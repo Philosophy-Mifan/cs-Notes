@@ -53,10 +53,8 @@ int find(List* list, int key){
         if(list->list[i] == key){
             return i;
         }
-        else{
-            printf("key %d is not in the list", key);
-        }
     }
+    return -1;  //key not found, return -1
 }
 
 //在list中的data前插入key
@@ -64,7 +62,7 @@ void insert_index(List* list, int key, int data){
     if(list->count < list->maxSize){
         int index = find(list, data);
         if (index == -1){
-            printf("data %d is not in the list", data);
+            printf("data %d is not in the list\n", data);
             return;
         }
         else{
@@ -75,6 +73,10 @@ void insert_index(List* list, int key, int data){
             list->list[index] = key;
             list->count++;
         }
+    }
+    else{
+        printf("list is full can not insert\n");
+        return;
     }
 }
 
