@@ -13,8 +13,10 @@ typedef struct LNode{
 LNode* Initlist(LNode* node);    //initial node
 int find(LNode* node, int key);
 void head_insert(LNode* node, int key); //头插
+void tail_insert(LNode* node, int key); //尾插
 void delete(LNode* node, int key);  //删除
-void printInfo(LNode* node);
+int get_length(LNode* node);    //获取链表长度
+void printList(LNode* node);
 
 //debug
 int main(){
@@ -22,13 +24,16 @@ int main(){
     head_insert(head, 1);
     head_insert(head, 2);
     head_insert(head, 3);
-    head_insert(head, 4);
+    tail_insert(head, 4);
+    tail_insert(head, 8);
+    int length = get_length(head);
+    printf("the length of list: %d\n", length);
     printInfo(head);
     int search_key = 3;
     int temp = find(head, search_key) + 1;
     printf("the search_key is in pos:%d\n", temp);
     delete(head, 2);
-    printInfo(head);
+    printList(head);
 }
 
 LNode* Initlist(LNode* node){
@@ -66,6 +71,22 @@ void head_insert(LNode* node, int key){
     
 }
 
+void tail_insert(LNode* node, int key){
+    LNode* tmp = (LNode*)malloc(sizeof(node));
+    if (tmp == NULL){
+        printf("can not create new node.\n");
+        return;
+    }
+    tmp->data = key;
+    tmp->next = NULL;
+
+    LNode* last = node;
+    while(last->next != NULL){
+        last = last->next;
+    }
+    last->next = tmp;
+}
+
 void delete(LNode* node, int key){
     //find
     int index = find(node, key);
@@ -87,7 +108,7 @@ void delete(LNode* node, int key){
     }
 }
 
-void printInfo(LNode* node){
+void printList(LNode* node){
     if(node == NULL || node->next == NULL){
         printf("this list is empty.\n");
         return;
@@ -100,4 +121,14 @@ void printInfo(LNode* node){
     }
     printf("\n");
 }
-    
+
+
+int get_length(LNode* node){
+    int length = 0;
+    LNode* tmp = node->next;
+    while(tmp != NULL){
+        length++;
+        tmp = tmp->next;
+    }
+    return length;
+}
