@@ -7991,7 +7991,7 @@ int main() {
 }
 ```
 
-## 20.8 set容器
+## 20.8 set/mutiset容器
 
 `set/multiset`属于关联式容器，底层结构使用二叉树实现的（详见《数据结构与算法》——二叉树）其特点是，所有的元素在插入时会自动被排序。使用时需包含头文件\<set\>
 `set/multiset`的区别是：set容器中不允许有重复的元素，而multiset允许有重复的元素。
@@ -8118,3 +8118,131 @@ int main() {
 - multiset容器在执行insert()时，只要数据不是非法数据和空数据，insert就总是能够执行，无论是一个数据还是一段数据。
 - multiset容器中的find()函数会返回和参数匹配的第一个元素的迭代器，即使存在多个元素也只返回第一个，如{10,20,20,20}搜索20进行匹配会返回第二个参数，如果没有符合的参数则结束迭代器
 - 同理注入lower_bound()等的需要进行一个位置的返回值，则统统返回第一个发现的值。
+
+### 20.8.6 multiset的构造与赋值
+
+```cpp
+#include <iostream>
+#include <set>
+
+//1.默认构造函数
+multiset<int> ms1;
+//2.拷贝构造函数
+multiset<int> ms2(ms1);
+//3.重载
+multiset<int> ms3 = ms2;
+```
+
+### 20.8.7 Multiset的插入与删除
+
+```cpp
+void printMultiset(multiset<int>& ms){
+    for(auto i = ms.begin(); i != ms.end(); i++){
+        cout << *i << " ";
+    }
+    cout << endl;
+}
+//注：Multiset会自动排序！！
+multiset<int> ms;
+
+ms.insert(10);
+ms.insert(30);
+ms.insert(50);
+ms.insert(40);
+ms.insert(20);
+
+//使用迭代器范围插入
+vector<int> vec = { 5,15,25 };
+ms.insert(vec.begin(),vec.end());
+
+//删除erase()
+auto it = ms.find(20);
+if (it != ms.end()){
+    ms.erase(it);	//删除迭代器指向的单个元素
+}
+
+ms.erase(20);	//删除所有值为20的元素（可能多个）
+
+ms.erase(ms.begin());	//删除第一个元素
+ms.erase(ms.begin(), ++ms.begin());	//删除指定范围
+
+ms.clear();		//清空所有元素
+```
+
+### 20.8.8 Multiset的大小与交换
+
+```cpp
+multiset<int> ms = { 2,3,1,5,4,2,1 };
+//size() -> 元素个数
+cout << "ms.size():" << ms.size() << endl;
+//empty() -> 判空
+if(ms.empty()){
+    cout << "the ms is empty" << endl;
+}
+else{
+    cout << "the ms is not empty." << endl;
+}
+multiset<int> ms2 = { 11,33,22,55,44 };
+ms.swap(ms2);
+cout << "ms:" << endl;
+printfMultiset(ms);
+cout << "ms2:" << endl;
+printfMultiset(ms2);
+```
+
+### 20.8.9 Multiset的查找操作
+
+```cpp
+//find() -> 查找元素（返回第一个匹配的迭代器）
+auto pos = ms.find(20);
+if(pos != ms.end()){
+	cout << "找到元素：" << pos << endl;	
+}
+
+//count() -> 统计特定元素的个数
+int num = ms.count(20);	//返回值为20的元素个数
+
+//lower_bound() -> 返回第一个 >= key 的元素迭代器
+auto lb = ms.lower_bound(30);
+
+//upper_bound() -> 返回第一个 <= key 的元素迭代器
+auto ub = ms.upper_bound(20);
+
+//equal_range()	-> 返回所有包含key的迭代器对
+auto range = ms.equal_range(20);
+for(auto it = range.first; it != range.second; ++it){
+    cout << *it << " ";
+}
+```
+
+### 20.8.10 Multiset的遍历操作
+
+```cpp
+//使用迭代器遍历
+cout << "升序遍历：";
+for (auto it = ms.begin(); it != ms.end(); ++it){
+    cout << *it << " ";
+}
+//使用反向迭代器
+cout << "\n降序遍历：";
+for(auto rit = ms.rbegin(); rit != ms.rend(); ++rit){
+    cout << *rit << " ";
+}
+
+//C++11 范围for循环
+for(const auto& elem : ms){
+    cout << elem << " ";
+}
+```
+
+### 20.8.11 Multiset的边界访问
+
+```cpp
+if (!ms.empty()){
+    int smallest = *ms.begin();		//最小元素
+    int largest = *ms.rebegin();	//最大元素
+}
+```
+
+## 20.9 map/multimap容器
+
