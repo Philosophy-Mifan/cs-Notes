@@ -8246,9 +8246,9 @@ if (!ms.empty()){
 
 
 
-## 20.9 Pair
+## 20.9 Pair 队组
 
-### 20.9.1 pair
+### 20.9.1 概念
 
 pair只含有两个元素，可以看做是只有两个元素的结构体。对于成对出现的数据，利用数组可以返回<u>两个</u>数据。其应用：1、代替二元结构体；2、作为map键对进行插入/取出等操作
 
@@ -8305,4 +8305,45 @@ map容器中所有元素都是pair，pair中第一个元素为key（键值），
 map/multimap属于关联式容器，底层数据结构是用**二叉树**实现的，它的优点就是可<u>根据key值快速找到value值</u>。
 
 - map与multimap的区别：map不允许容器中有重复的key值元素，而multimap允许，类似于set/multiset的关系
+
+### 20.10.1 map容器的构造与赋值
+
+```cpp
+map<T, T> m;			//map默认构造函数
+map(const map &mp);		//拷贝构造函数
+map& operator = (const map &mp);	//重载等号运算符
+```
+
+```cpp
+#include <iostream>
+#include <map>
+using namespace std;
+void printMap(map<int, int>& m){
+    for(auto it = m.begin(); it != m.end(); it++){
+        cout << "key = " << it->first << "value = " << it->second << endl;
+    }
+    cout << endl;
+}
+int main(){
+    //create map vector
+    map<int, int> m;
+    //插入数据中传入Pair
+    m.insert(pair<int, int>(1, 10));	//为匿名二元组，无明确标识；有明确表示的则为具名二元组
+    m.insert(pair<int, int>(3, 30));
+    m.insert(pair<int, int>(4, 40));
+    m.insert(pair<int, int>(2, 20));
+    //插入Pair后会根据key的值自动排序
+    printMap(m);
+    
+    //拷贝构造
+    map<int, int> m2(m);
+    printMap(m2);
+    
+    //赋值
+    map<int, int> m3;
+    m3 = m2;
+    printMap(m3);
+    return 0;
+}
+```
 
