@@ -8244,5 +8244,65 @@ if (!ms.empty()){
 }
 ```
 
-## 20.9 map/multimap容器
+
+
+## 20.9 Pair
+
+### 20.9.1 pair
+
+pair只含有两个元素，可以看做是只有两个元素的结构体。对于成对出现的数据，利用数组可以返回<u>两个</u>数据。其应用：1、代替二元结构体；2、作为map键对进行插入/取出等操作
+
+在创建pair对象时，必须提供两个类型名，两个对应的类型名的类型不必相同，可以在定义时进行成员初始化。
+
+在使用pair对组时，需包含头文件**\<utility\>** （注：除了头文件\<map\>会直接包含该头文件，其余间接包含的(如：\<iostream\>等)都建议显式的包含此头文件）
+
+### 20.9.2 初始化
+
+`template <class T1, class T2> struct pair;`
+
+实际中，我们可以像类似于STL差UN关键新容器一样创建pair也可以直接使用：
+
+```cpp
+pair<int, int> p;
+pair<int, int> p(10,20);
+map<char, int> m;
+m.insert(pair<char, int>('a', 10));
+```
+
+### 20.9.3 数据访问
+
+```cpp
+pair<string, int> p("kazuha", 17);
+cout << "姓名：" << p.first << "岁数：" << p.second << endl;	
+//和结构体类似，first代表pair中的第一个元素，second代表第二个元素
+
+pair<char, float>p1 = make_pair('pi', 3.14);
+cout << "字符：" << p1.first << "小数："  << p1.second << endl;
+```
+
+### 20.9.4 make_pair
+
+函数原型 `template pair make_pair(T1 a, T2 b) { return pair(a,b); }`
+
+可以通过make_pair生成我们所需要的pair，对于一般的pair而言，如果需要对其进行赋值，则需要
+
+```cpp
+pair<int, int> p;
+p.first = 10, p.second = 20;
+//使用make_pair方法，则如下
+pair<int, int> p;
+p = make_pair(10, 20);
+```
+
+可以看见，使用make_pair不仅仅让我们免去了对两个变量进行分开来的访问赋值，同时make_pair也只能的接受变量的类型，不需要再度指定，make_pair本身是接受隐式类型转换的，定义的是一个int类型，使用make_pair传入一个float类型的参数，make_pair不会报错，会自动进行类型转换，这样的灵活度更高，但是隐式转换也会有一些不可预知的问题出现。
+
+
+
+## 20.10 map/multimap容器
+
+map容器中所有元素都是pair，pair中第一个元素为key（键值），起到索引作用，第二个元素为value（实值）。
+同时，所有元素都会根据元素的键值自动排序。
+map/multimap属于关联式容器，底层数据结构是用**二叉树**实现的，它的优点就是可<u>根据key值快速找到value值</u>。
+
+- map与multimap的区别：map不允许容器中有重复的key值元素，而multimap允许，类似于set/multiset的关系
 
