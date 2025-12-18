@@ -8425,3 +8425,118 @@ cout << "num = " << num << endl;
 return 0;
 ```
 
+### 20.10.5 Multimap容器
+
+Multimap是map映射容器中的一种，其拥有了map的全部内容，并在此基础上，multimap还具有的了可以重复保存元素的功能，与Multiset的差不多，任何进行访问单个值的语句访问均只会返回第一个位置。
+
+Q:有没有一种方法，使得一个key值能够对应多个value，产生一种诸如一个学生有多门考试成绩一样的映射。
+A:map关联容器是使得一个数据与另一个数据发生映射的容器，通过key得到value产生一一对应，那么multimap在此基础上使得map的元素可以重复，因此这种情况下使用multimap容器。
+
+```cpp
+multimap<int, int> m1;		//默认构造函数
+multimap<int, int> m2(m1);	//赋值构造函数
+multimap<int, int> m3 = m2;	//重载'='
+```
+
+其余函数同20.1.1-20.1.4中一致，只是容器变为了multimap而已，这里就不再重复。
+
+
+
+## 20.11 STL常用算法
+
+算法主要是由头文件**\<algorithm\>\<functional\>\<numeric\>**组成
+
+1. **\<algorithm\>**是所有头文件中最大的一个，范围涉及到比较、交换、查找、遍历操作、复制和修改等等。
+2. **\<numeric\>**体积很小，只包括一系列在数值序列上面进行简单数学运算的模板函数。
+3. **\<functional\>**定义了一些模板类，用以声明函数对象。
+
+### 20.11.1 常用遍历算法
+
+#### 20.11.1.1 for_each
+
+功能：实现遍历函数
+
+原型：`for_each(iterator beg, iterator end, _func);`，其中beg是开始迭代器，end是结束迭代器，_func是函数或者函数对象。
+
+```cpp
+#include<iostream>
+#include<vector>
+#include<algorithm>
+
+using namespace std;
+
+//normal function
+void print_N(int val) {
+    cout << val << " ";
+}
+
+//仿函数 functor
+class print_F{
+public:
+    void operator()(int val) {
+        cout << val << " ";
+    }
+};
+
+int main() {
+    vector<int> v;
+    for (int i = 0; i < 10; i++) {
+        v.push_back(i);
+    }
+    for_each(v.begin(), v.end(), print_N);
+    cout << "下面是仿函数：" << endl;
+    for_each(v.begin(), v.end(), print_F());
+    cout << endl;
+    return 0;
+}
+```
+
+#### 20.1.1.2 transform
+
+功能：搬运容器到另一个容器中
+
+原型：`transform(iterator beg1, iterator end1, iterator beg2, _func);`其中beg1为源容器开始迭代器，end1为源容器结束迭代器，beg2为目标容器开始迭代器，_func为函数或者函数对象。
+
+```cpp
+class Transform {
+public:
+	int operator()(int v) {
+		return v + 100;
+	}
+};
+class Myprint {
+public:
+	void operator()(int val) {
+		cout << val << " ";
+	}
+};
+
+int main() {
+	vector<int>v;
+	for (int i = 0; i < 10; i++) {
+		v.push_back(i);
+	}
+	vector<int>vTarget;	//转移的目标容器
+	vTarget.resize(v.size());	//目标容器需要提前开辟空间
+	transform(v.begin(), v.end(), vTarget.begin(), Transform());
+	for_each(vTarget.begin(), vTarget.end(), Myprint());
+	cout << endl;
+	return 0;
+}
+```
+
+### 20.11.2 常用查找算法
+
+#### 20.11.2.1 find
+
+功能：查找指定元素，找到返回指定元素的迭代器，找不到则返回结束迭代器end()
+
+原型：`find(iterator beg, iterator end, value);`
+
+```cpp
+vector<int>v;
+for (int i = 0; i < 10; i++){
+	v.push_back(i);
+}
+```
+
