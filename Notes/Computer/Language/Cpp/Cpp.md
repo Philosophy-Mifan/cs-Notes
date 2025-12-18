@@ -8347,3 +8347,81 @@ int main(){
 }
 ```
 
+### 20.10.2 map容器的大小与交换
+
+```cpp
+size();		//返回容器中元素的数目
+empty();	//判断容器中是否为空
+swap(st);	//交换两个集合容器
+```
+
+```cpp
+//map容器的大小与交换
+void printMap(map<int, int>& m){
+    for(auto iy = m.begin(); it != m.end(); it++){
+        cout << "key = " << it->first << "value = " << it->second << endl;
+    }
+    cout << endl;
+}
+```
+
+### 20.10.3 map容器的插入与删除
+
+```cpp
+insert(elem);	//在容器中插入元素
+clear();	//清除所有元素
+erase(pos);	//删除pos迭代器所指的元素，返回下一个元素的迭代器
+erase(beg, end);//删除区间[beg, end)的所有元素，返回下一个元素的迭代器
+erase(key);	//删除容器中值为key的元素
+```
+
+```cpp
+map<int, int> m;
+m.insert(pair<int, int>(1, 10));	//第一种插入方式
+m.insert(make_pair(2, 20));			//第二种插入方式
+m.insert(map<int, int>::value_type(3, 30));	//不推荐使用，代码冗余，且C++11中的标准已经可以简化（详见后），但其安全性和显式的类型说明是一个非常优秀的方面，如果需要兼容老版本的
+//第四种插入方式，最简单
+//[]不建议插入，通过[]可以利用key访问到value
+//使用[]插入元素的时候，如果key不存在则会自动创建键对值
+m[4] = 40;
+printMap(m);
+
+m.erase(m.begin());	//删除
+printMap(m);
+
+m.erase(3);	//删除，直接传入key
+printMap(m);
+//全部删除
+m.clear();	//相当于m.erase(m.begin(), m.end())
+printMap(m);
+return 0;
+```
+
+### 20.10.4 map容器的查找与统计
+
+```cpp
+find(key);	//查找key是否存在，若存在，则返回该键值的元素的迭代器；若不存在，则返回map.end()
+count(key);	//统计key的元素的个数
+```
+
+```cpp
+//查找
+map<int, int> m;
+m.insert(pair<int, int>(1, 10));
+m.insert(pair<int, int>(3, 30));
+m.insert(pair<int, int>(2, 20));
+//查找键值为3的键值对
+map<int, int>::iterator pos = m.find(3);
+if(pos != m.end()){
+    cout << "查到了元素：key = " << pos->first << "value = " << pos->second << endl;
+}
+else{
+    cout << "未找到元素" << endl;
+}
+
+//统计    由于map容器中key不能重复出现，因此count统计的结果只有0或1
+int num = m.count(3);
+cout << "num = " << num << endl;
+return 0;
+```
+
