@@ -8717,17 +8717,92 @@ cout << endl;
 
 #### 20.11.4.1 copy
 
+功能：将容器内指定范围的元素拷贝到另一个容器中。
+
+`copy(iterator beg, iterator end, iterator dest);`
+
+```cpp
+vector<int> v = {11,22,33,44,55};
+vector<int> vTarget;
+vTarget.resize(v.size());
+copy(v.begin(), v.end(), vTarget.begin());
+for_each(v.begin(), v.end(), myPrint);
+cout << endl;
+```
+
+#### 20.11.4.2 copy_if
+
+功能：将区间内满足条件的元素，拷贝到另一个容器中
+
+`copy_if(iterator beg1, iterator end, iterator beg2, _Pred);`
+
+#### 20.11.4.3 replace
+
+功能：将容器内指定范围的旧元素替换为新元素
+
+`replace(iterator beg, iterator end, oldvalue, newvalue);`
+
+```cpp
+vector<int> v = {10,20,10,30,10,40};
+cout << "before replace: " << endl;
+for_each(v.begin(), v.end(), myPrint());
+cout << endl;
+//将10替换成100
+replace(v.begin(), v.end(), 10, 100);
+cout << "after replace: " << endl;
+for_each(v.begin(), v.end(), myPrint());
+cout << endl; 
+```
+
+#### 20.11.4.4 replace_if
+
+功能：将区间内满足条件的元素，替换成指定元素
+
+`replace_if(iterator beg, iterator end, _Pred, newvalue);`
+
+```cpp
+class Greater20{
+public:
+    bool operator()(int val){
+        return val == 20;
+    }
+}
+vector<int> v; = {1,5,10,15,20,25,30};
+cout << "before replace: " << endl;
+for_each(v.begin(), v.end(), myPrint());
+cout << endl;
+//将10替换成100
+replace_if(v.begin(), v.end(), Greater20(), 100);
+cout << "after replace: " << endl;
+for_each(v.begin(), v.end(), myPrint());
+cout << endl; 
+```
+
+#### 20.11.4.5 swap
+
+功能：互换两个容器的元素
+
+`swap(container c1, container c2);`
+
+```cpp
+vector<int> v1 = {1,2,3};
+vector<int> v2 = {11,22,33};
+
+cout << "before swap: " << endl;
+for_each(v1.begin(), v1.end(), myPrint());
+cout << endl;
+for_each(v2.begin(), v2.end(), myPrint());
+cout << endl;
+cout << "after swap: " << endl;
+for_each(v1.begin(), v1.end(), myPrint());
+cout << endl;
+for_each(v2.begin(), v2.end(), myPrint());
+cout << endl;
+```
 
 
-#### 20.11.4.2 replace
 
-
-
-#### 20.11.4.3 replace_if
-
-
-
-#### 20.11.4.4 swap
+### 20.11.5 常用的算术生成算法
 
 
 
