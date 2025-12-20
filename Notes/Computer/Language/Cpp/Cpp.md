@@ -8637,6 +8637,98 @@ cout << "greater than 10's num is:" << num << endl;
 
 ### 20.11.3 常用排序算法
 
+#### 20.11.3.1 sort
+
+功能：对容器内元素进行排序
+
+`sort(iterator beg, iterator end, _Pred);`
+
+```cpp
+void myPrint(int val){
+    cout << val << " ";
+}
+vector<int> v = { 2,5,1,3,4,6 };
+//升序
+sort(v.begin(), v.end());
+for_each(v.begin(), v.end(), myPrint);
+cout << endl;
+
+//降序
+sort(v.begin(), v.end(), greater<int>());
+for_each(v.begin(), v.end(), myPrint);
+cout << endl;
+```
+
+#### 20.11.3.2 random_shuffle
+
+功能：洗牌，指定范围内的元素随机调整次序
+
+`random_shulffle(iterator beg, iterator end);`
+
+```cpp
+void myPrint(int val){
+    cout << val << " ";
+}
+srand((unsigned int)time(NULL));	//在使用srand时需包含头文件<ctime>
+vector<int> v = {1,2,3,4,5};
+
+random_shuffle(v.begin(), v.end());
+for_each(v.begin(), v.end(), myPrint());
+cout << endl;
+```
+
+#### 20.11.3.3 merge
+
+功能：使两个容器元素合并，并存储在另一个容器中
+
+`merge(iterator beg1, iterator end1, iterator beg2, iterator end2, iterator dest);`，其中，dest代表目标容器开始迭代器，要注意，**使用merge时两个容器必须是有序的**
+
+```cpp
+vector<int> v1 = {1,3,5,9,11};
+vector<int> v2 = {2,4,8,12};
+vector<int> vTarget;
+vTarget.resize(v1.size() + v2.size());
+
+merge(v1.begin(), v1.end(), v2.begin(), v2.end(), vTarget.begin());
+for_each(vTarget.begin(), vTarget.end(), myPrint);
+cout << endl;
+```
+
+#### 20.11.3.4 reverse
+
+功能：将容器内指定范围的元素进行反序
+
+`reverse(iterator beg, iterator end);`
+
+```cpp
+vector<int> v = {1,3,5,6,9};
+cout << "before reverse: ";
+fot_each(v.begin(), v.end(), myPrint);
+cout << endl;
+cout << "after reverse: ";
+reverse(v.begin(), v.end());
+for_each(v.begin(), v.end(), myPrint);
+cout << endl;
+```
+
+
+
+### 20.11.4 常用的拷贝和替换算法
+
+#### 20.11.4.1 copy
+
+
+
+#### 20.11.4.2 replace
+
+
+
+#### 20.11.4.3 replace_if
+
+
+
+#### 20.11.4.4 swap
+
 
 
 
