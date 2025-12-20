@@ -8804,7 +8804,88 @@ cout << endl;
 
 ### 20.11.5 常用的算术生成算法
 
+在使用这些算法之前，请先导入头文件`<numertic>`
 
+#### 20.11.5.1 accumulate
+
+功能：计算区间内的容器元素累计总和
+
+`accumulate(iterator beg, iterator end, startvalue);`，其中startvalue是指起始的累加值。
+
+```cpp
+vector<int> v;
+for(int i = 1; i <= 100; i++){
+    v.push_back(i);
+}
+int total = accumulate(v.begin(), v.end(), 0);
+```
+
+#### 20.11.5.2 fill
+
+功能：向容器中填充指定的元素
+
+`fill(iterator beg, iterator end, value)`，其中value是指填充的值
+
+```cpp
+vector<int> v;
+v.resize(10);
+fill(v.begin(), v.end(), 10);
+```
+
+
+
+### 20.11.6 常用集合算法
+
+#### 20.11.6.1 set_intersection
+
+功能：求两个容器的交集
+
+`set_intersection(iterator beg1, iterator end1, iterator beg2, iterator end2, iterator dest);`
+
+在使用这个算法时，两个容器必须是有序序列！且目标容器所需的空间为两个容器中容量小的一者。
+
+```cpp
+vector<int> v1 = {1,2,3,4,5};
+vector<int> v2 = {1,3,6,9};
+vector<int> vTarget;
+vTarget.resize(min(v1.size(), v2.size()));
+//获取交集
+vector<int>::iterator itEnd = set_intersection(v1.begin(), v1.end(), v2.begin(), v2.end(), vTarget.begin());
+```
+
+#### 20.11.6.2 set_union
+
+功能：求两个容器的并集
+
+`set_union(iterator beg1, iterator end1, iterator beg2, iterator end2, iterator dest);`
+
+在使用这个算法时，两个容器必须是有序序列！且目标容器所需的空间为两个容器的容量相加。
+
+```cpp
+vector<int> v1 = {1,2,3};
+vector<int> v2 = {4,5,6};
+vector<int> vTarget;
+vTarget.resize(v1.size() + v2.size());
+//获取并集
+vector<int>::iterator itEnd = set_union(v1.begin(), v1.end(), v2.begin(), v2.end(), vTarget.begin());
+```
+
+#### 20.11.6.3 set_difference
+
+功能：求两个容器的差集
+
+`set_difference(iterator beg1, iterator end1, iterator beg2, iterator end2, iterator dest);`
+
+在使用这个算法时，两个容器必须是有序序列！且目标容器所需的空间为两个容器容量的大者。
+
+```cpp
+vector<int> v1 = {1,2,3,4,5};
+vector<int> v2 = {2,4,5,6,7,8};
+vector<int> vTarget;
+vTarget.resize(max(v1.size(), v2.size()));
+//获取差集，v1在前和v2在前取得的情况是不一样的
+vector<int>::iterator itEnd = set_difference(v1.begin(), v1.end(), v2.begin(), v2.end(), vTarget.begin());
+```
 
 
 
