@@ -8491,7 +8491,7 @@ int main() {
 }
 ```
 
-#### 20.1.1.2 transform
+#### 20.11.1.2 transform
 
 功能：搬运容器到另一个容器中
 
@@ -8538,5 +8538,235 @@ vector<int>v;
 for (int i = 0; i < 10; i++){
 	v.push_back(i);
 }
+//查找容器中是否有这9个元素
+vector<int>::iterator it = find(v.begin(), v.end(), 9);
+if(it == v.end()){
+    cout << "not found" << endl;
+}
+else{
+    cout << "found: " << *it << endl;
+}
+```
+
+#### 20.11.2.2 find_if
+
+功能：按条件查找元素
+
+`find_if(iterator beg, iterator end, _Pred);`，按值开始查找元素，返回指定位置的迭代器，找不到则返回结束迭代器的位置，_Pred指函数或者谓词（返回bool类型的仿函数）。
+
+```cpp
+class GreaterFive{
+public:
+    bool operator()(int val){
+        return val == 5;
+    }
+};
+int main(){
+    vector<int>::iterator it = find_if(v.begin(), v.end(), GreaterFive());
+    if(it == v.end()){
+        cout << "not found" << endl;
+    }
+    else{
+        cout << "found:" << *it << endl;
+    }
+    return 0;
+}
+```
+
+#### 20.11.2.3 adjacent_find
+
+功能：查找相邻重复元素
+
+`adjacent_find(iterator beg, iterator end);`，返回相邻元素的第一个位置的迭代器。
+
+```cpp
+vector<int> v ={0,2,2,1,3,4,4};
+vector<int>::iterator pos = adjacent_find(v.begin(), v.end());
+if(pos == v.end()){
+	cout << "not found" << endl;
+}
+else{
+    cout << "found: " << *pos << endl;
+}
+```
+
+#### 20.11.2.4 binary_search
+
+二分查找，查找元素是否存在。！！使用该方法必须是有序序列！！
+
+`bool binary_search(iterator beg, iterator end, value);`，查询到返回True，查不到则返回False
+
+```cpp
+vector<int> v;
+for(int i = 0; i < 10; i++){
+	v.push_back(i);
+}
+bool ret = binary_search(v.begin(), v.end(), 9);
+if(ret){
+	cout << "found" << endl;
+}
+else{
+    cout << "not found" << endl;
+}
+```
+
+#### 20.11.2.5 count
+
+功能：统计元素个数
+
+`count(iterator beg, iterator end, value);`
+
+#### 20.11.2.6 count_if
+
+功能：按条件统计元素个数
+
+`count_if(iterator beg, iterator end, _Pred);`
+
+```cpp
+class Greater_5{
+public:
+    bool operator()(int val){
+        return val > 5;
+    }
+};
+
+vector<int> v = {1,2,3,4,5,6,7,8,9,10,11,2,3,4};
+int num = count_if(v.begin(), v.end(), Greater_5());
+cout << "greater than 10's num is:" << num << endl;
+```
+
+### 20.11.3 常用排序算法
+
+
+
+
+
+### 20.11.x 补充概念
+
+#### 20.11.x.1 仿函数 Functor
+
+仿函数是C++中一种特殊的类或结构体，通过重载函数调用运算符`operator()`，使得对象可以像函数一样被调用、它也被称为**函数对象**（Function Object）。仿函数是C++中将数据和操作封装在一起的强大工具，它既拥有函数的行为，又拥有对象的特性，是连接面向对象编程和泛型编程的重要桥梁。
+
+```cpp
+// 现代C++开发建议：
+// 1. 简单场景 -> 使用lambda表达式
+auto simple = [](int x) { return x * x; };
+
+// 2. 复杂逻辑、需要状态 -> 使用仿函数类
+class ComplexOperation {
+    // 封装复杂逻辑和状态
+};
+
+// 3. 标准操作 -> 使用STL内置仿函数
+sort(data.begin(), data.end(), greater<>());
+
+// 4. 需要重用的操作 -> 定义仿函数类
+class ReusableTransform {
+    // 可以在多个地方重用
+};
+```
+
+
+
+#### 20.11.x.2 谓词 Predicate
+
+谓词指能够返回布尔值（true/false）的可调用对象，用于判断或测试条件。
+
+```cpp
+//谓词必须是可调用对象，并返回bool
+bool func(T arg);			//函数
+struct Functor{				//仿函数
+    bool opeartor()(T arg);
+};
+auto lambda = [](T arg){	//Lambda表达式
+    return /* bool */;
+};
+```
+
+谓词可分为一元谓词（Unary Predicate）和二元谓词（Binary Predicate），一元谓词就是接受一个参数返回
+
+bool，二元谓词就是接受两个参数返回bool。
+
+##### 1、谓词的实现方式
+
+###### I. 函数指针
+
+```cpp
+//定义谓词函数
+bool isMultipleOfThree(int n){
+	return n % 3 == 0;
+}
+//使用函数指针作为谓词
+vector<int> nums = {1,2,3,4,5,6,7,8,9};
+int count = count_if(nums.begin(), nums.end(), isMultipleOfThree);
+//count = 3 (3, 6, 9)
+```
+
+###### II. 仿函数（函数对象）
+
+```cpp
+//仿函数可以保存状态
+class IsInRange{
+private:
+    int min_, max_;
+public:
+    IsInRange(int min, int max) : min_(min), max_(max){}
+    bool operator()(int n) const{
+        return n >= min_ && n <= max_;
+    }
+};
+
+//使用仿函数作为谓词
+vector<int> nums = {1, 5, 10, 15, 20};
+int count = count_if(nums.begin(), nums.end(), IsInRange(5, 15));
+//count = 3 (5, 10, 15)
+```
+
+###### III. Lambda表达式
+
+```cpp
+//在现代C++中推荐，更简洁和方便
+vector<int> nums = {1,2,3,4,5,6,7,8,9};
+// Lambda捕获外部变量
+int threshold = 5;
+int count = count_if(nums.begin(), nums.end(),
+    [threshold](int n) {  // 按值捕获threshold
+        return n > threshold;
+    });
+
+// 带捕获列表的复杂Lambda
+int minVal = 3, maxVal = 7;
+vector<int> result;
+copy_if(nums.begin(), nums.end(), back_inserter(result),
+    [minVal, maxVal](int n) {
+        return n >= minVal && n <= maxVal;
+    });
+// result: {3, 4, 5, 6, 7}
+```
+
+##### 2、谓词设计原则
+
+要注意，在使用谓词的时候要遵循以下原则：
+
+1. 纯函数：不应修改输入参数
+2. 无副作用：避免影响外部状态
+3. 严格弱序：用于排序的比较谓词必须满足
+4. 高效：避免昂贵的操作
+
+##### 3、实现
+
+```cpp
+//现代C++推荐使用Lambda表达式
+auto predicate = [capture](parameters) -> bool{
+    return condition;
+};
+//复杂的谓词可以封装为仿函数
+class ComplexPredicate{
+public:
+    bool operator()(const T& value) const{
+        //complex
+        return /* ... */
+    }
+};
 ```
 
