@@ -8444,6 +8444,8 @@ multimap<int, int> m3 = m2;	//重载'='
 
 ## 20.11 STL常用算法
 
+在后续用到常用的STL算法可随时根据自己的要求添加。
+
 算法主要是由头文件**\<algorithm\>\<functional\>\<numeric\>**组成
 
 1. **\<algorithm\>**是所有头文件中最大的一个，范围涉及到比较、交换、查找、遍历操作、复制和修改等等。
@@ -8889,6 +8891,74 @@ vector<int>::iterator itEnd = set_difference(v1.begin(), v1.end(), v2.begin(), v
 
 
 
+### 20.11.7 练习——约瑟夫环问题
+
+题目：共n个人，每次数到第m个人时，这个人会出圈，出圈后会再次从1开始数数，直到所有人都出圈，要求按顺序输出出圈人的编号。
+
+思路：队列，先计数是第几人，在未到第m个人时先读入再弹出，直至到第m个人输出第m个人的编号，再次从头开始计数，如此循环。
+
+```cpp
+queue<int> q;   //读入数据
+int n, m, num = 1; //n个人，到m出圈，num为报数
+cin >> n >> m;
+for (int i = 1; i <= n; i++) {
+    q.push(i);  //填充数据
+}
+while (!q.empty()) {    //出队模拟
+    if (num == m) {
+        cout << q.front() << " ";   //输出数到第m个人
+        q.pop();    //第m个人出队
+        num = 1;    //重新报数
+    }
+    else {
+        num++;  //继续报数
+        q.push(q.front());  //将队首移到队尾
+        q.pop();    //队首出队
+    }
+}
+```
+
+题：假设一个表达式有英文小写字母、运算符（+，-，*，/）和左右小括号构成，以"@"作为表达式的结束符，编写一个程序检查表达式中的左右圆括号是否匹配，若匹配，则返回"yes"，否则返回"no"。假设表达式长度小于255，左圆括号少于20个。
+
+input：一行数据（表达式）
+output：一行，"yes" 或 "no"
+input sample: 2*(x+y)/(1-x)@
+output sample: yes
+
+思路：其本意就是检查括号是否匹配，用到栈的LIFO特性
+
+```cpp
+#include<iostream>
+#include<stack>
+#include<string>
+using namespace std;
+
+int main(){
+    stack<char> s;
+    string expr;
+    getline(cin, expr);
+    
+    for(char ch : expr){
+        if(ch == '@') break;
+        if(ch == '('){
+            s.push(ch);	//左括号入栈
+        }
+        else if(ch == ')'){
+            if (s.empty() || s.top != '('){
+                cout << "no" << endl;
+                return 0;
+            }
+            s.pop();	//匹配成功，弹出左括号
+        }
+    }
+    cout << (s.empty() ? "yes" : "no") << endl;
+    
+    return 0;
+}
+```
+
+
+
 ### 20.11.x 补充概念
 
 #### 20.11.x.1 仿函数 Functor
@@ -9017,4 +9087,8 @@ public:
     }
 };
 ```
+
+
+
+# Chapter 21 文件操作
 
