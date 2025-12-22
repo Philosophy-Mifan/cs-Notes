@@ -5595,7 +5595,7 @@ public:
 
 此时再调用上述main函数会报错，在编译器中会提示`E0265 不可访问`，这是因为`height`是`private`属性的，不能被访问。
 
-再对派生类进行修改，使之成为`private`继承:`class Student:private Person{}`会出现如下图的情况<img src="E:\Typora\Typora Note\Computer\Language\Cpp\Picture\12.png" style="zoom:50%;" />
+再对派生类进行修改，使之成为`private`继承:`class Student:private Person{}`会出现如下图的情况<img src="Picture\12.png" style="zoom:50%;" />
 
 这是因为修改为private继承后，此时就不能访问基类里面的任何成员了。
 
@@ -5776,7 +5776,7 @@ int main() {
 
 在C++中，多继承如果多个基类中有相同的成员变量或者成员函数，那么此时就会存在成员名字冲突的问题，如果存在名字冲突，我们在调用的时候就必须显式的声明需要调用的成员。（报错如下图所示）
 
-<img src="E:\Typora\Typora Note\Computer\Language\Cpp\Picture\13.png" style="zoom:50%;" />
+<img src="Picture\13.png" style="zoom:50%;" />
 
 ```cpp
 class Person {
@@ -5818,7 +5818,7 @@ int main() {
 
 在使用多继承时，如果发生了如果类A派生出类B和类C，类D继承自类B和类C，这时候就发生了菱形继承。如果发生了菱形继承，这个时候类A中的成员变量和成员函数继承到类D中变成了两份，一份来自A->B->D这条路径，另一份来自A->C->D这条路径。
 
-<img src="E:\Typora\Typora Note\Computer\Language\Cpp\Picture\14.png" style="zoom:33%;" />
+<img src="Picture\14.png" style="zoom:33%;" />
 
 ```cpp
 class A {
@@ -6194,7 +6194,7 @@ Call ~Person()
 
 ### 17.7.1 当子类无重写基类虚函数时
 
-<img src="E:\Typora\Typora Note\Computer\Language\Cpp\Picture\15.png" style="zoom:50%;" />
+<img src="Picture\15.png" style="zoom:50%;" />
 
 `a->func1()`当程序执行到这里，会去animal指向的空间中寻找vptr指针，通过vptr指针找到func1函数，此时由于子类并没有重写也就是覆盖基类的func1函数，所以调用func1时，仍然调用的是基类的func1。 
 
@@ -6590,7 +6590,7 @@ int main() {
 
 详见7.2 多文件编程，首先建立一个新的头文件`abstrCal.h`
 
-<img src="E:\Typora\Typora Note\Computer\Language\Cpp\Picture\16.png" style="zoom:50%;" />
+<img src="Picture\16.png" style="zoom:50%;" />
 
 基类：[abstrCal.h](E:\Typora\Typora Note\Computer\Language\Cpp\Files\多态\abstrCal.h)
 子类：[chCal.h](E:\Typora\Typora Note\Computer\Language\Cpp\Files\多态\chCal.h)
@@ -6615,7 +6615,7 @@ C++中的异常处理是处理运行时错误的过程。执行异常处理，�
 
 C++提供一系列标准的异常，将其定义在exception中，可以使用这些标准的异常。它们是以父子类层次结构组织起来的。
 
-<img src="E:\Typora\Typora Note\Computer\Language\Cpp\Picture\17.png" style="zoom:50%;" />
+<img src="Picture\17.png" style="zoom:50%;" />
 
 | 异常                  | 描述                                                         |
 | --------------------- | ------------------------------------------------------------ |
@@ -6683,7 +6683,7 @@ double Div(double num1, double num2){
 }
 ```
 
-<img src="E:\Typora\Typora Note\Computer\Language\Cpp\Picture\18.png" style="zoom:50%;" />
+<img src="Picture\18.png" style="zoom:50%;" />
 
 当在函数里面抛出异常后，程序还是无法正常运行结束，此时要对异常进行捕获。
 
@@ -6813,8 +6813,8 @@ int main() {
 有时候在设计程序的时候会遇到这样一种情况：需要设计的几个类，其功能都是一样的，仅仅只是需要操作的数据类型不同。例如需要创建一个数组类，该数组可能是int整型数组，也可能是double类型数组、string类型数组等。解决类似的问题，固然可以将所有的类都设计一遍，但是在C++中，有更好的方法，就是设计一个模版类。
 
 C++提供了多种代码重用机制，在前面介绍派生和继承时，派生类可以继承基类中的成员变量和成员函数。
-`->模版是另一种代码重用机制`
-模版是一个非常强大的C++功能，STL的各种组件也是基于模版的。`模板可以提高代码的可用性，减少开发的代码量和工作量。`
+->模版是另一种代码重用机制
+模版是一个非常强大的C++功能，STL的各种组件也是基于模版的。**模板可以提高代码的可用性，减少开发的代码量和工作量。**
 
 ## 19.2 函数模板 ※
 
@@ -7269,10 +7269,10 @@ vector(int nSize, const t& t);	//创建一个vector，元素个数为nSize，且
 vector(const vector&);	//复制构造函数
 vector(begin, end);	//复制[begin,end)区间内另一个数组的元素到vector中
 
-vector <int> vec(10);//定义一个含有10个变量的整型数组vec，默认值都为0
-vector <int> vec(10, 2);//定义一个含有10个变量的整型数组vec，默认值都为2
-vector <int> vec(a);//其中a也是vector，把a整体赋值给vec
-vector <int> vec(a.begin(), a.begin + 1);//把a的从开始到第二个赋值给vec
+vector<int> vec(10);//定义一个含有10个变量的整型数组vec，默认值都为0
+vector<int> vec(10, 2);//定义一个含有10个变量的整型数组vec，默认值都为2
+vector<int> vec(a);//其中a也是vector，把a整体赋值给vec
+vector<int> vec(a.begin(), a.begin + 1);//把a的从开始到第二个赋值给vec
 ```
 
 ### 20.3.2 遍历函数
@@ -7288,7 +7288,7 @@ reverse_iterator rend();//反向迭代器，指向第一个元素之前的位置
 ```
 
 ```cpp
-vector <int> v = {1,2,3,4,5,6};
+vector<int> v = {1,2,3,4,5,6};
 cout << v.at(1) << endl;	//2
 cout << v.front() << endl;	//1
 cout << v.back() << endl;	//6
@@ -7310,8 +7310,8 @@ iterator insert(iterator it, int n, const T& x);
 //向量中迭代器指向元素前插入另一个相同类型向量的[first,last)间的数据
 iterator insert(iterator it, const_iterator first, const_iterator last);
 
-vector <int> v = { 1,2 };
-vector <int> v2 = { 10,20 };
+vector<int> v = { 1,2 };
+vector<int> v2 = { 10,20 };
 v.push_back(3);	//1 2 3
 v.insert(v.begin(), 11);	//11 1 2 3
 v.insert(v.begin() + 1, 3, 22);	//11 22 22 22 1 2 3
@@ -7348,7 +7348,7 @@ int size() const;	//返回向量中元素的个数
 int capacity() const;	//返回当前向量所能容纳的最大元素值
 int max_size() const;	//返回最大可允许的vector元素数量值
 
-vector <int> v = { 1,2,3,4,5,6 };
+vector<int> v = { 1,2,3,4,5,6 };
 cout << v.size() << " " << v.capacity() << " " << v.max_size() << endl;
 //6 6 4611686018427387903
 ```
@@ -7360,14 +7360,14 @@ void swap(vector&);	//交换两个同类型向量的数据
 void assign(int n, const T& x);	//设置向量中前n个元素的值为x
 void assign(const_iterator first, const_iterator last);	//向量区间[first,last)中的元素设置成当前向量元素
 
-vector <int> v;
+vector<int> v;
 v.assign(4, 2);	//v只含4个元素，且每个元素为2
 for (auto i = v.begin(); i != v.end(); i++) {
 	cout << *i << " ";	//2 2 2 2
 }
 cout << endl;
-vector <int> v1 = { 1,2,3,4,5 };
-vector <int> v2 = { 11,22,33 };
+vector<int> v1 = { 1,2,3,4,5 };
+vector<int> v2 = { 11,22,33 };
 v2.assign(v1.begin(), v1.end());
 for (auto i = v2.begin(); i != v2.end(); i++) {
 	cout << *i << " ";	//1 2 3 4 5
@@ -7390,7 +7390,7 @@ for (auto i = v2.begin(); i != v2.end(); i++) {
 
 ```cpp
 int n;
-vector <int> v;
+vector<int> v;
 cin >> n;
 srand((unsigned)time(0));
 for (int i = 1; i <= n; i++) {
@@ -7434,7 +7434,7 @@ push(elem);	//向栈顶添加元素
 pop();//从栈顶移除第一个元素
 top();//返回栈顶元素
 
-stack <int> s;
+stack<int> s;
 s.push(1);
 s.push(2);
 s.push(3);
@@ -9092,3 +9092,281 @@ public:
 
 # Chapter 21 文件操作
 
+## 21.1 数据流 (data stream)
+
+### 21.1.1 概念
+
+数据流是一组有序，有起点和终点的字节数据序列，包括输入流和输出流。C++通过一种称为流(stream)的机制提供了更为精良的输入和输出方法。流是一种灵活且面向对象的I/O方法。根据操作对象不同分为**文件流**、**字符串流**、**控制台流**。
+
+### 21.1.2 控制台流
+
+C++输入输出操作分别是由istream输入流和ostream输出流这两个类提供的，为了允许双向的输入/输出，istream和ostream派生出了iostream类。
+
+iostream是多继承的，同时从istream和ostream继承，在程序应用中可以只包含头文件iostream。
+
+| 函数 | 功能                                    |         应用         |
+| :--: | :-------------------------------------- | :------------------: |
+| cin  | 输入(standard input)的istream类对象     |    从设备读入数据    |
+| cout | 输出(standard output)的ostream类对象    | 向设备输出或者写数据 |
+| cerr | 标准错误(standard error)的ostream类对象 |    屏幕设备写数据    |
+
+上面的'<<'和'>>'操作符，是因为iostream.h头文件中，ostream类对应每个基本数据类型都有其友元函数对左移操作符进行了友元函数的重载。
+
+### 21.1.3 文件流
+
+文件流的输入输出类在fstream头文件被定义，和控制台流继承关系为下图
+
+<img src="Picture\19.png" alt="" style="zoom:65%;" />
+
+由于文件设备不像显示器屏幕和键盘那样标准的默认设备，所以我们定义一个流对象。
+
+ofstream类的默认构造函数原型为：`ofstream::ofstream(constchar* filename, int mode = ios::out, int penprot = filebuf::openprot);`
+
+| 参数     | 值来源                          |
+| -------- | ------------------------------- |
+| filename | 打开的文件名                    |
+| mode     | 打开文件的模式(ios::out)        |
+| prot     | 打开文件属性(filebuf::openprot) |
+
+#### 21.1.3.1 mode属性表
+
+| 类型           | 解释                                                         |
+| -------------- | ------------------------------------------------------------ |
+| ios::app       | 追加方式打开文件，新输入的文本不会覆盖掉原有文件的文本       |
+| ios::ate       | 文件打开后定位到文件尾，app就包含有此属性                    |
+| ios::binary    | 以二进制的方式打开文件，缺省的方式(default mode，默认模式)是文本方式 |
+| ios::in        | 文件以输入方式打开(ifstream)                                 |
+| ios::out       | 文件以输出方式打开(ofstream)                                 |
+| ios::nocreate  | 不建立文件，所以问津不存在时打开失败                         |
+| ios::noreplace | 不覆盖文件，打开文件时如果文件存在失败                       |
+
+#### 20.1.3.2 文件属性值
+
+| 类型 | 解释               |
+| ---- | ------------------ |
+| 0    | 普通文件，打开访问 |
+| 1    | 只读文件           |
+| 2    | 隐含文件           |
+| 4    | 系统文件           |
+
+"或" 或者 "+"把以上属性连接起来，如'3'或者'1|2'就是以只读和隐含属性打开文件。文件使用完后可以使用close成员函数关闭文件。
+
+`ios::app`为追加模式，再使用追加模式的时候同事进行文件状态的判断是一个比较好的习惯。
+
+### 21.1.4 字符串流
+
+字符串流就是能够控制字符串类型对象进行输入输出的类，C++不光可以支持C++风格的字符串流控制，还可以支持C风格的字符串流控制。继承关系如下图：
+
+<img src="Picture\20.png" style="zoom:50%;" />
+
+`istrstream`   C风格的串流的输入操作，字符串数组作为输入。
+
+`ostrstream`   C风格的串流的输出操作，字符串数组作为输出。
+
+`strstream`     支持C风格的串流的输入输出操作。
+
+
+
+## 21.2 文件处理
+
+### 21.2.1 简介
+
+C++的文件处理也是看为一个对象，使用文件流的类，使用头文件\<fstream\>，处理的时候有文本文件和二进制文件之分，主要的区别就是存储的形式。
+
+C++通过以下几个类支持文件的输入输出：
+
+1. `ofstream`：写操作（输出）的文件类（由`ostream`引申而来）
+2. `ifstream`：读操作（读入）的文件类（由`istream`引申而来）
+3. `fstream`：可同时读写操作的文件夹（由`iostream`引申而来）
+
+要在C++中进行文件处理，必须在源代码文件中包含头文件\<iostream\>和\<fstream\>。
+
+文件处理的基本流程：打开文件 -> 处理文件 -> 关闭文件
+
+### 21.2.2 输入与输出
+
+#### 21.2.2.1 打开文件
+
+在从文件读取信息或者向文件写入信息之前，必须先打开文件。`ofstream`和`fstream`对象都可以用来打开文件进行写操作，如果只需要打开文件进行读操作，则使用`ifstream`对象。
+
+下面是`open()`函数的标准语法，`open()`函数是`fstream`、`ifstream`、`ofstream`对象的一个成员。
+
+`void open(const char* filename, ios::openmode mode);`
+
+`open()`成员函数的第一参数指定要打开的文件的名称和位置，第二个参数定义文件被打开的模式。
+
+| 模式标志   | 描述                                                         |
+| ---------- | ------------------------------------------------------------ |
+| ios::app   | 追加模式。所有写入都追加到文件末尾                           |
+| ios::ate   | 文件打开后定位到文件末尾                                     |
+| ios::in    | 打开文件用于读取。                                           |
+| ios::out   | 打开文件用于写入。                                           |
+| ios::trunc | 如果该文件已经存在，其内容将在打开文件之前被截断，即把文件长度设为0。 |
+
+可以把以上两种或两种以上的模式结合使用。例如，如果想要以写入模式打开文件，并希望截断文件，以防文件已存在，那么可以使用下面的语法：
+
+`ofstream outf;`
+`outf.open("file.txt", ios::out | ios::trunc);`
+
+如果想要打开一个文件用于读写，可以使用下面的语法：
+
+`fstream file;`
+`file.open("file.txt", ios::out | ios::in);`
+
+`ofstream`，`ifstream`和`fstream`所有这些类的成员函数`open`都包含了一个默认打开文件的方式，这三个类的默认方式各不相同：
+
+| 类       | 参数的默认方式         |
+| -------- | ---------------------- |
+| ofstream | ios::out \| ios::trunc |
+| ifstream | ios::in                |
+| fstream  | ios::in \| ios::out    |
+
+#### 21.2.2.2 写入与读取
+
+- 写入文件：在C++编程中，可以使用流插入运算符( << )向文件写入信息，就像使用该运算符输出信息到屏幕上一样。唯一不同的是，在这里使用的是`ofstream`或`fstream`对象，而不是`cout`对象。
+- 读取文件：在C++编程中，可以使用流提取运算符( >> )从文件读取信息，就像使用该运算符从键盘输入信息一样。唯一不同的是，在这里使用的是`ifstream`或`fstream`对象，而不是`cin`对象。
+
+#### 21.2.2.3 关闭文件
+
+当C++程序终止时，它会<u>**自动关闭刷新所有流**</u>，释放所有分配的内存，并关闭所有打开的文件。但写程序时应该养成一个好习惯，在程序终止前<u>**关闭所有打开的文件**</u>。
+
+下面是`close()`函数的标准语法，`close()`函数是`fstream`、`ifstream`和`ofstream`对象的一个成员。
+
+`void close();`
+
+```cpp
+#include <iostream>
+#include <fstream>	//头文件
+using namespace std;
+int main(){
+    //创建流对象
+    ofstream outf;
+    //打开文件
+    outf.open("file.txt");	//outf.open("file.txt", ios::out);
+    //写入文件
+    outf << "    山村咏怀" << endl;
+    outf << "     邵雍" << endl;
+    outf << "一去二三里，烟村四五家。" << endl;
+    outf << "亭台六七座，八九十枝花。" << endl;
+    //关闭文件
+    outf.close();
+    return 0;
+}
+```
+
+注意：每次运行上述代码都会使得文件内的内容被重写；如果在`outf.open()`指令内加入`ios::out`则不会覆盖原文件内容。
+
+```cpp
+#include<iostream>
+#include<fstream>
+using namespace std;
+
+int main(){
+    //char cf[100];	//字符数组
+    string cf;	//字符串
+    ifstream infile;
+    infile.open("file.txt", ios::in); 	//inf.open("file.txt");
+    infile >> cf;
+    infile.close();
+    cout << cf;
+}
+```
+
+可以发现上述的案例在输出时无法输出完全，在C++中使用ifstream读文件的时候会以空格为分隔符，遇到空格就不读取了。这时候可以调用get函数来读取内容。
+
+```cpp
+#include<iostream>
+#include<fstream>	//文件流的头文件
+using namespace std;
+int main(){
+    char a;
+    ifstream infile;		//定义ifstream类（输入文件流类）对象outfile
+    infile.open("file.txt");	//打开文件，使文件流与C++.txt文件建立关联
+    while(!infile.eof()){
+        infile.get(a);	//依次获取文件中每个字符并输出
+        cout << a;
+    }
+    infile.close();	//关闭文件，使得文件流与C++.txt文件断开关联
+}
+```
+
+### 21.2.3 二进制文件读写
+
+#### 21.2.3.1 写文件
+
+二进制写文件主要利用流对象调用成员函数write()，函数原型：`ostream& write(const char* buffer, int len);`字符指针buffer指向内存中的一段存储空间，len是读写的字节数。
+
+```cpp
+#include<iostream>
+#include<fstream>
+using namespace std;
+
+class Student {
+public:
+	Student(){}
+	Student(string name, int age):name(name),age(age){}
+protected:
+	string name;
+	int age;
+};
+
+int main() {
+	ofstream bof;
+	Student s1("z3", 100);
+	bof.open("student.txt", ios::out | ios::binary);
+	bof.write((const char*)&s1, sizeof(Student));
+	bof.close();
+	return 0;
+}
+```
+
+#### 21.2.3.2 读文件
+
+二进制读文件主要利用流对象调用成员函数read，函数原型：`istream& read(char* buffer, int len);`字符指针buffer指向内存中的一段存储空间，len是读写的字节数。
+
+```cpp
+ifstream bif;
+bif.open("student.txt", ios::in | ios::bianry);
+if(!bif.is_open()){
+	cout << "文件打开失败" << endl;
+    return 0;
+}
+Student s2;
+bif.renad((char*)&s2, sizeof(Student));
+cout << s2.name << " " << s2.age << endl;
+bif.close();
+```
+
+### 21.2.4 fstream文件操作
+
+`ifstream`支持 >> 操作，`ofstream`支持 << 操作，fstream同时支持 >> 和 << 操作。
+
+打开文件fstream可以在声明流对象时传入文件名打开文件，也可以使用open()函数打开文件。文件打开后必须关闭，fstream提供close()函数关闭文件。
+
+#### 打开文件
+
+使用构造函数声明对象时打开文件：`fstream file(filename, ios::in | ios::out);`
+使用open()函数打开文件：`void open(const char* filename, int mode, int access);`
+
+如果只传入文件名，系统会自动根据文件类型选择默认的打开模式，打开文件模式mode如表：
+
+| 打开文件模式   | 说明                                                   |
+| -------------- | ------------------------------------------------------ |
+| ios::app       | 以追加的方式打开文件                                   |
+| ios::ate       | 文件打开后定位到文件尾，ios::app包含此属性             |
+| ios::binary    | 以二进制方式打开文件，默认是文本文件                   |
+| ios::in        | 以输入方式打开，读出文件内容                           |
+| ios::out       | 以输出方式打开，写入文件内容                           |
+| ios::nocreate  | 以不创建文件的方式打开文件，如果文件不存在，则打开失败 |
+| ios::noreplace | 以不覆盖的方式打开文件，如果文件存在，则打开失败       |
+| ios::trunc     | 如果文件存在，清空文件内容                             |
+
+模式和属性可以单独使用，也可以混合使用。混合使用时，用逻辑连接符或'|'连接。
+`ios::out`模式默认会清空，即`ios::out | ios::app`，以这种模式打开文件后，数据会以追加的方式写入到文件中。
+如果不想清空文件，那么设置读写模式为`ios::out | ios::app`，以这种模式打开文件后，数据会以追加的方式写入到文件。
+
+`fstream`提供的读写操作有： <<、>>、read()、write()、put()、get()、getline()。根据文件类型分为文本文件和二进制文件，根据读写方式可分为逐行读写和整块读写。通常，文件文本文件使用逐行读写的方式，二进制文件使用整块读写的方式。
+
+#### 文本文件读写
+
+逐行
