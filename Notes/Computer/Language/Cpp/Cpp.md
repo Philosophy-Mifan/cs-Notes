@@ -9343,7 +9343,7 @@ bif.close();
 
 打开文件fstream可以在声明流对象时传入文件名打开文件，也可以使用open()函数打开文件。文件打开后必须关闭，fstream提供close()函数关闭文件。
 
-#### 打开文件
+#### 21.2.4.1 打开文件
 
 使用构造函数声明对象时打开文件：`fstream file(filename, ios::in | ios::out);`
 使用open()函数打开文件：`void open(const char* filename, int mode, int access);`
@@ -9367,6 +9367,308 @@ bif.close();
 
 `fstream`提供的读写操作有： <<、>>、read()、write()、put()、get()、getline()。根据文件类型分为文本文件和二进制文件，根据读写方式可分为逐行读写和整块读写。通常，文件文本文件使用逐行读写的方式，二进制文件使用整块读写的方式。
 
-#### 文本文件读写
+1、文本文件读写
 
-逐行
+逐行写入文本文件可以使用操作符 '<<' 。
+逐行读取文本文件时可以使用`getline()`函数。
+
+2、二进制文件读写
+
+二进制文件通常整块读取或写入，当然也可以读写单个字符，用到的函数包括：`put()`、`get()`、`read()`、`write()`。通常使用`write()`、`put()`函数写入二进制文件。使用`read()`、`get()`读取二进制文件。
+
+```cpp
+#include<iostream>
+#include<fstream>
+#include<string>
+using namespace std;
+int main(){
+    string str;
+    fstream iofile;	//创建对象
+    iofile.open("file.txt", ios::out | ios::in | ios::trunc);	//打开文件
+    
+    iofile << "写入内容测试" << endl;	//写入
+    iofile << "this is test." << endl;
+    iofile.close();		//关闭文件
+    cout << "写入完毕" << endl;
+    iofile.open("file.txt", ios::out | ios::in);
+    while(getline(iofile, str))	{ //循环读取
+       cout << str << endl;
+	}
+    iofile.close();
+    cout << "读取完毕" << endl;
+    return 0;
+}
+```
+
+#### 21.2.4.2 文件定位和大小
+
+C++的文件定位分为读位置和写位置的定位，对应的成员函数分别为`seekg()`和`seekp()`。
+seekg()函数设置读位置，seekp()设置写位置。函数原型如下：
+
+```cpp
+istream& seekg(streampos pos);		//绝对定位
+istream& seekg(streamoff offset, seek_dir origin);	//相对定位
+ostream& seekp(streampos pos);		//绝对定位
+ostream& seekp(streamoff offset, seek_dir origin);	//相对定位
+//其中offset表示偏移量，seek_dir表示移动的基准位置，取值如下
+//ios::beg  文件开头
+//ios::cur	文件当前位置
+//ios::end	文件结尾
+//示例：
+inFile.seekg(2, ios::beg);	//把文件读指针从开始位置向后移动2个字节
+outFile.seekp(2, ios::cur);	//把文件写指针从当前位置向后移动2个字节
+//获取文件大小可以使用seekg()和tellg()或者seekp()和tellp()函数结合使用的方式获取文件大小。
+inFile.seekg(0, ios::end);	//读文件指针移动到文件末尾
+streampos ipos = inFile.tellg();	//返回当前指针的位置，是文件的大小，单位是字节。
+```
+
+:question:如何求出一个文件字节的大小
+
+```cpp
+long start, end;
+ifstream ifile;
+ifile.open("test_txt", ios::in | ios::binary);
+start = ifile.tellg();
+ifile.seekg(0, ios::end);
+end = ifile.tellg();
+ifile.close;
+
+cout << (end - start) << "bytes.\n";	//文件字节大小
+```
+
+
+
+###  21.2.5 基于字符串操作
+
+要使用字符串输入输出流，需包含头文件\<sstream\>
+
+#### 21.2.5.1 istringstream（字符串输入流）
+
+功能1：从字符串中提取数据
+
+```cpp
+void demo_istringstream(){
+	cout << "=== istringstream 演示 ===" << endl;
+    //解析逗号所分隔的字符串
+    string data = "Cyrene,25,Engineer,100000";
+    istringstream iss(data);
+    
+    string name, job;
+    int age;
+    double salary;
+    
+    getline(iss, name, ',');
+    iss >> age;
+    iss.ignore();
+    getline(iss, job, ',');
+    iss >> salary;
+    
+    cout << "Name: " << name << endl;
+    cout << "age: " << age << endl;
+    cout << "job: " << job << endl;
+    cout << "salary: " << salary << endl;
+    
+    //解析混合数据
+    string mixed = "100 apples 3.14 pi true";
+    istringstream iss2(mixed);
+    
+    int count;
+    string fruit;
+    double pi;
+    string symbol;
+    bool flag;
+    
+    iss2 >> count >> fruit >> pi >> symbol;
+    iss2 >> boolalpha >> flag;	//使用boolalpha读取布尔值
+    
+    cout << "\n解析混合数据： " << endl;
+    cout << count << " " << fruit << endl;
+    cout << pi << " " << symbol << endl;
+    cout << boolalpha << flag << endl;
+    
+    //循环读取所有数据
+    string numbers = "10 20 30 40 50";
+    istringstream iss3(numbers);
+    int num, sum = 0;
+    
+    cout << "\nnumber list:";
+    while (iss3 >> num){
+        cout << num << " ";
+        sum += num;
+    }
+    cout << "\n总和：" << sum << endl;
+}
+```
+
+功能2：类型转换和验证
+
+```cpp
+void advanced_istringstream() {
+    //字符串转数值
+    string strNum = "123.45";
+    istringstream iss(strNum);
+    double value;
+    
+    if (iss >> value) {
+        cout << "转换成功: " << value * 2 << endl;
+    } else {
+        cout << "转换失败" << endl;
+    }
+    
+    //验证输入格式
+    string date = "2024-01-15";
+    istringstream dateStream(date);
+    int year, month, day;
+    char dash1, dash2;
+    
+    if (dateStream >> year >> dash1 >> month >> dash2 >> day) {
+        if (dash1 == '-' && dash2 == '-' && month >= 1 && month <= 12) {
+            cout << "有效日期: " << year << "-" << month << "-" << day << endl;
+        } else {
+            cout << "无效日期格式" << endl;
+        }
+    }
+    
+    //重置流状态和位置
+    string text = "Hello World 123";
+    istringstream iss2(text);
+    
+    string word1, word2;
+    iss2 >> word1 >> word2;
+    cout << "前两个词: " << word1 << " " << word2 << endl;
+    
+    //重置到开头（先clear清除错误状态，再seekg）
+    iss2.clear();                    //清除可能的失败状态
+    iss2.seekg(0, ios::beg);         //回到开头
+    
+    int number;
+    iss2 >> word1 >> word2 >> number;
+    cout << "重新读取: " << word1 << " " << word2 << " " << number << endl;
+}
+```
+
+#### 21.2.5.2 ostringstream（字符串输出流）
+
+功能1：构建格式化字符串
+
+```cpp
+void demo_ostringstream() {
+    //构建格式化字符串
+    ostringstream oss;
+    
+    oss << "姓名: " << "张三" << endl;
+    oss << "年龄: " << 25 << endl;
+    oss << "工资: $" << fixed << setprecision(2) << 75000.50 << endl;
+    oss << "状态: " << boolalpha << true << endl;
+    
+    string result = oss.str();  // 获取构建的字符串
+    cout << "构建的字符串:" << endl;
+    cout << result << endl;
+    
+    //构建CSV格式  csv是表格的一种形式，其全称是逗号分隔符，以纯文本形式存储表格数据
+    ostringstream csv;
+    csv << "ID,Name,Score" << endl;
+    csv << 1 << "," << "Alice" << "," << 95.5 << endl;
+    csv << 2 << "," << "Bob" << "," << 88.0 << endl;
+    csv << 3 << "," << "Charlie" << "," << 92.5 << endl;
+    
+    cout << "\nCSV内容:" << endl;
+    cout << csv.str() << endl;
+    
+    //数值转字符串（替代itoa）
+    int num = 12345;
+    double pi = 3.1415926;
+    
+    ostringstream numStr;
+    numStr << "数字: " << num << ", PI: " << setprecision(4) << pi;
+    
+    cout << "\n数值转字符串: " << numStr.str() << endl;
+}
+```
+
+功能2：缓冲和重用
+
+```cpp
+void advanced_ostringstream() {
+    //重用ostringstream对象
+    ostringstream oss;
+    
+    for (int i = 1; i <= 5; i++) {
+        oss.str("");      //清空内容（但保留格式状态）
+        oss.clear();      //清除错误状态
+        
+        oss << "第" << i << "次迭代: " << i * 10;
+        cout << oss.str() << endl;
+    }
+    
+    //保存格式状态
+    ostringstream formatted;
+    
+    formatted << hex << showbase << uppercase;  //十六进制、显示基数、大写
+    formatted << 255 << endl;                   //输出: 0xFF
+    
+    formatted << dec << nouppercase;            //切换回十进制
+    formatted << 100 << endl;                   //输出: 100
+    
+    cout << "\n带格式的输出:" << endl;
+    cout << formatted.str() << endl;
+    
+    //构建复杂字符串
+    vector<string> items = {"苹果", "香蕉", "橙子", "葡萄"};
+    
+    ostringstream list;
+    list << "购物清单 (" << items.size() << "项):" << endl;
+    for (size_t i = 0; i < items.size(); i++) {
+        list << i + 1 << ". " << items[i] << endl;
+    }
+    cout << "\n" << list.str() << endl;
+}
+```
+
+#### 21.2.5.3 stringstream（字符串输入输出流）
+
+功能：即可读又可写
+
+```cpp
+void demo_stringstream() {
+    //双向操作
+    stringstream ss;
+    
+    //写入数据
+    ss << "Hello World " << 2024 << " " << 3.14;
+    
+    //从同一个流中读取数据
+    string word1, word2;
+    int year;
+    double pi;
+    
+    ss >> word1 >> word2 >> year >> pi;
+    
+    cout << "读取的数据:" << endl;
+    cout << word1 << " " << word2 << endl;
+    cout << year << endl;
+    cout << pi << endl;
+    
+    //数据转换和验证
+    stringstream converter;
+    string input = "123.45";
+    
+    converter << input;      //写入字符串
+    double value;
+    converter >> value;      //读取为double
+    
+    if (converter.fail()) {
+        cout << "转换失败" << endl;
+    } else {
+        cout << "\n转换成功: " << value * 2 << endl;
+    }
+    
+    //检查是否还有未读取的数据
+    string remaining;
+    converter >> remaining;
+    if (!converter.fail()) {
+        cout << "未读取的数据: " << remaining << endl;
+    }
+}
+```
+
