@@ -6,6 +6,8 @@
 //注1：各类标记如下：※->important    ▲->familiar    未标示->understand
 //注2：本文使用的编译器为Microsoft Visual Studio 2022  version:17.10.3
 //注3：推荐使用.markdown格式查阅此文，pdf格式观感不佳。
+
+//Chapter 0-22的内容为Cpp基础，此后的内容均为进阶，在学习进阶篇之前，请先学习Linux。
 ```
 
 
@@ -9672,3 +9674,212 @@ void demo_stringstream() {
 }
 ```
 
+
+
+## 21.3 综合案例——单词计数器
+
+通过使用多文件链接和文件处理的方式，来完成该案例，在visual studio 2022中使用类，在新建项中，如下图中在类名处输入，则会自动同步头文件和源文件。
+
+<img src="Picture/21.png" alt="" style="zoom:67%;" />
+
+### 21.3.1 Word类
+
+```cpp
+//Word.cpp
+#include "Word.h"
+Word::Word(string s) : s(s){}
+string Word::getWord() const {
+	return s;
+}
+bool Word::operator<(const Word& a) const {
+	return s < a.getWord();
+}
+bool Word::operator==(string s) {
+	return this->s == s;
+}
+```
+
+```cpp
+//Word.h
+#pragma once
+#include<iostream>
+#include<string>
+using namespace std;
+//Word单词基础类
+class Word{
+public:
+	Word(string s);
+	string getWord()const;
+	bool operator < (const Word& a)const;
+	bool operator == (string s);
+private:
+	string s;
+};
+```
+
+### 21.3.2 WordMap类
+
+```cpp
+//WordMap.cpp
+#include "WordMap.h"
+bool WordMap::wordmap_add(string s) {
+	map<Word, int>::iterator it = map_t.find(s);
+	//如果找不到该单词，则创建新的pair进行计数
+	if (it == map_t.end()) {
+		pair<Word, int> p(Word(s), 1);
+		map_t.insert(p);
+	}
+	//如果已有，则计数++
+	else {
+		it->second++;
+	}
+	return 1;
+}
+void WordMap::show() {
+	for (map<Word, int>::iterator it = map_t.begin(); it != map_t.end(); it++) {
+		cout << it->first.getWord() << ":出现了 " << it->second << "次." << endl;
+	}
+}
+```
+
+```cpp
+//WordMap.h
+#pragma once
+#include <iostream>
+#include <map>
+#include "Word.h"
+//统计单词个数
+class WordMap{
+private:
+	map<Word, int> map_t;
+public:
+	bool wordmap_add(string s);
+	void show();
+};
+```
+
+### 21.3.3 WordSet类
+
+```cpp
+//WordSet.cpp
+#include "WordSet.h"
+bool WordSet::wordset_add(string s) {
+	set_1.insert(Word(s));
+	return 1;
+}
+void WordSet::show() {
+	for (auto i = set_1.begin(); i != set_1.end(); i++) {
+		cout << i->getWord() << " ";
+	}
+}
+```
+
+```cpp
+//WordSet.h
+#pragma once
+#include <iostream>
+#include "Word.h"
+#include <set>
+using namespace std;
+//统计单词种类
+class WordSet{
+private:
+	set<Word> set_1;
+public:
+	bool wordset_add(string s);
+	void show();
+};
+```
+
+### 21.3.4 mycode类
+
+```cpp
+//mycode.cpp
+#include "mycode.h"
+//建立集合和映射的实例对象
+WordSet set_s;
+WordMap map_m;
+void showData() {
+	cout << endl;
+	cout << "单词集合为：" << endl;
+	set_s.show();
+	cout << endl;
+	cout << "单词集合及出现次数：" << endl;
+	map_m.show();
+	cout << endl;
+}
+//打开文件读入数据，装入集合
+void dataProcessing() {
+	//打开文件，读取文本
+	int pos = 0;
+	string s = " ";
+	string delimet = ",.?";	//去除符号
+
+	//把data.txt的内容直接展示出来
+	ifstream inp;
+	inp.open("data.txt", ios::in);
+	char c;
+	while (inp.peek() != EOF) {
+		inp.read(&c, 1);
+		cout << c;
+	}
+	inp.close();
+	//把data.txt文件内的单词进行分割，装入set和map
+	ifstream in("data.txt", ios::in);
+	while (!in.eof()) {
+		getline(in, s);	//读取每一行
+		if (s == " ") {	//如果是空格，则继续读取下一行
+			continue;
+		}
+		pos = 0;
+		while ((pos = s.find_first_of(delimet, pos)) != string::npos) {	//根据delimet所设置的，将符号找出来
+			s.replace(pos, 1, " ");		//并将其替换成空格
+		}
+		istringstream string(s);
+		while (!string.eof()) {
+			string >> s;
+			if (s == " ") {
+				continue;
+			}
+			set_s.wordset_add(s);
+			map_m.wordmap_add(s);
+		}
+	}
+	in.close();
+}
+```
+
+```cpp
+//mycode.h
+#pragma once
+#include "Word.h"
+#include "WordMap.h"
+#include "WordSet.h"
+#include <sstream>
+#include <iterator>
+#include <fstream>
+#include <algorithm>
+#include <numeric>
+#include <iostream>
+using namespace std;
+
+void dataProcessing();
+void showData();
+```
+
+### 21.3.5 调试部分
+
+```cpp
+#include <iostream>
+#include "mycode.h"
+using namespace std;
+
+int main() {
+	dataProcessing();
+	showData();
+
+	return 0;
+}
+```
+
+注：需要在项目文件夹中创建data.txt文件，并在文件中输入相应的内容即可。
