@@ -8431,8 +8431,8 @@ return 0;
 
 Multimap是map映射容器中的一种，其拥有了map的全部内容，并在此基础上，multimap还具有的了可以重复保存元素的功能，与Multiset的差不多，任何进行访问单个值的语句访问均只会返回第一个位置。
 
-Q:有没有一种方法，使得一个key值能够对应多个value，产生一种诸如一个学生有多门考试成绩一样的映射。
-A:map关联容器是使得一个数据与另一个数据发生映射的容器，通过key得到value产生一一对应，那么multimap在此基础上使得map的元素可以重复，因此这种情况下使用multimap容器。
+:question:有没有一种方法，使得一个key值能够对应多个value，产生一种诸如一个学生有多门考试成绩一样的映射。
+A: map关联容器是使得一个数据与另一个数据发生映射的容器，通过key得到value产生一一对应，那么multimap在此基础上使得map的元素可以重复，因此这种情况下使用multimap容器。
 
 ```cpp
 multimap<int, int> m1;		//默认构造函数
@@ -9883,3 +9883,154 @@ int main() {
 ```
 
 注：需要在项目文件夹中创建data.txt文件，并在文件中输入相应的内容即可。
+
+
+
+# Chapter 22 C++新特性
+
+## 22.1 C++11
+
+### 22.1.1 自动类型推断auto
+
+在C++11之前，auto关键字用来指定存储器。在新标准中，它的功能变为类型推断。auto现在成了一个类型的占位符，通知编译器去根据初始化代码推断所声明变量的真实类型。各种作用域内声明变量都可以用到它。例如，名空间中、程序块中或是for循环的初始化语句中
+
+```cpp
+int x = 0;
+const auto n = x;
+auto f = n;
+const auto& r1 = x;
+auto& r2 = r1;
+```
+
+1. 第2行代码中，n为`const int`，auto被推导为int。
+2. 第3行代码中，n为`const int`类型，但是auto被推导为int类型，这说明：当 '=' 右边的表达式带有const属性时，auto不会使用const属性，而是直接推导出`non-const`类型。
+3. 第4行代码中，auto被推导为int类型
+4. 第5行代码中，r1是`const int &`类型，`auto`也被推导为`const int`类型，这说明：当`const`和引用结合时，`auto`的推导将保留表达式的`const`类型。
+
+总结：
+
+1. 当类型不为引用时，auto的推导结果将不保留表达式的`const`属性；
+2. 当类型为引用时，auto的推导结果将保留表达式的`const`属性。
+
+auto除了可以独立使用，还可以和某些具体类型混合使用，这样auto表示的就是"半个"类型，而不是完整的类型：
+
+```cpp
+int x = 0;
+auto *pt1 = &x;	//pt1为int*, auto推导为int
+auto pt2 = &x;	//pt2为int*, auto推导为int*
+auto &r1 = x;	//r1为int&, auto推导为int
+auto r2 = r1;	//r2为int, auto推导为int
+```
+
+:arrow_right:auto的使用限制
+
+1. auto不能在函数的参数中使用；(在C++11的时候不允许，但C++14开始可以让普通函数具备返回值推导)
+2. auto不能作用于类的非静态成员变量；(也就是没有static关键字修饰的成员变量)
+3. auto不能作用于模板参数；
+4. auto不能用于推导数组类型
+
+### 22.1.2 decltype
+
+在C++中，decltype作为操作符，用于查询表达式的数据类型。主要是为泛型编程而设计，以解决泛型编程中，由于有些类型由模板参数决定，而难以（甚至不可能）表示的问题。
+decltype关键字是为了解决auto关键字只能对变量进行类型推导的缺陷而出现的。它的用法和sizeof很相似。
+在此过程中，编译器分析表达式并得到它的类型，却不实际计算表达式的值。有时候，我们可能需要计算某个表达式的类型。
+
+如果我们想要使用Lambda表达式的类型就需要使用decltype。
+
+```cpp
+auto num1 = 100;
+auto num2 = 200;
+decltype(num1 + num2)num3;	//num3的类型就是num1+num2最终的结果的类型。
+cout << typeid(num3).name() << endl;
+```
+
+```cpp
+template<class R, class T, class U>
+R add(T t, U u){
+	return t + u;
+}
+int main(){
+    int v1 = 100;
+    int v2 = 2.33;
+    auto v3 = add<decltype(v1 + v2)>(v1, v2);
+    cout << v3 << endl;
+    return 0;
+}
+```
+
+:question:下面这段代码正确吗
+
+```cpp
+template <typename T, typename U>
+decltype(t + u) add(T t, U u){
+	return t + u;
+}
+```
+
+肯定是不正确的，C++的语法是前置语法，在返回值定义的时候参数变量还不存在，此时报错！
+那有没有什么办法使得其变正确呢？:arrow_right:通过使用尾随法，也就是go语言中的方式
+
+```cpp
+template <typename T, typename U>
+auto add(T t, U u)->decltype(t + u){	//尾随返回类型
+	return t + u;
+}
+//从C++14开始，可以直接写成
+template <typename T, typename U>
+auto add(T t, U u){
+	return t + u;
+}
+```
+
+### 22.1.3 右值引用&&
+
+在C++98中提出了引用的概念，引用就是别名，引用变量与其引用实体公共同一块内存空间，而引用的底层是通过指针来实现的，因此使用引用，可以提高程序的可读性。
+
+比如交换两个变量的值，消除两个对象交互时不必要的对象拷贝，节省运算存储资源，提高效率。
+
+```cpp
+void change(int& num1, int& num2){
+	int tmp = num1;
+	num1 = num2;
+	num2 = tmp;
+}
+```
+
+为了提高程序运行效率，C++11中引入了右值引用，右值引用也是别名，但其只能对右值引用。
+
+```cpp
+int func(int v1, int v2){
+    return v1 + v2;
+}
+int main(){
+	const int&& num1 = 10;
+    //引用函数返回值，返回值是一个临时变量，是右值
+    int&& num2 = func(10, 20);
+    cout << num1 << " " << num2 << endl;
+}
+```
+
+一般认为，左值可以放在赋值符号的左边，右值可以放在赋值符号的右边；或者能够取地址的称为左值，不能取地址的称为右值；左值也能放在赋值符号的右边，但是右值只能放在赋值符号的右边。
+
+```cpp
+int num = 100;
+//函数的返回值结果为引用
+int& returnNum(){
+    return num;
+}
+int main(){
+    int num2 = 10;
+    int num3 = num2;
+    int* p = new int(0);
+    //num2和num3, p和*p都是左值，左值既可以放在"="的左侧，也可以放在"="的右侧。
+    const int num4 = 30;
+    //num4 = num1;
+    //特例：num4虽然是左值，但是为const常量，只读不允许被修改
+    cout << &num4 << endl;
+    //num4可以取地址，所以严格上说，num4也是左值
+    //num3 + 2 = 200;
+    //Compier Error:因为num3 + 2的结果是一个临时变量，没有具体名称，也不能取地址，因此为右值
+    returnNum() = 111;
+}
+```
+
