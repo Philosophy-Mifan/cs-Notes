@@ -10263,3 +10263,104 @@ int main(){
     return 0;
 }
 ```
+
+### 22.1.8 智能指针
+
+垃圾回收机制得到了诸多编程语言的支持，例如Java、Python、C#、PHP等。而C++虽然从来没有公开支持过垃圾回收机制，但在C++98/03标准中，支持使用`auto_ptr`智能指针来实现堆内存的自动回收；C++11新标准在废弃`auto_ptr`的同时，新增了`unique_ptr`、`shared_ptr`以及`weak_ptr`这3个智能指针来实现堆内存的自动回收。
+
+所谓智能指针，从字面上的意思理解为"智能"的指针。具体来讲，智能指针和普通指针的用法是相似的，不同之处在于，智能指针可以在适当的时机释放分配的内存。使用智能指针可以很好的避免"忘记释放内存而导致内存泄漏"的问题出现。
+
+#### 22.1.8.1 shared_ptr
+
+智能指针都是以类模板的方式实现的，`shared_ptr<T>`(T表示指针指向的具体数据类型)的定义位于`<memory>`头文件，并位于std命名空间中。
+和`unique_ptr`、`weak_ptr`的不同之处在于，多个`shared_ptr`智能指针可以**共同使用同一块堆内存**。并且，由于该类型智能指针在实现上采用的是引用计数机制，即使有一个`shared_ptr`指针放弃了堆内存的"使用权"（引用计数减1），也不会影响其他指向同一堆内存的`shared_ptr`指针（只有引用计数为0时，堆内存才会被自动释放）
+
+- `shared_ptr`的创建
+
+```cpp
+//shared_ptr<T>类模板中，提供了多种实用的构造函数
+shared_ptr<int> p1;	//不传入任何实参
+shared_ptr<int> p2(nullptr);	//传入空指针nullptr
+//空的shared_ptr指针，其初始引用计数为0，而不是1。
+shared_ptr<int> p(new int(5));	//在构建shared_ptr智能指针，也可以明确其指向
+//C++11标准中还提供了std::make_shared<T>模板函数，其可以用于初始化shared_ptr智能指针
+shared_ptr<int> p = make_shared<int>(5);
+
+//shared_ptr<T>模板还提供有相应的拷贝构造函数和移动构造函数
+shared_ptr<int> p3;
+shared_ptr<int> p4(p3);	//调用拷贝函数
+shared_ptr<int> p5(move(p4));	//调用移动构造函数
+```
+
+在初始化`shared_ptr`智能指针时，还可以自定义所指堆内存的释放规则，这样当堆内存的引用计数为0时，会优先调用自定义的释放规则。
+在某些应用场景中，自定义释放规则是很有必要的。比如，对于申请的动态数组来说，`shared_ptr`指针默认的释放规则是不支持释放数组的，只能自定义对应的释放规则，才能正确的释放申请的堆内存。
+对于申请的动态数组，释放规则可以使用C++11标准中提供的`default_delete<T>`，我们也可以自定义释放规则
+
+```cpp
+#include<iostream>
+using namespace std;
+void deleteInt(int* p){
+	delete[]p;
+}
+int main(){
+    //指定default_delete作为释放规则
+    shared_ptr<int> p1(new int[3], default_delete<int[]>());
+    //初始化智能指针，并自定义释放规则
+    shared_ptr<int> p2(new int[3], deleteInt);
+    return 0;
+}
+```
+
+#### 22.1.8.2 unique_ptr
+
+`unique_ptr`指针也具备<u>在适当时机自动释放堆内存空间</u>的能力，和`shared_ptr`指针最大的不同之处在于，`unique_ptr`指针指向的堆内存无法同其他`unique_ptr`共享，每个`unique_ptr`指针都独自拥有对其所指堆内存空间的所有权。
+
+#### 22.1.8.3 weak_ptr
+
+`shared_ptr`是采用引用计数的智能指针，多个`shared_ptr`实例可以指向同一个动态对象，并维护了一个共享的引用计数器。
+
+对于引用计数法实现的计数，总是避免不了循环引用的问题，`shared_ptr`也不例外。
+
+```cpp
+#include <iostream>
+using namespace std;
+class CB;
+class CA{
+public:
+    CA() { cout << "CA() called!" << endl; }
+    ~CA() { cout << "~CA() called!" << endl; }
+    void set_ptr(shared_ptr<CB>& ptr) { m_ptr_b = ptr; }
+    void b_use_count() { cout << "b use count: " << m_ptr_b.use_count() << endl; }
+    void show() { cout << "this is class CA!" << endl; }
+private:
+    shared_ptr<CB> m_ptr_b;
+};
+class CB{
+public:
+    CB() { cout << "CB() called!" << endl; }
+    ~CB() { cout << "~CB() called!" << endl; }
+    void set_ptr(shared_ptr<CA>& ptr) { m_ptr_a = ptr; }
+    void a_use_count() { cout << "a use count: " << m_ptr_a.use_count() << endl; }
+    void show() { cout << "this is class CB!" << endl; }
+private:
+    shared_ptr<CA> m_ptr_a;
+};
+
+int main(){
+	shared_ptr<CA> ptr_a(new CA());
+    shared_ptr<CB> ptr_b(new CB());
+    cout << "a use count:" << ptr_a.use_count() << endl;
+    cout << "b use count:" << ptr_b.use_count() << endl;
+    ptr_a->set_ptr(ptr_b);
+    ptr_b->set_ptr(ptr_a);
+    cout << "a use count:" << ptr_a.use_count() << endl;
+    cout << "b use count:" << ptr_b.use_count() << endl;
+    return 0;
+}
+```
+
+可以看到最后两个类都没有被析构，这个时候，可以用`weak_ptr`来解决问题，可以把两个类中的一个成员变量改为`weak_ptr`对象即可。`weak_ptr`不会增加应用计数，所以引用就构不成环。
+
+将任意一个类中的private内改为`weak_ptr<CB> m_ptr_b;`即可。
+
+### 22.1.9 可变类型模板
