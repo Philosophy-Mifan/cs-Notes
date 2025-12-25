@@ -10034,3 +10034,232 @@ int main(){
 }
 ```
 
+### 22.1.4 移动语义
+
+移动语义可以将资源（堆、系统对象等）从一个对象转移到另一个对象，这样可以减少不必要的临时对象的创建、拷贝及销毁。移动语义与拷贝语义是相对的，可以类比文件的剪切和拷贝。在现有C++机制中，自定义的类要实现转移语义，需要定义移动构造函数，还可以定义转移赋值操作符。
+
+```cpp
+//以string类的移动构造函数为例
+MyString(MyString&& str){
+	cout << "move ctor source from" << str.data << str.data << endl;
+    len = str.len;
+    data = str.data;
+    str.len = 0;
+    str.data = NULL;
+}
+```
+
+:arrow_right:和拷贝构造函数类似，需注意：
+
+1. 参数(右值)的符号必须是&&；
+2. 参数(右值)不可以是常量，因为需要修改右值
+3. 参数(右值)的资源链接和标记必须修改，否则，右值的析构函数就会释放资源，转移到新对象的资源也就无效了
+
+:arrow_right:标准库函数`std::move`可以将左值变成一个右值
+
+编译器只对右值引用才能调用移动构造函数，那么如果已知一个命名对象不再被使用，若此时仍然想调用它的移动构造函数，也就是把一个左值引用当成右值引用来使用，该怎么做呢？就是使用`std::move`，这个函数以非常简单的方式将左值引用转换为右值引用。
+
+### 22.1.5 列表初始化
+
+统一列表初始化的使用：在C++98中，标准允许使用花括号{}对数组元素进行统一的列表初始值设定。比如：
+`int arr1[] = {1,2,3,4,5};`
+`int arr2[100] = {0};`
+
+但对于一些自定义类型却不行，例如：`vector<int> vc{1,2,3,4,5};`在C++98中是无法编译成功的，只能够定义vector对应之后通过循环进行插入元素达到这个目的。
+
+在C++11扩大了用大括号扩起的列表{初始化列表}的使用范围，使其可用于所有的内置类型和用户自定义类型，使用初始化列表时，可添加等号（=），也可以不添加。
+
+```cpp
+#include<iostream>
+#include<vector>
+#include<map>
+using namespace std;
+class ClassNum {
+public:
+	ClassNum(int n1 = 0, int n2 = 0): _x(n1),_y(n2){}
+private:
+	int _x;
+	int _y;
+};
+int main() {
+	int num1 = { 100 };	//定于内置类型
+	int num2(3);	//也可以不加=
+	//数组
+	int arr1[5] = { 1,3,4,5,6 };
+	int arr2[] = { 4,5,6,7,8 };
+	//STL中的容器
+	vector<int> v{ 12,2 };
+	map<int, int>mp{ {1,2},{3,4} };
+	//自定义类型初始化
+	ClassNum p{ 1,2 };
+}
+```
+
+### 22.1.6 For each
+
+C++11中引入了基于范围的迭代写法，拥有了能够写出想Python类似的简洁的循环语句。
+
+```cpp
+vector<int> v1 = {1,2,3,4,5,6};
+for(auto i : v1){
+    cout << i << " ";
+}
+```
+
+### 22.1.7 Lambda
+
+Lambda表达式实际上是一个匿名类函数，在编译时会将表达式转换为匿名类函数。
+
+`[capture-list](parameters)mutable -> return-type{ statement }`//\[捕获列表](参数)->返回值{函数体}
+
+①`[capture-list]`：捕捉列表，该列表总是出现在Lambda函数的开始位置，编译器根据[]来判断接下来的代码是否为Lambda函数，捕捉列表能够捕捉上下文中的变量供Lambda函数使用（不能省略）。
+②`(paramters)`：参数列表。与普通函数的参数列表一致，如果不需要参数传递，则可以连同"()"一起省略
+③`mutable`：默认情况下，Lambda函数总是一个const函数，mutable可以取消其常量性。使用该修饰符时，参数列表不可省略（即使参数为空），mutable放在参数列表和返回值之间。
+④`->returntype`：返回值类型。用追踪返回类型形式声明函数的返回值类型，没有返回值时此部分可省略。返回值类型明确情况下，也可以省略，由编译器对返回类型进行推导。
+⑤`{statement}`：函数体。在该函数体内，除了可以使用其参数外，还可以使用所有捕获到的变量。（不能省略）
+
+#### 22.1.7.1 捕捉列表说明
+
+捕获列表描述了上下文中哪些数据可以被Lambda使用，以及使用的方式是传值还是传引用。
+
+1. [a, &b]：其中a以复制捕获，而b以引用捕获。
+2. [this]：以引用捕获当前对象(*this)。
+3. [&]：以引用捕获所有用于Lambda体内的自动变量，若存在，则以引用捕获当前对象。
+4. [=]：以复制捕获所有用于Lambda体内的自动变量，若存在，则以复制捕获当前对象。
+5. []：不捕获，大部分情况下不捕获就可以了。
+
+在Lambda函数定义中，参数列表和返回值类型都是可选部分，而捕捉列表和函数体可以为空。(在C++11中最简单的Lambda函数是：[]{};但该Lambda函数不能做任何事情，没有意义。)
+
+```cpp
+#include<iostream>
+void(*FP)();	//函数指针
+int main(){
+    //最简单的Lambda表达式，无意义
+    []{};
+    //省略参数列表和返回值类型，返回值类型由编译器推导为int
+    int num1 = 3, num2 = 4;
+    //省略了返回值类型，无返回值类型
+    auto func1 = [&num1, &num2](int num3) {num2 = num1 + num3;};
+    func1(100);
+    cout << num1 << " " << num2 << endl;
+    //捕捉列表可以是Lambda表达式
+    auto func = [func1] {cout << "great" << endl;};
+    func();
+    //各部分都很完善的Lambda函数
+    auto func2 = [=, &num2](int num3)->int {return num2 += num1 + num3;};
+    cout << func2(10) << endl;
+    //复制捕捉x
+    int x = 10;
+    auto add x = [x](int a)mutable {x *= 2; return a + x;};
+    cout << add_x(10) << endl;
+    //编译失败-->提示找不到operator=()
+	//auto func3 = [&num1, &num2](int num3) {num2 = num1 + num3;};
+    //func1 = func3;
+    //允许使用一个Lambda表达式拷贝构造一个新的副本
+    auto func3(func);
+    func();
+    //可以将Lambda表达式赋值给相同类型的函数指针
+    auto f2 = []{};
+    FP = f2;
+    FP();
+}
+```
+
+#### 22.1.7.2 函数对象与Lambda表达式
+
+从使用方式上来看，函数对象与Lambda表达式完全一样。
+
+```cpp
+#include<iostream>
+using namespace std;
+class Rate{
+public:
+    Rare(double rate) : _rate(rate){}
+    double operator()(double money, int year){
+        return money * _rate * year;
+    }
+private:
+	double_rate;    
+}
+int main(){
+	//函数对象
+    double rate = 0.6;
+    Rate r1(rate);
+    double rd = r1(20000, 2);
+    cout << rd << endl;
+    //Lambda
+    auto r2 = [=](double monty, int year)->double {return monty * rate * year;};
+    double rd2 = r2(20000, 2);
+    cout << rd2 << endl;
+    return 0;
+}
+```
+
+#### 22.1.7.3 排序
+
+在C++98中，对一个数据集合中的元素进行排序，可以使用sort方法。
+
+```cpp
+#include<iostream>
+#include<algorithm>
+#include<functional>
+using namespace std;
+int main(){
+	int array[] = {3,6,9,5,4,7,0,8,2,1};
+    //默认按照小于比较，排出来结果是升序
+    sort(array, array + sizeof(array) / sizeof(array[0]));
+    //如果需要降序，需要改变元素的比较规则
+    sort(array, array + sizeof(array) / sizeof(array[0]), greater<int>());
+    return 0;
+}
+```
+
+但是如果待排元素为自定义类型，需要用户定义排序时的比较规则
+
+```cpp
+#include<iostream>
+#include<algorithm>
+#include<functional>
+using namespace std;
+struct Goods{
+    string name;
+    double price;
+};
+struct Compare{
+    bool operator()(const Goods& gl, const Goods& gr){
+        return gl.price <= gr.price;
+    }
+};
+
+int main(){
+    Goods gds[] = {{"apple", 5.1},{"orange", 9.2},{"banana", 3.6},{"pineapple", 9.6}};
+    sort(gds, gds + sizeof(gds) / sizeof(gds[0]), Compare());
+    for(int i = 0; i < 4; i++){
+        cout << gds[i].name << " " << gds[i].price << endl;
+    }
+    return 0;
+}
+```
+
+用Lambda表达式，代码如下
+
+```cpp
+#include<iostream>
+#include<algorithm>
+#include<functional>
+using namespace std;
+struct Goods{
+    string name;
+    double price;
+};
+int main(){
+    Goods gds[] = {{"apple", 5.1},{"orange", 9.2},{"banana", 3.6},{"pineapple", 9.6}};
+     sort(gds, gds + sizeof(gds) / sizeof(gds[0]), [](const Goods& l, const Goods& r)->bool{
+         return l.price < r.price;
+     });
+    for (int i = 0; i < 4; i++){
+        cout << gds[i].name << " " << gds[i].price << endl;
+    }
+    return 0;
+}
+```
