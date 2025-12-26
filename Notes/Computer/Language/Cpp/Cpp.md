@@ -10364,3 +10364,91 @@ int main(){
 将任意一个类中的private内改为`weak_ptr<CB> m_ptr_b;`即可。
 
 ### 22.1.9 可变类型模板
+
+C++11之前，类模板和函数模板中只能含固定数量的模板参数，新特性可变参数模板能够创建可以接受可变参数的函数模板和类模。
+
+```cpp
+#include <iostream>
+using namespace std;
+//函数模板的参数个数为0到多个参数，每个参数的类型可以各不相同
+template<class...T>
+void funcName(T...args){	//args为包形参，T为包类型
+    cout << sizeof...(args) << endl;	//sizeof...固定语法格式计算获取到模板参数的个数
+    cout << sizeof...(T) << endl;	//注意sizeof...只能计算...的可变参
+}
+int main(){
+	funcName(100, 200, 300, 400, 500);
+    return 0;
+}
+```
+
+当中的参数包展开有两种方式：递归函数和使用`if constexpr`
+
+#### 22.1.9.1 递归函数
+
+```cpp
+#include <iostream>
+using namespace std;
+void func(){
+    cout << "递归终止函数" << endl;
+}
+template<class T, class...U>
+void func(T first, U...others){
+    cout << "收到的参数值" << first << endl;
+    func(others...);	//这里传进来的势包形参，不可省略
+}
+int main(){
+    func(1,2,3,4,5,6);
+    return 0;
+}
+```
+
+#### 22.1.9.2 if constexpr
+
+在C++17中新增了一个编译期间if语句，示例代码如下
+
+```cpp
+#include <iostream>
+using namespace std;
+//if constexpr...()	//constexpr代表的是常量的意思或者是编译时求值
+//C++17中新增一个语句叫做编译期间if语句(constexpr if)
+template<class T, class...U>
+void func(T first, U...args){
+    cout << "收到参数: " << first << endl;
+    if constexpr(sizeof...(args) > 0){	//constexpr必须有，否则无法编译成功，圆括号内是常量表达式
+        func(args...);
+    }
+}
+int main(){
+	func(1,2,3,4,5,6);
+    return 0;
+}
+```
+
+### 22.1.10 默认成员函数控制
+
+在C++中，对于空类编译器会生成一些默认的成员函数，比如：构造函数、拷贝构造函数、运算符重载、析构函数、&和const &的重载、移动构造、移动拷贝构造等函数。
+
+如果在类中显式定义了，编译器将不会重新生成默认版本。
+
+有时候这样的规则可能被忘记，最常见的是声明了带参数的构造函数，必要时则需要定义不带参数的版本以实例化无参的对象。而且有时编译器会生成，有时又不生成，非常容易造成混乱，于是C++11中让程序员可以控制是否需要编译器生成。
+
+```cpp
+#include<iostream>
+using namespace std;
+class ClassTest{
+public:
+    ClassTest(int num) : n(num){}
+    ClassTest() = default;	//显式缺省构造函数，让编译器生成不带参数的默认构造函数，若为delete则不会生成
+    ClassTest(const ClassTest&) = delete;	//禁止编译器生成默认的拷贝构造函数
+    ClassTest& operator = (const ClassTest& a);	//在类中声明，在类外定义时，让编译器生成默认赋值运算符重载
+private:
+    int n;
+};
+ClassTest& ClassTest::operator = (const ClassTest& a) = default;	//让类外让编译器默认生成
+int main(){
+    ClassTest c;
+    return 0;
+}
+```
+
