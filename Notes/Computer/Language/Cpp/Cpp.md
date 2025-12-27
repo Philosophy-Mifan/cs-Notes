@@ -10403,15 +10403,15 @@ int main(){
 }
 ```
 
-#### 22.1.9.2 if constexpr
+#### 22.1.9.2 if constexpr (C++17)
 
-在C++17中新增了一个编译期间if语句，示例代码如下
+在<u>**C++17**</u>中新增了一个编译期间if语句，示例代码如下
 
 ```cpp
 #include <iostream>
 using namespace std;
 //if constexpr...()	//constexpr代表的是常量的意思或者是编译时求值
-//C++17中新增一个语句叫做编译期间if语句(constexpr if)
+//C++17中新增一个语句叫做编译期间if语句(if constexpr)
 template<class T, class...U>
 void func(T first, U...args){
     cout << "收到参数: " << first << endl;
@@ -10601,4 +10601,55 @@ std::forward_list<int>values(arr.begin() + 1, arr.end());	//拷贝arr容器中�
 | pop_front()     | 删除容器头部的一个元素                                       |
 | emplace_after() | 在指定位置之后插入一个新元素，并返回一个指向新元素的迭代器   |
 | insert_after()  | 功能同上，但该函数的效率不如上者                             |
+
+#### 22.1.11.3 unordered
+
+在C++11中引入了两组无序的容器，分别包含在头文件`<unordered_set>`和`<unordered_map>`中：
+`std::unordered_set/std::unordered_multiset`
+`std::unordered_map/std::unordered_multimap`
+
+无序容器中的元素是不进行排序的，内部通过Hash表实现，插入和搜索元素的平均复杂度为O(1).
+
+他们的操作和之前在STL中讲到的几乎一样，只是从有序容器变为了无序容器，这里就不再过多赘述。
+
+
+
+### 练习
+
+使用Lambda表达式完成：输入一个字符串，统计字符串中某个字符的个数
+input: 
+abcstringabc
+a
+output:
+2
+
+```cpp
+#include<iostream>
+#include<algorithm>
+using namespace std;
+
+int getCharNum(string s, char c){
+    int count = 0;
+    for_each(s.begin(), s.end(), [&](char ch){
+        if(c == ch){
+            count++;
+        }
+    });
+    return count;
+}
+int main(){
+    string s1;
+    char ch;
+    cin >> s1;
+    cin >> ch;
+    cout << getCharNum(s1, ch) << endl;
+    return 0;
+}
+```
+
+
+
+## 22.2 C++17
+
+### 22.2.1 折叠表达式
 
