@@ -10653,3 +10653,222 @@ int main(){
 
 ### 22.2.1 折叠表达式
 
+**折叠表达式**（Fold Expressions）是 C++17 引入的功能，它允许对**参数包**（parameter pack）应用**二元运算符**进行简化计算。这是对 C++11/14 可变参数模板的重要增强，可分为以下几种折叠表达式。
+
+一元右折叠：  (pack op ...)           // 从右向左折叠
+一元左折叠：  (... op pack)           // 从左向右折叠
+二元右折叠：  (pack op ... op init)   // 从右向左，带初始值
+二元左折叠：  (init op ... op pack)   // 从左向右，带初始值
+
+#### ① 一元右折叠
+
+```cpp
+#include <iostream>
+using namespace std;
+
+// 一元右折叠：从右向左计算
+template<typename... Args>
+auto sumRight(Args... args) {
+    return (args + ...);  // 等价于：arg1 + (arg2 + (arg3 + ...))
+}
+// 展开过程示例：
+// sumRight(1, 2, 3, 4)
+// => (1 + (2 + (3 + 4)))
+// => 10
+void UnaryRightFold() {
+    cout << "一元右折叠示例:" << endl;
+    auto result = sumRight(1, 2, 3, 4);
+    cout << "1 + 2 + 3 + 4 = " << result1 << endl;  // 10
+}
+```
+
+#### ② 一元左折叠
+
+```cpp
+#include <iostream>
+using namespace std;
+
+// 一元左折叠：从左向右计算
+template<typename... Args>
+auto subtractLeft(Args... args) {
+    return (... - args);  // 等价于：((arg1 - arg2) - arg3) - ...
+}
+//对于减法的一元左右折叠其结果是不一致的
+//一元右折叠：从右向左计算
+template<typename... Args>
+auto subtractRight(Args... args) {
+    return (args - ...);  // 等价于：arg1 - (arg2 - (arg3 - ...))
+}
+// 展开过程示例：
+// subtractLeft(1, 2, 3, 4)
+// => (((1 - 2) - 3) - 4)
+// => -8
+// subtractRight(1, 2, 3, 4)
+// => 1 - (2 - (3 - 4))
+// => -2
+void UnaryLeftFold() {
+    cout << "一元左折叠示例:" << endl;
+    auto result = subtractLeft(1, 2, 3, 4);
+    cout << "1 - 2 - 3 - 4 = " << result1 << endl;  // -8
+}
+```
+
+#### ③ 二元右折叠
+
+```cpp
+// 二元右折叠：从右向左计算，带初始值
+template<typename... Args>
+auto sumRightWithInit(Args... args) {
+    return (args + ... + 0);  // arg1 + (arg2 + (arg3 + 0))
+}
+
+// 展开过程示例：
+// sumRightWithInit(1, 2, 3)
+// => 1 + (2 + (3 + 0))
+// => 6
+
+void demoBinaryRightFold() {
+    cout << "\n二元右折叠示例:" << endl;
+    
+    // 带初始值的折叠
+    auto result1 = (1 + ... + 0);  // 单元素包：1 + 0 = 1
+    cout << "(1 + ... + 0) = " << result1 << endl;
+    
+    //auto result2 = (1 + 2 + ... + 0);   实际上编译错误，需要放在模板中
+    // 正确用法：
+    auto sum = [](auto... args) { return (args + ... + 0); };
+    cout << "sum(1, 2, 3) = " << sum(1, 2, 3) << endl;  // 6
+    cout << "sum() = " << sum() << endl;  // 0（空参数包返回初始值）
+    
+    // 初始值可以是任意表达式
+    auto sumWithBase = [](int base, auto... args) {
+        return (args + ... + base);  // args的总和 + base
+    };
+    cout << "sumWithBase(100, 1, 2, 3) = " 
+         << sumWithBase(100, 1, 2, 3) << endl;  // 106
+}
+```
+
+#### ④ 二元左折叠
+
+```cpp
+// 二元左折叠：从左向右计算，带初始值
+template<typename... Args>
+auto sumLeftWithInit(Args... args) {
+    return (0 + ... + args);  // ((0 + arg1) + arg2) + arg3
+}
+
+void demoBinaryLeftFold() {
+    cout << "\n二元左折叠示例:" << endl;
+    
+    auto sum = [](auto... args) { return (0 + ... + args); };
+    cout << "(0 + ... + 1,2,3) = " << sum(1, 2, 3) << endl;  // 6
+    
+    // 空参数包返回初始值
+    cout << "sum() = " << sum() << endl;  // 0
+    
+    // 更实际的例子：字符串连接
+    auto concatenate = [](const auto&... strings) {
+        return (string("") + ... + strings);
+    };
+    
+    string result = concatenate("Hello", " ", "World", "!");
+    cout << "连接结果: " << result << endl;  // Hello World!
+}
+```
+
+### 22.2.2 类模板参数推导
+
+类模板实例化时，可以不必显式指定类型，前提是保证类型可以推导。
+
+```cpp
+#include<iostream>
+using namespace std;
+template<class T>
+class ClassTest{
+public:
+    ClassTest(T, T) {};
+};
+int main(){
+    auto y = new ClassTest{ 100,200 };	//分配的类型是ClassTest<int>
+    return 0;
+}
+```
+
+auto占位的非类型模板形参
+
+```cpp
+#include<iostream>
+using namespace std;
+template <auto T> void func(){
+	cout << T << endl;
+}
+int main(){
+	func<100>();	//func<int>();
+	return 0;
+}
+```
+
+### 22.2.3 编译期的if constexpr语句
+
+在之前的22.1.9.2提到过，这里直接举出例子
+
+```cpp
+#include<iostream>
+using namespace std;
+template <bool ok> constexpr void func(){
+	//在编译期间进行判断，if和else不生成汇编代码
+    if constexpr (ok == true){
+        //当ok为true时，下面的else块不生成汇编代码
+        cout << "ok" << endl;
+    }
+    else{
+        //当ok为false时，上面的if块不生成汇编代码
+        cout << "not ok" << endl;
+    }
+}
+int main(){
+    func<true>();	//输出ok，且汇编代码中只有cout << "ok" << endl;
+    func<false>();	//输出ok，且汇编代码中只有cout << "not ok" << endl;
+}
+```
+
+### 22.2.4 inline扩展
+
+在C++17中扩展了关键字`inline`的用法，使得可以在头文件或者类内初始化静态成员变量
+
+```cpp
+//在头文件中
+inline int value = 100;
+//在类中
+class test{
+    inline static int value2 = 10;
+};
+```
+
+### 22.2.5 结构化绑定
+
+在C++11中，如果需要获取`tuple`(元组)中元素，则使用`get<>()`函数或者`tie<>`函数，这个函数可以把`tuple`中的元素值转换为可以绑定到`tie<>()`左值的集合，也就是需要已分配好的内存去接收。
+
+```cpp
+int main(){
+	auto student = make_tuple(string{"zs"}, 19, string{"man"});
+    string name;
+    size_t age;
+    string gender;
+    tie(name, age, gender) = student;
+    cout << name << "." << age << "," << gender << endl;
+    return 0;
+}
+```
+
+在C++17中新增了结构化绑定，简化和方便了上述的操作
+
+```cpp
+int main(){
+	auto student = make_tuple(string{"zs"}, 19, string{"man"});
+	auto[name,age,gender] = student;
+	cout << name << "," << age << "," << gender << endl;
+}
+```
+
