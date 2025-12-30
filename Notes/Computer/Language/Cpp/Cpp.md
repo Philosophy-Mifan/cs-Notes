@@ -10872,3 +10872,140 @@ int main(){
 }
 ```
 
+### 22.2.6 带初始化的if语句
+
+在C++17中使用迭代器操作时，可以使得代码更为紧凑
+
+```cpp
+//C++11：iter变量在if块外部仍然可见，可能导致误用
+unordered_map<string, int> stu1{{"zs", 18}, {"ww", 19}};
+auto iter = stu.find("ww");			//step1：查找并声明变量
+if(iter != stu.end()){				//step2：条件判断
+    cout << iter->second << endl;	//使用迭代器
+}
+
+//C++17：iter变量只在if块内可见，作用域限制更好
+if (auto iter = stu1.find("ww"); iter != stu1.end()){
+    cout << iter->second << endl;
+}
+```
+
+### 22.2.7 简化的嵌套命名空间
+
+```cpp
+//C++17之前
+namespace A{
+    namespace B{
+        namespace C{
+            void func(){}
+        }
+    }
+}
+
+//C++17
+namespace A::B::C{
+    void func(){}
+}
+```
+
+### 22.2.8 using可以声明多个名称
+
+`using std::cin, std::cout;`
+
+### 22.2.9 Lambda表达式捕获 *this
+
+一般情况下，Lambda表达式访问类成员变量时需要捕获`this`指针，这个`this`指针指向原对象，即相当于一个引用，在多线程情况下，有可能Lambda的生命周期超过了对象的生命周期，此时，对成员变量的访问是未定义的。因此C++17中增加了捕获`*this`，此时捕获的是对象的副本，也可以理解为只能对原对象进行读操作，没有写的权限。
+
+```cpp
+#include <iostream>
+using namespace std;
+class ClassTest{
+public:
+    int num;
+    void func(){
+        auto lamfunc = [*this](){ cout << num << endl; };
+        lamfunc();
+    }
+};
+int main(){
+    ClassTest a;
+    a.num = 100;
+    a.func();
+    return 0;
+}
+```
+
+### 22.2.10 __has_include
+
+跨平台项目需要考虑不同平台编译器的实现，使用`__has_include`可以判断当前环境下是否存在某个头文件。
+
+```cpp
+int main(){
+	#if __has_include("iostream")
+    cout << "iostream exist." << endl;
+    #endif
+    
+    #if __has_include(<cmath>)
+    cout << "<cmath> exist." << endl;
+    #endif
+    return 0;
+}
+```
+
+
+
+### 22.2.11 属性(Attributes)
+
+属性(Attributes)由C++11开始引入并在后续版本中不断扩展的特性。属性为代码元素提供额外的信息，让编译器优化、检查或特殊处理。在C++17中得到了一些增强：
+
+1. 可以同时指定多个属性，而不需要为每个属性单独使用[[]]
+   在C++11/14中，每个属性都需要自己的[[]]，如：`[[noreturn]]` `[[deprecated]]   //标记为已弃用`
+   在C++17中，允许在同一个[[]]内列出多个属性，用逗号分隔：`[[noreturn, depreacted]]`
+2. 属性可以带有命名空间，例如：`[[gnu::always_inline]]`
+3. 属性可以带有实参，例如：`[[deprecated("Use new_func instead")]]`
+4. 在C++17中，还有一个重要的属性：`[[maybe_unused]]`，用于抑制未使用变量的警告。
+5. alignas说明符也可以用于指定对齐方式，但它不是属性，是一个单独的关键字，它也可以和属性一起使用。
+
+#### C++17中新增属性
+
+1. `[[fallthrough]]`:switch语句中跳到下一条语句，不需要break，让编辑器忽略告警。
+
+   ```cpp
+   int i = 1;
+   int result;
+   switch(i){
+       case 0:
+           result = 1;	//warning
+       case 1:
+           result = 2;
+           [[fallthrough]];	//no warning
+       default:
+           result = 0;
+           break;
+   }
+   ```
+
+2. `[[nodiscard]]`：所修饰的内容不可被忽略，主要用于修饰函数返回值，当用于描述函数的返回值时，如果调用函数的地方没有获取返回值时，编译器会给予警告
+
+   ```cpp
+   [[nodiscard]] auto func(int a, int b) { return a + b }
+   int main(){
+       func(2, 3);	//警告
+       return 0;
+   }
+   ```
+
+3. `[[maybe_unused]]`：用于描述暂时没有被使用的函数或者变量，来避免编译器对此发出警告
+
+   ```cpp
+   [[maybe_unused]] void func(){
+       cout << "test" << endl;
+   }
+   int main(){
+   	[[maybe_unused]] int num = 0;	//没有被使用的变量
+       return 0;
+   }
+   ```
+
+   
+
