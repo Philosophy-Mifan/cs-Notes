@@ -10777,6 +10777,8 @@ void demoBinaryLeftFold() {
 }
 ```
 
+
+
 ### 22.2.2 类模板参数推导
 
 类模板实例化时，可以不必显式指定类型，前提是保证类型可以推导。
@@ -10809,6 +10811,8 @@ int main(){
 }
 ```
 
+
+
 ### 22.2.3 编译期的if constexpr语句
 
 在之前的22.1.9.2提到过，这里直接举出例子
@@ -10833,6 +10837,8 @@ int main(){
 }
 ```
 
+
+
 ### 22.2.4 inline扩展
 
 在C++17中扩展了关键字`inline`的用法，使得可以在头文件或者类内初始化静态成员变量
@@ -10845,6 +10851,8 @@ class test{
     inline static int value2 = 10;
 };
 ```
+
+
 
 ### 22.2.5 结构化绑定
 
@@ -10872,6 +10880,8 @@ int main(){
 }
 ```
 
+
+
 ### 22.2.6 带初始化的if语句
 
 在C++17中使用迭代器操作时，可以使得代码更为紧凑
@@ -10889,6 +10899,8 @@ if (auto iter = stu1.find("ww"); iter != stu1.end()){
     cout << iter->second << endl;
 }
 ```
+
+
 
 ### 22.2.7 简化的嵌套命名空间
 
@@ -10908,9 +10920,13 @@ namespace A::B::C{
 }
 ```
 
+
+
 ### 22.2.8 using可以声明多个名称
 
 `using std::cin, std::cout;`
+
+
 
 ### 22.2.9 Lambda表达式捕获 *this
 
@@ -10934,6 +10950,8 @@ int main(){
     return 0;
 }
 ```
+
+
 
 ### 22.2.10 __has_include
 
@@ -10964,11 +10982,11 @@ int main(){
 2. 属性可以带有命名空间，例如：`[[gnu::always_inline]]`
 3. 属性可以带有实参，例如：`[[deprecated("Use new_func instead")]]`
 4. 在C++17中，还有一个重要的属性：`[[maybe_unused]]`，用于抑制未使用变量的警告。
-5. alignas说明符也可以用于指定对齐方式，但它不是属性，是一个单独的关键字，它也可以和属性一起使用。
+5. `alignas`说明符也可以用于指定对齐方式，但它不是属性，是一个单独的关键字，它也可以和属性一起使用。
 
 #### C++17中新增属性
 
-1. `[[fallthrough]]`:switch语句中跳到下一条语句，不需要break，让编辑器忽略告警。
+1. `[[fallthrough]]`：switch语句中跳到下一条语句，不需要break，让编辑器忽略告警。
 
    ```cpp
    int i = 1;
@@ -11007,5 +11025,169 @@ int main(){
    }
    ```
 
-   
+#### alignas说明符
+
+指定变量、类成员、类、枚举的对齐要求，其值必须是2的幂，通常小于或等于实现的最大对齐；其用于控制内存对齐，优化性能。
+
+```cpp
+#include <iostream>
+#include <cstddef>  // std::max_align_t
+using namespace std;
+
+// alignas 用于指定对齐要求
+struct alignas(16) AlignedStruct {
+    char a;      // 1字节
+    int b;       // 4字节
+    double c;    // 8字节
+    // 整个结构体会按16字节对齐
+};
+
+struct alignas(32) AnotherAligned {
+    int data[4];
+};
+
+// 对齐数组
+alignas(64) char buffer[1024];  // 64字节对齐的缓冲区
+
+// 对齐变量
+alignas(alignof(long long)) long long aligned_ll;
+
+void alignasDemo() {
+    cout << "=== alignas 示例 ===" << endl;
+    
+    AlignedStruct s1;
+    AnotherAligned s2;
+    
+    cout << "AlignedStruct 大小: " << sizeof(s1) 
+         << ", 对齐: " << alignof(decltype(s1)) << endl;
+    
+    cout << "AnotherAligned 大小: " << sizeof(s2)
+         << ", 对齐: " << alignof(decltype(s2)) << endl;
+    
+    cout << "缓冲区对齐: " << alignof(decltype(buffer)) << endl;
+    cout << "long long 对齐: " << alignof(decltype(aligned_ll)) << endl;
+    
+    // 验证对齐
+    auto ptr = reinterpret_cast<uintptr_t>(&s1);
+    cout << "AlignedStruct 地址: " << ptr 
+         << " (16字节对齐: " << (ptr % 16 == 0 ? "是" : "否") << ")" << endl;
+    
+    ptr = reinterpret_cast<uintptr_t>(&s2);
+    cout << "AnotherAligned 地址: " << ptr 
+         << " (32字节对齐: " << (ptr % 32 == 0 ? "是" : "否") << ")" << endl;
+}
+```
+
+
+
+### 22.2.12 charconv
+
+`<charconv>`是C++17新的标准库头文件，包含了相关类和两个转换函数。可以完成传统的整数/浮点和字符串互相转换的功能(atoi、itoa、atod、sprintf等)，同时支持输出格式控制、整数基底设置并且将整数和浮点类型对字符串的转换整合起来。它是独立于本地环境、不分配、不抛出的。目的是在常见的高吞吐量环境，例如基于文本的交换（JSON或XML）中，允许尽可能快的实现。
+
+:arrow_right:`chars_format`是作为格式控制的类定义在`<charconv>`头文件中
+
+```cpp
+enum class chars_format{
+	scientific = /*unspecified*/,
+    fixed = /*unspecified*/,
+    hex = /*unspecified*/,
+    general = fixed | scientific
+};
+```
+
+:arrow_right:`from_chars`
+
+```cpp
+struct from_chars_result{
+    const char* ptr;
+    std::errc ec;
+    std::errc ec;
+};
+std::from_chars_result from_chars(const char* first, const char* last, & value, int base = 10);
+std::from_chars_result from_chars(const char* first, const char* last, float& value,
+                                  std::chars_cormat fmt = std::chars_format::general);
+std::from_chars_result from_chars(const char* first, const char* last, double& value,
+                                  std::chars_cormat fmt = std::chars_format::general);
+std::from_chars_result from_chars(const char* first, const char* last, long double& value,
+                                  std::chars_cormat fmt = std::chars_format::general);
+//first, last - 要分析的合法字符范围
+//value - 若分析成功，则存储被分析值的输出参数
+//base - 使用的整数基底：2与36间的值（含上下限）
+//fmt - 使用的浮点格式，std::chars_format类型的位掩码
+```
+
+:arrow_right:`to_chars`
+
+```cpp
+struct to_chars_result{
+    char* ptr;
+    std::errc ec;
+};
+std::to_chars_result to_chars(char* first, char* last, value, int base = 10);	//整数转字符串
+//value - 要转换其字符串表示的值
+std::to_chars_result to_chars(char* first, char* last, float value, std::chars_format fmt, int precision);
+std::to_chars_result to_chars(char* first, char* last, double value, std::chars_format fmt, int precision);
+std::to_chars_result to_chars(char* first, char* last, long double value, std::chars_format fmt, int precision);
+//浮点转字符串
+//precision - 使用的浮点精度
+```
+
+:arrow_right:案例
+
+```cpp
+#include <iostream>
+#include <charconv>
+using namespace std;
+int main(){
+    string s{ "1234567789" };
+    int val = 0;
+    auto res = from_chars(s.data(), s.data + 4, val);	//把s的前4个转为整数
+    if(res.ec == errc()){
+        cout << "val" << val << ", distance: " << res.ptr - s.data() << endl;
+        //val: 1234, distance: 4
+    }
+    else if(res.ec == errc::invalid_argument){
+        cout << "invalid" << endl;
+    }
+    s = string{"12.34"};
+    double value = 0;
+    auto format = chars_format::general;
+    res = from_chars(s.data(), s.data() + s.size(), value, format);	//把"12.34"转成小数
+    cout << "value: " << value << endl;
+    //value: 12.34
+    s = string{"xxxxx"};
+    int v = 1234;
+    auto result = to_chars(s.data(), s.data() + s.size(), v);	//把整数转成字符串
+    cout << "str: " << s << ", filled" << result.ptr - s.data() << "characters." << endl;
+    //s:1234x, filled: 4 characters.
+    return 0;
+}
+```
+
+
+
+### 22.2.13 std::variant
+
+C++17中提供了`std::variant`类型，意为多变的、可变的类型。其有点类似于加强版的union，里面可以存放复合数据类型，且操作元素更为方便，可以用于表示多种类型的混合体，但同一时间只能用于代表一种类型的实例。
+
+`variant`提供了`index`成员函数，该函数返回一个索引，该索引用于表示`variant`定义对象时模板参数的索引(起始索引为0)，同时提供了一个函数`holds_alternative<T>(v)`用于查询对象v当前存储的值类型是否是T。
+
+```cpp
+#include<iostream>
+#include<variant>
+#include<string>
+using namespace std;
+int main(){
+    variant<int, double, string> d;	//int->0, double->1, string->2
+    cout << d.index() << endl;	//output:0
+    d = 3.14;
+    cout << d.index() << endl;	//output:1
+    d = "hi";
+    cout << d.index() << endl;	//output:2
+    cout << holds_alternative<int>(d) << endl;		//output:0
+    cout << holds_alternative<double>(d) << endl;	//output:0
+    cout << holds_alternative<string>(d) << endl;	//output:1
+    return 0;
+}
+```
 
