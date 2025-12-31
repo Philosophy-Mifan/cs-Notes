@@ -11080,7 +11080,9 @@ void alignasDemo() {
 
 
 
-### 22.2.12 charconv
+### 22.2.12 新增头文件
+
+#### 22.2.12.1 charconv
 
 `<charconv>`是C++17新的标准库头文件，包含了相关类和两个转换函数。可以完成传统的整数/浮点和字符串互相转换的功能(atoi、itoa、atod、sprintf等)，同时支持输出格式控制、整数基底设置并且将整数和浮点类型对字符串的转换整合起来。它是独立于本地环境、不分配、不抛出的。目的是在常见的高吞吐量环境，例如基于文本的交换（JSON或XML）中，允许尽可能快的实现。
 
@@ -11166,7 +11168,7 @@ int main(){
 
 
 
-### 22.2.13 std::variant
+#### 22.2.12.2 std::variant
 
 C++17中提供了`std::variant`类型，意为多变的、可变的类型。其有点类似于加强版的union，里面可以存放复合数据类型，且操作元素更为方便，可以用于表示多种类型的混合体，但同一时间只能用于代表一种类型的实例。
 
@@ -11191,3 +11193,178 @@ int main(){
 }
 ```
 
+
+
+#### 22.2.12.3 std::optional
+
+在C时代以及早期C++时代，语法层面支持的`nullable`类型可以采用指针方式：`T*`， 如果指针为NULL（C++11之后则使用`nullptr`）就表示无值状态（empty value）。
+在编程中，经常遇到这样的情况：可能返回/传递/使用某种类型的对象。也就是说，可以有某个类型的值，也可以没有任何值。因此，需要一种方法来模拟类似指针的语义，在指针中，可以使用`nullptr`表示无值。处理这个问题的方法是定义一个特定类型的对象，并用一个额外的布尔成员/标志来表示值是否存在。`std::optional<>`以一种类型安全的方式提供了这样的对象。
+
+:exclamation:每个C++版本可能对某些特征做了一定的改动
+
+`optional`是一个模板类：`template <class T>` `class optional;`它内部有两种状态，要么有值（T类型），要么没有值（`std::nullptr`）
+`std::optional`有以下几种构造方式：
+
+```cpp
+#include <iostream>
+#include <optional>
+using namespace std;
+int main(){
+	optional<int> o1;	//什么都不写时默认初始化为nullopt
+	optional<int> o2 = nullptr;	//初始化为无值
+	optional<int> o3 = 10;	//用一个T类型的值来初始化
+	optional<int> o4 = o3;	//用另一个optional来初始化
+}
+```
+
+要查看一个optional对象是否有值，可以直接用`if`，或者用`has_value()`
+
+```cpp
+optional<int> o1;
+if(o1){
+	printf("o1 has value\n");
+}
+if(o1.has_value()){
+	printf("o1 has value\n");
+}
+```
+
+当一个optional有值时，可以通过用指针的方式（* 和 ->）来使用，或者用`.value()`来获取它的值。
+
+```cpp
+optional<int> o1 = 100;
+cout << *o1 << endl;
+optional<string> o2 = "orange";
+cout << o2->c_str() << endl;
+cout << o2.value().c_str() << endl;
+```
+
+若要将一个有值的`optional`变为无值，用`.reset()`，该函数会将已存储的T类型对象析构掉
+
+```cpp
+optional<int> o1 = 500;
+o1.reset();
+```
+
+#### 22.2.12.4 std::any
+
+在C++11中引入的auto自动推导类型变量大大方便了编程，但是auto变量一旦声明，该变量类型不可再改变。
+在C++17中引入了`std::any`类型，该类型变量可以存储任何类型的值，也可以时刻改变它的类型，类似于python中的变量。
+
+```cpp
+#include<any>
+#include<iostream>
+using namespace std;
+int main(){
+    cout << boolalpha;	//将bool值用"true"和"false"显示
+    any a;	//定义一个空的any
+    //判断any中是否为空
+    cout << a.has_value() << endl;	//any为空时，has_value返回值为false
+    cout << a.type().name() << endl;	//any为空时，has_value返回值为true
+    
+    //几种创建any的方式
+    any b = 1;	//b：存了int类型值的any
+    auto c = make_any<float>(5.0f);	//c为存了float类型的any
+    any d(6.0);	//d：存了double类型的any
+    cout << b.has_value() << endl;	//true
+    cout << b.type().name() << endl;	//int
+    cout << c.has_value() << endl;	//true
+    cout << c.type().name() << endl;	//float
+    cout << d.has_value() << endl;	//true
+    cout << d.type().name() << endl;	//double
+}
+```
+
+#### 22.2.12.5 std::apply
+
+将`tuple`元组解包，并作为函数的传入参数
+
+```cpp
+#include<any>
+#include<iostream>
+using namespace std;
+int add(int a, int b){
+	return a + b;
+}
+int main(){
+    auto add_lambda = [](auto a, auto b, auto c){ return a + b + c; };
+    cout << apply(add, pair(2, 3)) << endl;	//5
+    cout << apply(add_lambda, tuple(2, 3, 4)) << endl;	//9
+    return 0;
+}
+```
+
+#### 22.2.12.6 std::make_from_tuple
+
+解包tuple作为构造函数参数、构造对象
+
+```cpp
+#include<iostream>
+using namespace std;
+class ClassTest{
+public:
+    string _name;
+    size_t _age;
+    ClassTest(string name, size_t age): _name(name), _age(age){
+        cout << "name:" << _name << ",age: " << _age << endl;
+    }
+};
+int main(){
+    auto param = make_tuple("zs", 19);
+    make_from_tuple<ClassTest>(move(param));
+    return 0;
+}
+```
+
+#### 22.2.12.7 std::string_view
+
+C++中字符串有两种形式，`char*`和std::string，`string`类型封装了`char*`字符串，让我们对字符串的操作方便了很多，但是会有些许性能的损失，而且由`char*`转为`string`类型，需要调用`string`类拷贝构造函数，也就是说需要重新申请一片内存，但如果只是对源字符串做只读操作，这样的构造行为显然是不必要的。
+
+在C++17中，增加了`std::string_view`类型，它通过`char*`字符串构造，但是并不会去申请内存重新创建一份该字符串对象，只是`char*`字符串的一个视图，优化了不必要的内存操作。相应的，对源字符串只有读权限，没有写权限。
+
+```cpp
+#include<iostream>
+using namespace std;
+void func(string_view str_v){
+    cout << str_v << endl;
+    return;
+}
+int main(){
+    const char* charStr = "hello world";
+    string str{ charStr };
+    string_view str_v(charStr, strlen(charStr));
+    cout << "str:" << str << endl;
+    cout << "str_v:" << str_v << endl;
+    func(str_v);
+    return 0;
+}
+```
+
+#### 22.2.12.8 std::as_const
+
+将左值转换为`const`类型
+
+```cpp
+#include<iostream>
+using namespace std;
+int main(){
+	string str = { "C++ as const test" };
+    cout << is_const<decltype(str)>::value << endl;
+    const string str_const = as_const(str);
+    cout << is_const<decltype(str_const)>::value << endl;
+    return 0;
+}
+```
+
+#### 22.2.12.9 std::filesystem
+
+C++17引入了`filesystem`，方便处理文件，提供接口函数很多，用起来也很方便
+
+头文件及命名空间：`#include<filesystem>` `using namespace std::filesystem`
+
+常用类：
+
+- `path`类：路径处理
+- `directory_entry`类：文件入口
+- `directory_iterator`类：获取文件系统目录中文件的迭代器容器
+- `file_status`类：用于获取和修改文件（或目录）的属性
