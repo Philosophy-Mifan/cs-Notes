@@ -11368,3 +11368,75 @@ C++17引入了`filesystem`，方便处理文件，提供接口函数很多，用
 - `directory_entry`类：文件入口
 - `directory_iterator`类：获取文件系统目录中文件的迭代器容器
 - `file_status`类：用于获取和修改文件（或目录）的属性
+
+##### :one: path类
+
+| 函数名                                         | 功能                     |
+| ---------------------------------------------- | ------------------------ |
+| `path& append(const _Src& source)`             | 在`path`末尾加入一层结构 |
+| `path& assign(string_type& source)`            | 赋值（字符串）           |
+| `void clear()`                                 | 清空                     |
+| `int compare(const path& other)`               | 比较                     |
+| `bool empty()`                                 | 空判断                   |
+| `path filename()`                              | 返回文件名（带后缀）     |
+| `path stem()`                                  | 返回文件名（不带后缀）   |
+| `path extension()`                             | 返回文件后缀名           |
+| `path is_acsolute()`                           | 判断路径是否为绝对路径   |
+| `path is_relative()`                           | 判断路径是否为相对路径   |
+| `path relative_path()`                         | 返回相对路径             |
+| `path parent_path()`                           | 返回父路径               |
+| `path& replace_extension(const path& replace)` | 替换文件后缀             |
+
+##### :two: 常用函数
+
+```cpp
+std::filesystem::exists(const path& pval)	//用于判断路径是否存在
+std::filesystem::copy(const path& from, const path& to)	//复制目录
+//获取相对于base的绝对路径
+std::filesystem::absolute(const path& pval, const path& base = current_path())
+std::filesystem::create_directory(const path& pval)	//当目录不存在时创建目录
+std::filesystem::create_directories(const path& pval)	//形如a/b/c这样的，如果不存在，则创建目录结构
+std::filesystem::file_size(const path& pval)	//返回目录的大小
+```
+
+```cpp
+#include<ctime>
+#include<iostream>
+#include<filesystem>
+using namespace std;
+int main(){
+    namespace fs = std::filesystem;
+    auto testdir = fs::path("./testdir");
+    if(!fs::exists(testdir)){	//文件是否存在
+    	cout << "file or directory is not exists!" << endl;
+    }
+    //none (default)跳过符号链接，权限拒绝是错误
+    //sollow_directory_symlink	跟随而非跳过符号链接。
+    //skip_permission_denied	跳过，若不跳过则产生权限拒绝错误的目录
+    fs::directory_options_opt(fs::directory_options::none);
+    fs::directory_entry dir(testdir);
+    //遍历当前目录
+    std::cout << "show:\t" << dir.path().filename() << endl;
+    for (fs::directory_entry const& entry : fs::directory_iterator(testdir, opt)){
+        if(entry.is_regular_file()){
+            cout << entry.path().filename() << "\t size:" << entry.file_size() << endl;
+        }
+        else if(entry.is_directory()){
+            cout << entry.path().filename() << "\t dir" << endl;
+        }
+    }
+    cout << endl;
+    //递归遍历所有的文件
+    cout << "show all:\t" << dir.path().filename() << endl;
+    for(fs::directory_entry const& entry : fs::recursive_directory_itrator(testdir, opt)){
+        if(entry.is_regular_file()){
+            cout << entry.path().filename() << "\t size:" << entry.file_size() << "\t parent:" << entry.path().parent_path() << endl;
+        }
+        else if(entry.is_directory()){
+            cout << entry.path().filename() << "\t dir" << endl;
+        }
+    }
+    return 0;
+}
+```
+
