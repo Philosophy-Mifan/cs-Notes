@@ -1,5 +1,5 @@
 ```cpp
-//本文基于01university课程，适用于初学C++，且有一定C语言基础的同学使用，如在使用此笔记时有好的想法、建议以及发现文中的错误，欢迎指正
+//本文基于01university课程编写，适用于初学C++，且有一定C语言基础的同学使用，如在使用此笔记时有好的想法、建议以及发现文中的错误，欢迎指正
 
 //E-mail：philosophy_mifan@outlook.com，GitHub：Philosophy-Mifan。
 
@@ -33,7 +33,7 @@ int main()
 }
 ```
 
-想要进行输入/输出------>使用`cin`/`cout`------>需要包含<iostream>
+想要进行输入/输出------>使用`cin`/`cout`------>需要包含`<iostream>`
 
 ！！注：在给变量命名时需注意，array、max、min这一类已经被C++内置使用的不得再次使用，否则会出现compile error
 
@@ -11547,3 +11547,176 @@ co_return some_value;	//彻底结束当前协程，返回some_value给协程调�
 类似于C中的strcmp函数返回-1，0和1。
 
 一般情况下，自动生成所有的比较操作符，如果对象是结构体则逐个比较，可以用下面的代码代替所有的比较运算符：`auto X::operator<=>(const Y&) = default;`，在更高级的情况下：指定返回类型（支持6种所有的比较运算符）
+
+
+
+### 22.3.4 范围(Ranges)
+
+范围库始于Eric Niebier对STL序列观念的推广和现代化的工作。它提供了更易于使用、更通用及性能更好的标准库算法，在C++20标准库中为整个容器的操作提供了更简单的表达方式。
+
+```cpp
+void func(vector<string>& s){
+	sort(s);	//而不是sort(sv.begin(), vs.end());
+}
+```
+
+```cpp
+#include<vector>
+#include<ranges>
+#include<iostream>
+using namespace std;
+int main(){
+    auto ints = view::iota(0, 10);	//生成0~9
+    auto even = [](int i) { return 0 == i % 2;};
+    auto square = [](int i) { return i * i;};
+    for(int i : ints | views::filter(even) | views::transform(square))
+        cout << i << " ";
+    return 0;
+}
+```
+
+
+
+### 22.3.5 日期和时区
+
+日期库是多年工作和实际使用的结果，它基于`chrono`标准库的时间支持，在2018年进入到C++20中，并且和旧的时间工具一起放在`<chrono>`中。
+
+```cpp
+#include<iostream>
+#include<chrono>
+using namespace std;
+using namespace std::chrono;
+int main(){
+	//Creating a year
+	auto y1 = year{ 2019 };
+	auto y2 = 2019y;
+	//Creating a month
+	auto m1 = month{ 9 };
+	auto m2 = September;
+	//Creating a day
+	auto d1 = day{ 184 };
+	auto d2 = 18d;
+	year_month_day date1{2026y, January, 3d};
+	auto date2 = 2026y / January / 3d;
+	chrono::year_month_day date3{ Saturday[3] / January / 2026 };
+    cout << date1 << endl;
+    cout << date2 << endl;
+    cout << date3 << endl;
+}
+```
+
+
+
+### 22.3.6 格式化(format)
+
+`iostream`库提供了类型安全的`I/O`的扩展，但是它的格式化工具比较弱。格式化库提供了一种类`printf`的方式去组装字符串和格式化输出值，同时这种方法类型安全、快捷，并能和`iostream`协同工作。
+类型中带有`<<`运算符的可以在一个格式化的字符串中输出。
+
+```cpp
+string s = "C++";
+cout << format("The string '{}' has {} characters", s, s.size());
+cout << format("The string '{1}' has {0} characters", s, s.size()) << endl;
+cout << format("The string '{0}' has {1} characters", s.size(), s) << endl;
+```
+
+
+
+### 22.3.7 跨度(span)
+
+越界访问，有时也称为缓冲区溢出，从C的时代以来就一直是一个严重的问题，先看看下面的代码块：
+
+```cpp
+void func(int* p, int n){	//n是什么？
+	for(int i = 0; i < n; ++i){
+		p[i] = 7;		//是否可行
+	}
+}
+```
+
+此时`span<T>`类模板就这样被放到C++核心指南的支持库中。
+
+```cpp
+void func(span<int> a){	//span包含一个指针和一条大小信息
+	for (int& x : a){
+		x = 7;
+	}
+}
+```
+
+`for`从跨度中提取范围，并准确的遍历正确数量的元素（无序代价高昂的范围检查）。这个例子说明了一个适当的抽象可以同时简化写法并提升性能。对于算法来说，相较于挨个检查每一个访问的元素，明确地使用一个范围（比如span）要容易得多，开销也更低。
+
+
+
+### 22.3.8 并发(Promise)(C++11)
+
+`std::promise`和`std::future`是一对，这是在**C++11**中引入的**异步编程**核心组件，用于线程之间的结果传递和同步，通过它们可以进行更加灵活的任务控制，`promise`通过函数`set_value()`传入一个值、异常或者通知，并且异步的获取结果。其角色可以如下代码类比：
+
+```cpp
+// std::promise：生产者（承诺者），承诺在将来提供某个值
+// std::future：消费者（等待者），等待承诺的值变得可用
+// std::thread：执行者（实现者），实际执行计算并提供结果
+```
+
+其工作流程如下（详见《操作系统》）：
+
+生产者线程：         	|   消费者线程：
+promise ← 创建    	|   future ← promise.get_future()
+↓                                               ↓
+设置值/异常           	| 等待结果（阻塞/轮询）
+↓                                               ↓
+promise.set_value()     | future.get() 获取结果
+
+```cpp
+#include <iostream>
+#include <thread>
+#include <future>
+#include <chrono>
+using namespace std;
+
+void product(promise<int>&& intPromise, int v1, int v2){
+    intPromise.set_value(v1 * v2);
+}
+int main(){
+    int num1 = 100;
+    inr num2 = 200;
+    promise<int> producePromise;
+    future<int> productResult = productPromise.get_future();
+    jthread productThread(product, move(productPromise), num1, num2);	//C++20新特性
+    cout << format("product is {}\n", productResult.get());
+}
+```
+
+`std::future_status`调用`wait_for`或者`wait_until`返回的结果如下
+
+```cpp
+enum class future_status{
+	ready,		//成功
+    timeout,	//超时
+    diferred	//延迟
+};
+```
+
+```cpp
+#include<iostream>
+#include<future>
+#include<format>
+using namespace std;
+void getAnswer(promise<int> intPromise){
+	this_thread::sleep_for(2s);
+	intPromise.set_value(100);
+}
+int main(){
+    promise<int> answerPromise;
+    auto fut = answerPromise.get_future();
+    jthread productThread(getAnswer, move(answerPromise));
+    future_status status{};
+    do{
+        status = fut.wait_for(0.5s);
+        cout << "The result is not ready." << endl;
+    }
+    while(status != future_status::ready){
+        cout << format("answer is {}\n", fut.get());
+    }
+}
+```
+
