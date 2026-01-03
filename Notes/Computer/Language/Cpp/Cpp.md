@@ -11444,7 +11444,7 @@ int main(){
 
 ## 22.3 C++20
 
-### 22.3.1 模块
+### 22.3.1 模块(Module)
 
 从C语言中，C++继承了`#include`机制，依赖从头文件使用文本形式包含C++源代码，这些头文件中包含了接口的文本定义。一个流行的头文件可以在大型程序的各个单独编译的部分中被`#include`数百次，会出现以下基本问题：
 
@@ -11482,3 +11482,68 @@ export void hello(){	//导出声明
 import helloworld;	//导入声明即可使用
 ```
 
+如果想在模块中使用类似分区的功能，如下所示
+
+```cpp
+//MyModule01.ixx
+export module hello;
+import <iostream>;
+export helloFunc();	//使用模块分区的函数要在主模块中声明
+void abcFunc(){
+    std::cout << "abc..." << std::endl;
+}
+export void MyFunc(){
+    std::cout << "MyFunc..." << std::endl;
+    abcFunc();
+}
+
+//MyModule02.ixx
+export module hello:partA;	//hello的A分区
+import <iostream>;
+export void helloFunc(){
+    std::cout << "helloFunc..." << std::endl;
+}
+```
+
+
+
+### 22.3.2 协程(Coroutine)
+
+协程是一种**轻量级线程**，它允许函数在特定位置暂停执行，并在需要时恢复执行。与线程不同，协程的**切换由程序控制**，而不是由操作系统调度。
+
+:arrow_right: 特征：
+
+- 可挂起(Suspendable)：可以在任意点暂停执行
+- 可恢复(Resumable)：可以从暂停点继续执行
+- 轻量级(Lightweight)：切换开销远小于线程
+- 协作式(Cooperative)：由程序员控制切换时机
+
+```cpp
+//创建(Create)：创建协程但不立即执行
+auto coro = createCoroutine();
+//挂起(Suspend)：暂停协程执行，协程保存当前状态（局部变量、程序计数器等）
+co_await async_operation();
+//恢复(Resume)：从挂起点继续执行
+coro.resume();
+//销毁(Destroy)：结束协程生命周期
+coro.destroy();
+```
+
+协程让我们使用同步方式写异步代码，在C++中提供了三个方式挂起协程：`co_await`，`co_yield`和`co_return`，C++20中只是提供了协程的机制，而不是提供协程库，它是无栈协程，无栈协程是一个可以挂起/恢复的特殊函数，是函数调用的泛化，且只能被线程调用，本身并不抢占内核调度。
+
+在C++中如果有一个函数中存在上述的三个关键字之一，那么它就是一个协程。
+
+```cpp
+co_yield some_value;	//保存当前协程的执行状态并挂起，返回some_value给调用者
+co_await some_awaitable;//返回some_awaitable没有ready，就保存当前协程的执行状态并挂起
+co_return some_value;	//彻底结束当前协程，返回some_value给协程调用者
+```
+
+### 22.3.3 三向比较运算符(<=>)
+
+(a <=> b) < 0  //如果a < b则为true
+(a <=> b) > 0 //如果b < a则为true
+(a <=> b) == 0 //如果a、b相等或等价，则为true
+类似于C中的strcmp函数返回-1，0和1。
+
+一般情况下，自动生成所有的比较操作符，如果对象是结构体则逐个比较，可以用下面的代码代替所有的比较运算符：`auto X::operator<=>(const Y&) = default;`，在更高级的情况下：指定返回类型（支持6种所有的比较运算符）
