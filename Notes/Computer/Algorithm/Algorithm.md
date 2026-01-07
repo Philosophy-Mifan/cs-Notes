@@ -119,31 +119,7 @@ https://www.luogu.com.cn/problem/P1003
 
 从后往前枚举地毯，如果有一个地毯满足条件则直接输出，并退出；如果没有地毯满足则返回-1。(满足条件：点的坐标在地毯的覆盖范围内)
 
-```cpp
-#include<iostream>
-#include<cstdio>
-using namespace std;
-int n;	//在做题时的变量名请和题中保持一致，保持可读性。
-int a[10005],b[10005],x[10005],y[10005];	//开数组的技巧就是根据题目中给的上限多开几个，防止内存溢出
-int sx, sy;	//地面的点
-int main(){
-    //input
-    scanf("%d", &n);
-    for(int i = 1; i <= n; i++){
-        scanf("%d %d %d %d", &a[i], &b[i], &c[i], &d[i]);
-    }
-    ans = -1;	//先认为没有地毯覆盖，随后在枚举中更新ans的值
-    //枚举解题
-    for(int i = n; i > 0; i--){
-        if(sx>=a[i]&&sx<=a[i]+x[i]&&sy>=b[i]&&sy<=b[i]+y[i]){
-            ans = i;
-            break;
-        }
-    }
-    printf("%d", ans);
-    return 0;
-}
-```
+思路解：[P1003.cpp](source codes\Part I 枚举&暴力\P1003.cpp) 
 
 
 
@@ -180,55 +156,7 @@ int main(){
 更新边界：例如第一轮从左到右填完以后，上边界`top += 1`，相当于上边界向内缩1,
 最终返回mat。
 
-```cpp
-#include<iostream>
-#include<cstdio>
-#include<vector>
-using namespace std;
-vector<vector<int>> generateMatrix(int n) {	//将力扣中的默认代码直接放过来即可，类不用考虑
-	vector<vector<int>> mat(n, vector<int>(n));
- 	int left = 0;
- 	int top = 0;
-	int right = n - 1;
-	int bottom = n - 1;
- 	int num = 1;
- 	while (num <= n * n) {
-     	//left->right
-     	for (int i = left; i <= right; i++) {
-         	mat[top][i] = num++;
-     	}
-     	top++;
-     	//top->bottom
-     	for (int i = top; i <= bottom; i++) {
-         	mat[i][right] = num++;
-     	}
-     	right--;
-     	//right->left
-     	for (int i = right; i >= left; i--) {
-         	mat[bottom][i] = num++;
-     	}
-     	bottom--;
-     	//bottom->top
-     	for (int i = bottom; i >= top; i--) {
-         	mat[i][left] = num++;
-     	}
-     	left++;
-	}
-	return mat;
-}
-int main(){		//在本地测试时，无需与力扣中的输出格式一致，在本地只测试输出是否合理即可
-    int n;
-	scanf("%d", &n);
-	vector<vector<int>> a = generateMartix(n);
-	for (int i = 0; i < n; i++) {
-    	for (int j = 0; j < n; j++) {
-        	printf("%d ", a[i][j]);
-    	}
-    printf("\n");
-	}
-return 0;
-}
-```
+思路解： [LC59.cpp](source codes\Part I 枚举&暴力\LC59.cpp)
 
 
 
@@ -252,7 +180,7 @@ NOIP2014 提高组 D1T1
 
 这五种手势的胜负关系如表一所示,表中列出的是甲对乙的游戏结果。
 
-![](https://cdn.luogu.com.cn/upload/pic/1346.png)
+<img src="https://cdn.luogu.com.cn/upload/pic/1346.png" alt="" style="zoom:60%;" />
 
 现在，小 A 和小 B 尝试玩这种升级版的猜拳游戏。已知他们的出拳都是有周期性规律的，但周期长度不一定相等。例如：如果小 A 以 `石头-布-石头-剪刀-蜥蜴人-斯波克` 长度为 $6$ 的周期出拳,那么他的出拳序列就是 `石头-布-石头-剪刀-蜥蜴人-斯波克-石头-布-石头-剪刀-蜥蜴人-斯波克-...`，而如果小 B 以 `剪刀-石头-布-斯波克-蜥蜴人` 长度为 $5$ 的周期出拳,那么他出拳的序列就是 `剪刀-石头-布-斯波克-蜥蜴人-剪刀-石头-布-斯波克-蜥蜴人-...`。
 
@@ -308,5 +236,5 @@ NOIP2014 提高组 D1T1
 
 我们可以将题目中所展示的游戏结果转换为得分表，整理成一个整数型的二维数组，我们在查看结果时只要将取这个数组的(`a[i]`, `b[j]`)便可以知道结果。出拳都是有周期性规律的，其周期长度不一定一致。
 
-
+思路解：[P1328.cpp](source codes\Part I 枚举&暴力\P1328.cpp) 
 
