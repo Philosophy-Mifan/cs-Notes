@@ -242,8 +242,6 @@ NOIP2014 提高组 D1T1
 
 ## Chapter 2 前缀和&差分
 
-### 前缀和
-
 前缀和可以简单理解为 "数列的前i项的和" ，是一种重要的**预处理**方式。
 **一维**：有N个的正整数放到数组A里，现在要求一个新的数组B，新数组的第`i`个数`B[i]`是原数组A第0到第`i`个数的和。
 **二维**：有$n*m$个的正整数$n*m$的二维数组A中，现在要求一个新的二维数组数组B，新数组的`B[i][j]`是原数组`A[0][0]`到`A[i][j]`的和。（矩形范围）
@@ -271,8 +269,8 @@ NOIP2014 提高组 D1T1
 <img src="Pictures/1.png" alt="" style="zoom:50%;" /><img src = "Pictures/2.png" alt="" style="zoom:50%;" /><img src="Pictures/3.png" alt="3" style="zoom:50%;" />
 
 第二个问题就是如何应用，譬如求$(x_1,y_1)-(x_2,y_2)$子矩阵的和，那么，根据类似的思考过程，易得答案为：$sum_{x_2,y_2}-sum_{x_1-1,y_2}-sum_{x_2,y_1-1}+sum_{x_1-1,y_1-1}$
-<img src="Pictures/4.png" alt="3" style="zoom:40%;" /><img src="Pictures/5.png" alt="3" style="zoom:40%;" />
-<img src="Pictures/6.png" alt="3" style="zoom:40%;" /><img src="Pictures/7.png" alt="3" style="zoom:40%;" />
+<img src="Pictures/4.png" alt="" style="zoom:40%;" /><img src="Pictures/5.png" alt="" style="zoom:40%;" />
+<img src="Pictures/6.png" alt="" style="zoom:40%;" /><img src="Pictures/7.png" alt="" style="zoom:40%;" />
 
 :question:如果要求中间子矩阵（非对角线）的和，可以用以下的方法：
 
@@ -282,4 +280,21 @@ $$ b_i=\begin{cases}   a_i-a_{i-1} & i\in[2,n] \\ a_1 & i=1 \end{cases} $$
 
 **差分**标记数组，可以维护<u>多次</u>、<u>多对</u>和<u>序列</u>的一个区间加上一个数，并在最后询问某一位的数，<u>修改操作一定要在查询操作之前</u>。
 
-假设我们现在要给[2,5]这个区间加一，原来的序列是：0 0 0 0 0 0 0 0，这时候我们在2上面打+1标记，6上面打-1标记，那么现在的序列是：0 0 +1 0 0 0 -1 0，这样从左往右扫描这个数组，记录当前经过的标签之和。这个和就是对应那个数的答案，对于每个区间加操作，只需要O(1)的时间打上标记。
+如果有$n$个数，其前缀和为`sum[]`，现在求`[l, r]`的和其公式为：`ans = sum[r] - sum[l-1]`，其推导如下：
+`sum[r] = a[1] + a[2] + ... + a[l-1] + a[l] + ... + a[r]`①
+`sum[l-1] = a[1] + a[2] + ... +a[l-1]`②
+由$①-②$得`ans = sum[r] - sum[l-1]`
+
+上述问题如果在二维中（如下图所示），求`(x1, y1) -> (x2, y2)`的值
+
+<img src="Pictures/8.png" alt="" style="zoom:50%;" />
+其计算结果：$ans = sum[x_2][y_2]-sum[x_2][y_1-1]-sum[x_1-1][y_2]+sum[x_1-1][y_1-1]$
+
+ 差分标记数组的目的是解决**元素变化**，为了区间修改而生的，只改变两个端点的值，就能在$O(1)$的时间内给一整段区间加减数值，如下有$m$个操作:
+`l, r, q`：在区间`[l, r]`中增加`q`，如1,4,1的演示如下图所示
+
+<img src="Pictures/9.png" alt="" style="zoom:50%;" />
+
+当$m=3$ $l_1=3,r_1=6,q_1=-2\\ l_2=1,r_2=4,q_2=3\\ l_3=5,r_3=7,q_3=-1$时，如下图所示
+
+<img src="Pictures/10.png" alt="" style="zoom:50%;" />
