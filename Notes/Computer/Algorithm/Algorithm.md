@@ -266,11 +266,11 @@ NOIP2014 提高组 D1T1
 
 第一个问题就是递推求$sum$的过程，$sum_{i,j}=sum_{i-1,j}+sum_{i,j-1}-sum_{i-1,j-1}+a_{i,j} $ 因为同时加了$sum_{i-1,j}$和$sum_{i,j-1}$，重复了$sum_{i-1,j-1}$，减去，计算以及重叠区域如下所示：
 
-<img src="Pictures/1.png" alt="" style="zoom:50%;" /><img src = "Pictures/2.png" alt="" style="zoom:50%;" /><img src="Pictures/3.png" alt="3" style="zoom:50%;" />
+<img src="Pictures/prefix sum algorithm-1.png" alt="" style="zoom:50%;" /><img src = "Pictures/prefix sum algorithm-2.png" alt="" style="zoom:50%;" /><img src="Pictures/prefix sum algorithm-3.png" alt="3" style="zoom:50%;" />
 
 第二个问题就是如何应用，譬如求$(x_1,y_1)-(x_2,y_2)$子矩阵的和，那么，根据类似的思考过程，易得答案为：$sum_{x_2,y_2}-sum_{x_1-1,y_2}-sum_{x_2,y_1-1}+sum_{x_1-1,y_1-1}$
-<img src="Pictures/4.png" alt="" style="zoom:40%;" /><img src="Pictures/5.png" alt="" style="zoom:40%;" />
-<img src="Pictures/6.png" alt="" style="zoom:40%;" /><img src="Pictures/7.png" alt="" style="zoom:40%;" />
+<img src="Pictures/prefix sum algorithm-4.png" alt="" style="zoom:40%;" /><img src="Pictures/prefix sum algorithm-5.png" alt="" style="zoom:40%;" />
+<img src="Pictures/prefix sum algorithm-6.png" alt="" style="zoom:40%;" /><img src="Pictures/prefix sum algorithm-7.png" alt="" style="zoom:40%;" />
 
 :question:如果要求中间子矩阵（非对角线）的和，可以用以下的方法：
 
@@ -287,14 +287,93 @@ $$ b_i=\begin{cases}   a_i-a_{i-1} & i\in[2,n] \\ a_1 & i=1 \end{cases} $$
 
 上述问题如果在二维中（如下图所示），求`(x1, y1) -> (x2, y2)`的值
 
-<img src="Pictures/8.png" alt="" style="zoom:50%;" />
+<img src="Pictures/prefix sum algorithm-8.png" alt="" style="zoom:50%;" />
 其计算结果：$ans = sum[x_2][y_2]-sum[x_2][y_1-1]-sum[x_1-1][y_2]+sum[x_1-1][y_1-1]$
 
- 差分标记数组的目的是解决**元素变化**，为了区间修改而生的，只改变两个端点的值，就能在$O(1)$的时间内给一整段区间加减数值，如下有$m$个操作:
-`l, r, q`：在区间`[l, r]`中增加`q`，如1,4,1的演示如下图所示
+ 差分标记数组的目的是解决**元素变化**，为了区间修改而生的，只改变两个端点的值，就能在$O(1)$的时间内给一整段区间加减数值，如下在一维中有$m$个操作:
+`l, r, q`：在区间`[l, r]`内的元素增加`q`，如1,4,1的演示如下图所示
 
-<img src="Pictures/9.png" alt="" style="zoom:50%;" />
+<img src="Pictures/prefix sum algorithm-9.png" alt="" style="zoom:50%;" />
+
+```cpp
+//一维的伪代码实现
+int b[105];		//差分标记数组
+int sum[b];
+while(m > 0){
+    cin >> l >> r >> q;
+    b[l] += q;
+    b[r + l] -= q;
+}
+for(int i = 1; i <= n; i++){
+    sumb[i] = sum[i - 1] + b[i];
+    cout << a[i] + sumb[i];
+}
+```
 
 当$m=3$ $l_1=3,r_1=6,q_1=-2\\ l_2=1,r_2=4,q_2=3\\ l_3=5,r_3=7,q_3=-1$时，如下图所示
 
-<img src="Pictures/10.png" alt="" style="zoom:50%;" />
+<img src="Pictures/prefix sum algorithm-10.png" alt="" style="zoom:50%;" />
+
+在二维中有如下m个操作：
+$x_1,x_2,y_1,y_2,q$：在区间$[(x_1,y_1)(x_2,y_2)]$内的元素增加$q$，如下图操作所示：
+
+<img src="Pictures/prefix sum algorithm-11.png" alt="" style="zoom:75%;" />
+
+### B3612 【深进1.例1】求区间和
+
+**题目描述**
+
+给定 $n$ 个正整数组成的数列 $a_1, a_2, \cdots, a_n$ 和 $m$ 个区间 $[l_i,r_i]$，分别求这 $m$ 个区间的区间和。
+
+**输入格式**
+
+第一行包含一个正整数 $n$，表示序列的长度。
+
+第二行包含 $n$ 个正整数 $a_1,a_2, \cdots ,a_n$。
+
+第三行包含一个正整数 $m$，表示区间的数量。
+
+接下来 $m$ 行，每行包含两个正整数 $l_i,r_i$，满足 $1\le l_i\le r_i\le n$。
+
+**输出格式**
+
+共 $m$ 行，其中第 $i$ 行包含一个正整数，表示第 $i$ 组答案的询问。
+
+**输入输出样例** #1
+
+**输入 #1**
+
+```
+4
+4 3 2 1
+2
+1 4
+2 3
+```
+
+**输出 #1**
+
+```
+10
+5
+```
+
+**说明/提示**
+
+**样例解释**
+
+第 $1$ 到第 $4$ 个数加起来和为 $10$。第 $2$ 个数到第 $3$ 个数加起来和为 $5$。
+
+**数据范围**
+
+对于 $50 \%$ 的数据：$n,m\le 1000$；
+
+对于 $100 \%$ 的数据：$1 \le n, m\le 10^5$，$1 \le a_i\le 10^4$。
+
+**思路**
+
+同上前缀和和差分
+
+[][]
+
+思路解：[B3612.cpp](source codes\Part II 前缀和&差分\B3612.cpp)
