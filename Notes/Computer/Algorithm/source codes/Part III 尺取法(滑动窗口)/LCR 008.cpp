@@ -27,9 +27,9 @@ int minSubArrayLen(int target, vector<int>& nums) {
 	return res;
 }
 int main() {
-	int target, length, x;      //length只是为了方便下述读取数据以及验证，在leetcode中只需要使用上述函数的内容即可
-	vector<int>& nums;
-	scanf("%d %d", target, length);
+	int target = 0, length = 0, x = 0;
+	vector<int> nums;
+	scanf("%d %d", &target, &length);
 	for (int i = 0; i < length; i++) {
 		scanf("%d", &x);
 		nums.push_back(x);

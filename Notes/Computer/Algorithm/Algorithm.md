@@ -321,6 +321,8 @@ $x_1,x_2,y_1,y_2,q$：在区间$[(x_1,y_1)(x_2,y_2)]$内的元素增加$q$，如
 
 ### B3612 【深进1.例1】求区间和
 
+https://www.luogu.com.cn/problem/B3612
+
 **题目描述**
 
 给定 $n$ 个正整数组成的数列 $a_1, a_2, \cdots, a_n$ 和 $m$ 个区间 $[l_i,r_i]$，分别求这 $m$ 个区间的区间和。
@@ -382,6 +384,8 @@ $x_1,x_2,y_1,y_2,q$：在区间$[(x_1,y_1)(x_2,y_2)]$内的元素增加$q$，如
 
 ### P1387 最大正方形
 
+https://www.luogu.com.cn/problem/P1387
+
 **题目描述**
 
 在一个 $n\times m$ 的只包含 $0$ 和 $1$ 的矩阵里找出一个不包含 $0$ 的最大正方形，输出边长。
@@ -423,6 +427,8 @@ $x_1,x_2,y_1,y_2,q$：在区间$[(x_1,y_1)(x_2,y_2)]$内的元素增加$q$，如
 
 
 ### P3397 地毯
+
+https://www.luogu.com.cn/problem/P3397
 
 **题目背景**
 
@@ -565,3 +571,4 @@ https://leetcode.cn/problems/2VG8Kg/
 - 当`sum<target`时，通过右移指针`right`来扩大窗口
 - 当`sum>target`时，右移指针`left`，尽可能的吐出数组元素。
 
+思路解：[LCR 008.cpp](source codes\Part III 尺取法(滑动窗口)\LCR 008.cpp)
