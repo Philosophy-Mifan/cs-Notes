@@ -934,28 +934,28 @@ int prime[100005], k = 0;
 bool isPrime[100005];	//isPrime[i] = 1 就是质数
 int main() {
 	cin >> n;
-	for (int i = 2; i <= n; i++) {
-		isPrime[i] = 1;
-	}
+	memset(isPrime, 1, sizeof(isPrime));
+    prime[1] = 0;
 	for (int i = 2; i <= n; i++) {
 		if (isPrime[i] == 1) {
 			k++;
 			prime[k] = i;
-			//枚举质数表-----质数表中的数据是升序的
-			for (int j = 1; j <= k; j++) {	
-				//超过范围，跳出循环
-				x = i * prime[j];
-				if (x > n) {
-					break;
-				}
-				isPrime[x] = 0;	//把x标记成合数
-				//保证只筛选到以prime[j]为最小质因数的数
-				if (i % prime[j] == 0) {
-					break;
-				}//保证了只筛选到以prime[j]为最小质因数的数，如果继续循环，让i乘上后面的质数，得到的合数就不是被prime[j]筛选掉的
+        }
+		//枚举质数表-----质数表中的数据是升序的
+		for (int j = 1; j <= k; j++) {	
+			//超过范围，跳出循环
+			x = i * prime[j];
+			if (x > n) {
+				break;
 			}
+			isPrime[x] = 0;	//把x标记成合数
+			//保证只筛选到以prime[j]为最小质因数的数
+			if (i % prime[j] == 0) {
+				break;
+			}//保证了只筛选到以prime[j]为最小质因数的数，如果继续循环，让i乘上后面的质数，得到的合数就不是被prime[j]筛选掉的
 		}
 	}
+}
 	cin >> x;
 	if (isPrime[x] == 1) cout << 'Y' << endl;
 	else cout << 'N' << endl;
@@ -1071,7 +1071,7 @@ int main() {
 - `std::endl`：输出换行符并**强制刷新缓冲区**。
 - `\n`：只输出换行符，不刷新缓冲区。 在循环中使用 `endl` 会让前面的加速效果几乎抵消，所以请务必使用 `\n`。
 
-**⚠ 注意事项（必看）**
+**⚠ 注意事项**
 
 一旦开启了 `sync_with_stdio(0)`，你必须遵守以下规则：
 
