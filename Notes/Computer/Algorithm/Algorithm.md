@@ -1067,7 +1067,7 @@ int main(){
 
 上述代码的时间复杂度为$O(logx)$
 
-### P1226 【模板】快速幂
+### P1226 【模板题】快速幂
 
 https://www.luogu.com.cn/problem/P1226
 
@@ -1112,6 +1112,189 @@ $2^{10} = 1024$，$1024 \bmod 9 = 7$。
 在这道题中的数据大小已经逼近`long long`，让$a,b$相乘`long long`是很有可能存不下的，所以在类似的题目中都会出现所求结果中取余的操作，这里用到了一个数学恒等式：$(a×b)\%c=((a\%c)×(b\%c))\%c$
 
 解：[P1226.cpp](source codes\Part VI 快速幂\P1226.cpp)
+
+
+
+## Chapter 7 高精度
+
+大数：是指计算的**数值非常大**或者对运算的**精度要求非常高**，用已知的数据类型无法精确表示的数值。例如：求Fibonacci数列的第1000个数或者计算$\pi$到小数点后的第2000位。现有的基本数据类型存不下，无法进行计算。
+
+思路：高精度的问题属于**模拟题**，用一个数组保存数字的每一位，去**模拟**运算。
+
+一般用数组模拟大数的运算 $\rightarrow$ 开一个比较大的整形数组 $\rightarrow$ 数组的元素代表大数的某一位 $\rightarrow$ 通过数组元素的运算模拟大数的运算 $\rightarrow$ 最后将代表大数的数组输出即可
+
+以加法为例，在处理大整数计算中需要处理好的几个问题：
+
+1. 数据的输入方法和存储方法
+   输入：字符串  存储：数组
+2. 大整数位数的确定：字符串的长度
+3. 模拟过程：进、借位处理
+
+注：在`Java`中有`BigIntteger（大数整形）`和`BigDecimal（大数浮点型）`类，用这两个类来进行大数运算特别方便。
+
+### 7.1 高精度加法
+
+```cpp
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+#include<cmath>
+using namespace std;
+int a[505];
+int b[505];
+int c[505];
+//数据输入处理
+int init(int x[]){
+    string s;
+    cin >> s;
+    int length = s.size();
+    for (int i = 0; i < s.size(); i++){
+        x[i] = s[length - i - 1] - '0';	//把字符串倒着存到数组中，这是为了方便对齐最低位以进行计算
+    }
+    return length;
+}
+//算a+b
+int main(){
+    int length_a = init(a);
+	int length_b = init(b);
+	int length_c = max(length_a, length_b);
+	for(int i = 0; i < length_c; i++){
+   		c[i] += a[i] + b[i];	//不要直接=，c[i]可能会有本身就该进位的数字
+    	//大于10则进位
+    	if(c[i] >= 10){
+        	c[i + 1]++;
+        	c[i] -= 10;
+    	}
+    	//计算结果是否产生进位导致length_c没有完全存入
+    	if(c[length_c] != 0){
+        	cout << c[length_c];
+    	}
+    	for(int i = length_c - 1; i >= 0; i--){
+        	cout << length_c[i];
+   		}
+	}
+    cout << endl;
+	return 0;
+}
+```
+
+### P1601 【模板题】高精度加法
+
+https://www.luogu.com.cn/problem/P1601
+
+**题目描述**
+
+给定两个非负整数 $a,b$，求它们的和。**不用考虑负数**。
+
+**输入格式**
+
+输入共两行，每行一个非负整数，分别为 $a,b$。
+
+**输出格式**
+
+输出一行一个非负整数，表示 $a+b$ 的值。
+
+**输入输出样例 #1**
+
+**输入 #1**
+
+```
+1
+1
+```
+
+**输出 #1**
+
+```
+2
+```
+
+**输入输出样例 #2**
+
+**输入 #2**
+
+```
+1001
+9099
+```
+
+**输出 #2**
+
+```
+10100
+```
+
+**说明/提示** 
+对于 $100\%$ 的测试数据，$0\le a,b \le 10^{500}$。
+
+解：[P1601.cpp](source codes\Part VII 高精度\P1601.cpp)
+
+### 7.2 高精度减法
+
+减法比加法多了一些细节：
+
+1. 如果计算出来的结果是负数，则单独输出`'-'`，用`swap()`将元素对调计算即可
+2. 要去掉所有的前导`'0'`：`while(c[length_c] == 0 && length_c > 0)  length_c--;`
+
+```cpp
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+#include<cmath>
+using namespace std;
+
+int a[105];
+int b[105];
+int c[105];
+//数据输入处理
+int init(int x[], string s){
+   int length = s.size();
+    for(int i = 0; i < s.size(); i++){
+        x[i] = s[length - i - 1] - '0';	//把字符串倒着存进数组x
+    }
+    return length;
+}
+//算a-b
+int main(){
+    string s1, s2;
+    cin >> s1;
+    cin >> s2;
+    int length_a = init(a, s1);
+    int length_b = init(b, s2);
+    int length_c = max(length_a, length_b);
+    //判断需不需要输出负号
+    if(length_a < length_b || (length_a == length_b && s1 < s2)){
+        cout << "-";
+        swap(a, b);
+    }
+    //保证接下来的计算一定是大的数减小的数
+    for(int i = 0; i < length_c; i++){
+        if(a[i] < b[i]){
+            a[i] += 10;
+            a[i + 1]--;
+        }
+        c[i] = a[i] - b[i];
+    }
+    //去掉前导0
+    length_c--;
+    while(c[length_c] == 0 && length_c > 0)  length_c--;
+    for(int i = length_c; i >= 0; i--){
+        cout << c[i];
+    }
+    cout << endl;
+    return 0;
+}
+```
+
+
+
+
+
+
+
+
+
+
 
 
 
