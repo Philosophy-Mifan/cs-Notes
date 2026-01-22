@@ -1178,7 +1178,7 @@ int main(){
 }
 ```
 
-### P1601 【模板题】高精度加法
+#### P1601 【模板题】高精度加法
 
 https://www.luogu.com.cn/problem/P1601
 
@@ -1286,7 +1286,94 @@ int main(){
 }
 ```
 
+### 7.3 高精度乘法
 
+最核心的公式就是如何模拟出竖式算法：$c[i+j]+=a[i]×b[j]$，其中$c$代表结果
+
+```cpp
+int a[105];
+int b[105];
+int c[105];
+//数据输入处理
+int init(int x[], string s){
+    string s;
+    cin >> s;
+    int length = s.size();
+    for(int i = 0; i < s.size(); i++){
+        x[i] = s[length - i - 1] - '0';	//把字符串倒着存进数组x
+    }
+    return length;
+}
+int main(){
+    int length_a = init(a);
+    int length_b = init(b);
+    int length_c = length_a + length_b;
+    for(int i = 0; i < length_a; i++){
+        for(int j = 0; j < length_b; j++){
+            c[i + j] += a[i] * b[j];		//乘法中最关键的一步，这一步就是竖式计算的表现
+        }
+    }
+    //处理进位
+    for(int i = 0; i < length_c; i++){
+        if(c[i] >= 10){
+            c[i + 1] += c[i] / 10;
+            c[i] %= 10;
+        }
+    }
+    //去掉前导0
+    while(c[length_c] == 0 && length_c > 0){
+        length_c--;
+    }
+    for(int i = length_c; i >= 0; i--){
+        cout << c[i];
+    }
+    cout << endl;
+    return 0;
+}
+```
+
+#### P1303 【模板题】A*B Problem
+
+**题目背景**
+
+高精度乘法模板题。
+
+**题目描述**
+
+给出两个非负整数，求它们的乘积。
+
+**输入格式**
+
+输入共两行，每行一个非负整数。
+
+**输出格式**
+
+输出一个非负整数表示乘积。
+
+**输入输出样例 #1**
+
+**输入 #1**
+
+```
+1 
+2
+```
+
+**输出 #1**
+
+```
+2
+```
+
+**说明/提示**
+
+每个非负整数不超过 $10^{2000}$。
+
+解：[P1303.cpp](source codes\Part VII 高精度\P1303.cpp)
+
+
+
+### 7.4 高精度除法
 
 
 
