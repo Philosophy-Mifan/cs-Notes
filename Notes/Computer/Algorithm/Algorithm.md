@@ -1375,7 +1375,38 @@ int main(){
 
 ### 7.4 高精度除法
 
+$n$位数除以$m$位数，商为$n-m+1$
+1、利用字符串读入被除数和除数
+2、把字符串倒着放到数组中，把数组的0位置空出来，记录数据的总位数。
+3、商最多的$n-m+1$位，循环求商的每一位
+4、（循环内）添位数、做减法
 
+```cpp
+#include<iostream>
+#include<cstdio>
+#include<vector>
+#include<cstring>
+using namespace std;
+void init(int a[]){
+    string s;
+    cin >> s;
+    a[0] = s.size();	//在0位上存数据的总位数
+    for(int i =  1; i <= a[0]; i++){
+        a[i] = s[a[0] - i] - '0';
+    }
+}
+int main(){
+    int a[105], b[105];
+    int ans[105] = {0};	//商
+    init(a);
+    init(b);
+    ans[0] = a[0] = b[0] + 1;	//商的最大位数
+    if(ans[0] < 0){
+        cout << 0 << endl;
+        return 0;
+    }
+}
+```
 
 
 
