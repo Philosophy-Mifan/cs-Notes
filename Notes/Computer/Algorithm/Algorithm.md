@@ -1395,6 +1395,45 @@ void init(int a[]){
         a[i] = s[a[0] - i] - '0';
     }
 }
+void numcpy(int t[], int b[], int n) {
+	t[0] = b[0] + n;
+	for (int i = n + 1; i <= t[0]; i++) {
+		t[i] = b[i - n];
+	}
+}
+bool check(int a[], int t[]){
+    //
+    if(a[0] > t[0]){
+        return 1;
+    }
+    else if(a[0] < t[0]){
+        return 0;
+    }
+    for(int i = a[0]; i >= 1; i--){
+        if(a[i] > t[i]){
+            return 1;
+        }
+        else if(a[i] < t[i]){
+            return 0;
+        }
+    }
+    return 1;
+}
+void sub(int a[], int t[]){
+    for(int i = 1; i <= a[0]; i++){
+        a[i] -= t[i];
+        if(a[i] < 0){
+            a[i] += 10;
+            a[i + 1]--;
+        }
+    }
+    //去掉a的前导0
+    int length = a[0];
+    while(a[length] == 0 && length >= 1){
+        a[0]--;
+        length--;
+    }
+}
 int main(){
     int a[105], b[105];
     int ans[105] = {0};	//商
@@ -1405,6 +1444,23 @@ int main(){
         cout << 0 << endl;
         return 0;
     }
+    for(int i = ans[0]; i > 0; i--){
+        int t[105] = {0};
+        //对b补0
+        numcpy(t, b, i - 1);
+    }
+    while(check(a, t) == 1){
+        sub(a, t);
+        ans[i]++;
+    }
+    for(int i = ans[0]; i > 0; i--){
+        if(i == ans[0] && ans[i] == 0){
+            continue;
+        }
+        cout << ans[i];
+    }
+    cout << endl;
+    return 0;
 }
 ```
 
