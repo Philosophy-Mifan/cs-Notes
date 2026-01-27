@@ -1290,10 +1290,14 @@ int main(){
 
 最核心的公式就是如何模拟出竖式算法：$c[i+j]+=a[i]×b[j]$，其中$c$代表结果
 
+<img src="Pictures/High-precision multiplication.png" style="zoom:70%;" />
+
+先根据竖式运算得到上述结果，然后对每一位需要进位的数%10，且高位+1即可。$c$的最大位数取决于$a、b$，其位数上的关系为$c=a+b$。
+
 ```cpp
 int a[105];
 int b[105];
-int c[105];
+int c[205];
 //数据输入处理
 int init(int x[], string s){
     string s;
@@ -1381,84 +1385,75 @@ $n$位数除以$m$位数，商为$n-m+1$
 3、商最多的$n-m+1$位，循环求商的每一位
 4、（循环内）添位数、做减法
 
+
+
 ```cpp
-#include<iostream>
-#include<cstdio>
-#include<vector>
-#include<cstring>
+#include <iostream>
+#include <string>
+#include <vector>
 using namespace std;
-void init(int a[]){
+//索引从 1 开始，a[0] 专门存储长度
+void init(int a[]) {
     string s;
-    cin >> s;
-    a[0] = s.size();	//在0位上存数据的总位数
-    for(int i =  1; i <= a[0]; i++){
+    if (!(cin >> s)) return;
+    a[0] = s.size();
+    for (int i = 1; i <= a[0]; i++) {
+        // 倒序存储，s 的末尾字符存入 a[1]
         a[i] = s[a[0] - i] - '0';
     }
 }
+// 将 b 拷贝到 t，并向高位移动 n 位 (相当于 b * 10^n)
 void numcpy(int t[], int b[], int n) {
-	t[0] = b[0] + n;
-	for (int i = n + 1; i <= t[0]; i++) {
-		t[i] = b[i - n];
-	}
+    for (int i = 1; i <= b[0]; i++) {
+        t[i + n] = b[i];
+    }
+    t[0] = b[0] + n;
 }
-bool check(int a[], int t[]){
-    //
-    if(a[0] > t[0]){
-        return 1;
+// 比较函数：a >= t 返回 true
+bool check(int a[], int t[]) {
+    if (a[0] > t[0]) return true;
+    if (a[0] < t[0]) return false;
+    for (int i = a[0]; i >= 1; i--) {
+        if (a[i] > t[i]) return true;
+        if (a[i] < t[i]) return false;
     }
-    else if(a[0] < t[0]){
-        return 0;
-    }
-    for(int i = a[0]; i >= 1; i--){
-        if(a[i] > t[i]){
-            return 1;
-        }
-        else if(a[i] < t[i]){
-            return 0;
-        }
-    }
-    return 1;
+    return true;
 }
-void sub(int a[], int t[]){
-    for(int i = 1; i <= a[0]; i++){
+// 高精度减法：a = a - t
+void sub(int a[], int t[]) {
+    for (int i = 1; i <= a[0]; i++) {
         a[i] -= t[i];
-        if(a[i] < 0){
+        if (a[i] < 0) {
             a[i] += 10;
             a[i + 1]--;
         }
     }
-    //去掉a的前导0
-    int length = a[0];
-    while(a[length] == 0 && length >= 1){
-        a[0]--;
-        length--;
-    }
+    while (a[0] > 1 && a[a[0]] == 0) a[0]--; // 修正长度
 }
-int main(){
-    int a[105], b[105];
-    int ans[105] = {0};	//商
+int main() {
+    int a[205] = { 0 }, b[205] = { 0 }, ans[205] = { 0 };
     init(a);
     init(b);
-    ans[0] = a[0] = b[0] + 1;	//商的最大位数
-    if(ans[0] < 0){
+    if (!check(a, b)) {
         cout << 0 << endl;
         return 0;
     }
-    for(int i = ans[0]; i > 0; i--){
-        int t[105] = {0};
-        //对b补0
-        numcpy(t, b, i - 1);
-    }
-    while(check(a, t) == 1){
-        sub(a, t);
-        ans[i]++;
-    }
-    for(int i = ans[0]; i > 0; i--){
-        if(i == ans[0] && ans[i] == 0){
-            continue;
+    int len = a[0] - b[0];
+    for (int i = len; i >= 0; i--) {
+        int t[205] = { 0 };
+        numcpy(t, b, i);
+        while (check(a, t)) {
+            sub(a, t);
+            ans[i + 1]++; // 商的对应位数增加
         }
-        cout << ans[i];
     }
+    // 输出处理：跳过前导零
+    bool printing = false;
+    for (int i = a[0]; i >= 1; i--) {
+        if (ans[i] != 0) printing = true;
+        if (printing) cout << ans[i];
+    }
+    if (!printing) cout << 0;
     cout << endl;
     return 0;
 }
