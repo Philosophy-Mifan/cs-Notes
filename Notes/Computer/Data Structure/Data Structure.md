@@ -14,7 +14,7 @@
 
 数组：被开辟出来的时候就一定是一串连续的地址空间（地址连续），问题是长度在开辟出来的时候就已经固定了，数组在做删除的时候并不是真正的将值删除，而是表面上的移动；方便在于通过下标即可得到所要的值，在一般场景使用时，可以用数组标记状态。
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\2-1数组固定.png" alt="1" style="zoom:67%;" />
+<img src="Picture/2-1数组固定.png" alt="1" style="zoom:60%;" />
 
 <不要因为数据结构相对应的缺点而不去使用，而是根据应用场景来选择最适合的一种数据结构>
 
@@ -22,7 +22,7 @@
 
 #### 1.1 数组的扩容
 
-![](E:\Typora\Typora Note\Computer\Data Structure\Picture\2-2数组扩容.png)
+<img src="Picture/2-2数组扩容.png" style="zoom:67%;" />
 
 建立一个长度比原数组长的新数组，将原数组的值一一复制到新数组中，将指向原数组的指针指向新数组，最后把原数组释放掉即可
 
@@ -197,7 +197,7 @@ void insert(int key, List* list)
 
 链表：在物理上是不连续的，但逻辑上是连续的
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\2-3链表的单个结点ADT.png" alt="1" style="zoom:80%;" />
+<img src="Picture\2-3链表的单个节点ADT.png" style="zoom:67%;" />
 
 数据域存放的是真实存储的数据，指针域存储的是指向下一个结点的指针
 
@@ -205,7 +205,7 @@ void insert(int key, List* list)
 
 #### 2.1 单向链表
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\2-4链表的结构表示.png" alt="1" style="zoom:50%;" />
+<img src="Picture/2-4链表的结构表示.png" alt="1" style="zoom:50%;" />
 
 单向链表的结构如上图所示
 
@@ -213,7 +213,7 @@ void insert(int key, List* list)
 
 指向第一个位置的指针称之为<u>头指针</u>，一般来说，任何一个结构都需要头指针（除图），其作用就是指明第一个元素的位置。
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\2-5头指针.png" alt="1" style="zoom:67%;" />
+<img src="Picture/2-5头指针.png" alt="1" style="zoom:60%;" />
 
 特性：头指针要永远指向第一个元素！！！！
 
@@ -221,19 +221,19 @@ void insert(int key, List* list)
 
 在如上图所示中，若要在1处前插一个元素，则头结点不在指向第一个元素，所以需要更改头指针所指向的位置，而要是一直前插，则头指针会一直变化
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\2-6前插new元素(头指针未变).png" alt="1" style="zoom:67%;" />
+<img src="Picture/2-6前插new元素(头指针未变).png" alt="1" style="zoom:60%;" />
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\2-7前插new元素(头指针改变).png" alt="1" style="zoom:67%;" />
+<img src="Picture/2-7前插new元素(头指针改变).png" alt="1" style="zoom:60%;" />
 
 为了防止前插带来的头指针频繁变化，这里定义了一个头结点，头指针永远指向头结点，头结点指向的元素永远是第一个元素。
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\2-8头结点.png" alt="1" style="zoom:67%;" />
+<img src="Picture/2-8头结点.png" alt="1" style="zoom:60%;" />
 
 头结点可以省略一些步骤
 
 ##### 2.1.3 插入操作
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\2-9insert.png" alt="1" style="zoom:67%;" />
+<img src="Picture/2-9insert.png" alt="1" style="zoom:67%;" />
 
 在2、1之间插入元素4，首先将4的指针指向1，再将2的指针指向4即可
 
@@ -247,7 +247,7 @@ void insert(int key, List* list)
 
 见图2-8（上上图）这里要删除元素3，只需要将元素2的指针指向4，释放掉元素3即可
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\2-10delete.png" alt="1" style="zoom:67%;" />
+<img src="Picture/2-10delete.png" alt="1" style="zoom:60%;" />
 
 先删再指会导致无法找到后继元素，**操作顺序非常重要！！！**
 
@@ -346,7 +346,7 @@ void delete(Node* node,int key)
 
 #### 2.2 单向循环链表
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\2-11单向循环链表.png" alt="1" style="zoom:67%;" />
+<img src="Picture/2-11单向循环链表.png" alt="1" style="zoom:60%;" />
 
 将单向链表中的最后一个元素指向头结点就是单向循环链表
 
@@ -354,9 +354,9 @@ void delete(Node* node,int key)
 
 结点的ADT
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\2-12双向链表的单个结点ADT.png" alt="1" style="zoom:75%;" />
+<img src="Picture/2-12双向链表的单个节点ADT.png" style="zoom:50%;" />
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\2-13双向链表.png" alt="1" style="zoom:70%;" />
+<img src="Picture/2-13双向链表.png" alt="1" style="zoom:50%;" />
 
 ##### 插入操作
 
@@ -370,11 +370,11 @@ step3.把插入位置的前元素的后指针指向带插入元素
 
 step4.把插入位置的后元素的前指针指向带插入元素
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\2-14insert.png" alt="1" style="zoom:67%;" />
+<img src="Picture/2-14insert.png" alt="1" style="zoom:67%;" />
 
 ##### 删除操作
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\2-15delete.png" alt="5" style="zoom:65%;" />
+<img src="Picture/2-15delete.png" alt="5" style="zoom:60%;" />
 
 step1.将待删除元素的前元素的后指针指向后元素
 
@@ -384,13 +384,13 @@ step3.将待删除元素释放掉
 
 #### 2.4 双向循环链表
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\2-16双向循环链表.png" style="zoom:70%;" />
+<img src="Picture/2-16双向循环链表.png" style="zoom:60%;" />
 
 将第一个元素的前指针指向最后一个元素，最后一个元素的后指针指向第一个元素就可以从双向链表变成双向循环链表
 
 此时，尾结点就可以有作用了，同单向链表一致，头尾结点的作用就是可以省略一些步骤<如：插入>
 
-![](E:\Typora\Typora Note\Computer\Data Structure\Picture\2-17带头尾结点的双向循环链表.png)
+<img src="Picture/2-17带头尾结点的双向循环链表.png" style="zoom:50%;" />
 
 （机哥语录：没有坏的数据结构，只有用不好的数据结构，根据场景、需求选择相适应的数据结构才是正确的选择！）
 
@@ -506,19 +506,23 @@ void delete_node(int key)
 
 ​		   2.速度不匹配（CPU是很快的，但是比如计算机和打印机是比较慢的，两边速度不一致）
 
-##### LRU缓存淘汰机制(淘汰最近最久未使用的)
+- ##### LRU缓存淘汰机制(淘汰最近最久未使用的)
+
 
 当缓存区域为满时，此时要想在添加一个内容进入缓存则需要在原有的缓存区删除一个内容来添加新的内容，这时使用的淘汰机制为LRU缓存淘汰机制，通过辨别缓存区中某一个内容有多长时间没有被使用过来进行排序删除，这里就可以用队列的思想。
 
-##### Redis
+- ##### Redis
+
 
 根据次数来判断的
 
-##### 延迟队列
+- ##### 延迟队列
+
 
 比如网购付款机制，下单但是没有付款的就会后进队列，依据付款的时间来进行排队，过一段时间不付款就会清空出队
 
-##### 阻塞队列
+- ##### 阻塞队列
+
 
 任何的请求都是由CPU执行的
 
@@ -526,7 +530,7 @@ void delete_node(int key)
 
 队列也不考虑扩容
 
-![](E:\Typora\Typora Note\Computer\Data Structure\Picture\2-18队列.png)
+<img src="Picture/2-18队列.png" style="zoom:67%;" />
 
 #### 4.1 队列的实现
 
@@ -534,11 +538,11 @@ void delete_node(int key)
 
 ##### 4.1.1 假溢出
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\2-19假溢出.png" alt="1" style="zoom:80%;" />
+<img src="Picture/2-19假溢出.png" alt="1" style="zoom:80%;" />
 
 为了解决假溢出的情况，就要使用循环队列-->模运算(rear + 1 % maxSize)-->就需要进行判断空与满，空与满的时候队头指针和队尾指针都相等，无法辨别，所以可以少使用一个空间-->当队列为空时，头尾相等；当队列为满时，(队尾 + 1) % maxSize = 队头
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\2-20解决循环列表判断空与满的情况.png" alt="1" style="zoom:80%;" />
+<img src="Picture/2-20解决循环列表判断空与满的情况.png" alt="1" style="zoom:80%;" />
 
 ##### 4.1.2 队列的实现
 
@@ -609,7 +613,7 @@ void printf_queue(queue* list)
 
 #### 4.2 双向队列
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\2-21双向队列.png" style="zoom:67%;" />
+<img src="Picture/2-21双向队列.png" style="zoom:50%;" />
 
 不允许随便进随便出，一共只有四种情况，左进左出，右进右出，左进右出，右进左出；
 
@@ -617,17 +621,17 @@ void printf_queue(queue* list)
 
 从底层逻辑来说，<u>**用链表表示双向队列**</u>更好
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\2-22双向队列的实现.png" style="zoom:80%;" />
+<img src="Picture/2-22双向队列的实现.png" style="zoom:65%;" />
 
 以上图为规定（右插 -> 移动左指针[尾插]）
 
 此时，左插左删只需要移动右指针即可，其原理为栈（先进后出，后进先出）
 
-​		   左插右删，插入时移动右指针，删除时移动左指针，其原理为队列（先进先出，后进后出）
+​	    左插右删，插入时移动右指针，删除时移动左指针，其原理为队列（先进先出，后进后出）
 
-​		   右插右删只需要移动左指针即可，其原理为栈（先进后出，后进先出）
+​	    右插右删只需要移动左指针即可，其原理为栈（先进后出，后进先出）
 
-​		   右插左删，插入时移动左指针，删除时移动右指针，其原理为队列（先进先出，后进后出）
+​	    右插左删，插入时移动左指针，删除时移动右指针，其原理为队列（先进先出，后进后出）
 
 ##### 4.2.1 用链表表示双向队列
 
@@ -932,13 +936,13 @@ Q：如何表示一棵树
 
 存储当前的父结点是什么（只需要指向父结点就好）
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\3-1 树的双亲表示法.png" style="zoom:80%;" />
+<img src="Picture/3-1 树的双亲表示法.png" style="zoom:65%;" />
 
 ##### 1.2.2 孩子表达法
 
 存储当前的子结点是什么
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\3-2 树的孩子表示法.png" style="zoom:80%;" />
+<img src="Picture/3-2 树的孩子表示法.png" style="zoom:65%;" />
 
 用数组和链表一起去表达，如果只用数组会非常浪费空间
 
@@ -946,7 +950,7 @@ Q：如何表示一棵树
 
 存储孩子结点以及其兄弟结点的数据   
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\3-3 树的孩子兄弟表示法.png" style="zoom:80%;" />
+<img src="Picture/3-3 树的孩子兄弟表示法.png" style="zoom:65%;" />
 
 因为D、E都是B的孩子，而B的孩子指针只有一个，所以表示E时，就用D的兄弟指针指向E，同理B、C也是
 
@@ -1261,9 +1265,9 @@ int add(int n, int sum)
 
 #### 2.4 斐波那契数列(Fibonacci)
 
-F(n) = f(n - 2) + f(n - 1)	f(0) = 0, f(1) = 1
+$F(n)=f(n-2)+f(n-1)$	$f(0)=0$,  $f(1)=1$
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\3-4 Fibonacci.png" style="zoom:70%;" />
+<img src="Picture/3-4 Fibonacci.png" style="zoom:60%;" />
 
 通过图示的调用过程，发现其本质就是一颗二叉树，所以对树的遍历就是用递归方法去遍历（递归树）
 
@@ -1281,35 +1285,35 @@ F(n) = f(n - 2) + f(n - 1)	f(0) = 0, f(1) = 1
 
 在一棵二叉树中，除了叶子结点之外，只剩下度为2和度为1的结点
 
-树的结点总数 T = n0 + n1+ n2
+树的结点总数 $T=n_0+n_1+n_2$
 
-一棵树的连线数是T - 1
+一棵树的连线数是$T-1$
 
-n0 + n1 + n2 - 1 = 2*n2 + n1
+$n_0+n_1+n_2-1=2*n_2+n_1$
 
-n0 = n2 +1
+$n_0=n_2+1$
 
-具有n个结点的完全二叉树，其深度为log2n向下取整 + 1
+具有$n$个结点的完全二叉树，其深度为$log_2n$向下取整 + 1
 
 #### 3.2 空集合（空树）
 
-![](E:\Typora\Typora Note\Computer\Data Structure\Picture\3-5 空树.png)
+<img src="Picture/3-5 空树.png" style="zoom:67%;" />
 
 #### 3.3 只有一个根的树
 
-![](E:\Typora\Typora Note\Computer\Data Structure\Picture\3-6 只有一个根的树.png)
+<img src="Picture/3-6 只有一个根的树.png" style="zoom:67%;" />
 
 #### 3.4 根+左子树
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\3-7 根+左子树.png" style="zoom:80%;" />
+<img src="Picture/3-7 根+左子树.png" style="zoom:67%;" />
 
 #### 3.5 根+右子树
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\3-8 根+右子树.png" style="zoom:80%;" />
+<img src="Picture/3-8 根+右子树.png" style="zoom:67%;" />
 
 #### 3.6 二叉树
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\3-9 二叉树.png" style="zoom:80%;" />
+<img src="Picture/3-9 二叉树.png" style="zoom:67%;" />
 
 #### 3.7 特殊的树
 
@@ -1317,19 +1321,19 @@ n0 = n2 +1
 
 其结点的度要不是2，要不是0，且其叶子结点全部都在同一层
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\3-10 满二叉树.png" style="zoom:67%;" />
+<img src="Picture/3-10 满二叉树.png" style="zoom:67%;" />
 
 ##### 3.7.2 完全二叉树
 
 结点的度不限，但顺序必须是从上到下，从左到右
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\3-11 完全二叉树的图例.png" style="zoom:80%;" />
+<img src="Picture/3-11 完全二叉树的图例.png" style="zoom:67%;" />
 
 ##### 3.7.3 扩展二叉树
 
 为了补全一棵树使其为二叉树，从逻辑上将NULL指针也算进去的树被叫做扩展二叉树
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\3-14 扩展二叉树.png" style="zoom:80%;" />
+<img src="Picture/3-14 扩展二叉树.png" style="zoom:67%;" />
 
 
 
@@ -1349,7 +1353,7 @@ n0 = n2 +1
 
 根据遍历的顺序不同而区分为前序、中序、后序、层序遍历
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\3-12 遍历.png" style="zoom:70%;" />
+<img src="Picture/3-12 遍历.png" style="zoom:67%;" />
 
 ##### 3.9.1 前序遍历
 
@@ -1375,7 +1379,7 @@ n0 = n2 +1
 
 输出语句的位置不同就能实现前、中、后序遍历的输出，当输出语句在最前时，则为前序；在中间时，为后序；在最后时，为后序。(图示为中序遍历)
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\3-13 遍历的伪代码.png" style="zoom:67%;" />
+<img src="Picture/3-13 遍历的伪代码.png" style="zoom:67%;" />
 
 ##### 3.9.5  层序遍历的部分代码实现
 
@@ -1413,7 +1417,7 @@ void levelOrder(Node* root)
 
 2、如果右子树不空，右子树的结点均大于根结点
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\3-15 排序二叉树.png" style="zoom:80%;" />
+<img src="Picture/3-15 排序二叉树.png" style="zoom:67%;" />
 
 当按照顺序输入由小到大的时候，构建二叉排序树会完全的退化成一个链表，会形成斜树，导致查询的效率很低，树的高度决定其效率
 
@@ -1679,37 +1683,37 @@ void show(Node* root)
 
 如下图所示操作为左旋（左子树低，右子树高）
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\3-16 失衡的二叉树(左旋).png" style="zoom:80%;" />
+<img src="Picture/3-16 失衡的二叉树(左旋).png" style="zoom:67%;" />
 
 Step I. 将失衡结点的右孩子代替失衡结点的位置(图中的失衡结点为55，则表示将55的位置让给77)
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\3-16-1 step I.png" style="zoom:80%;" />
+<img src="Picture/3-16-1 step I.png" style="zoom:67%;" />
 
 Step II. 右孩子的左子树变成失衡结点的右子树(将66变为失衡结点55的右子树)
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\3-16-2 step II.png" style="zoom:80%;" />
+<img src="Picture/3-16-2 step II.png" style="zoom:67%;" />
 
 Step III. 失衡结点本身变成右孩子的左子树(55变为77的左子树)
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\3-16-3 step III.png" style="zoom:80%;" />
+<img src="Picture/3-16-3 step III.png" style="zoom:67%;" />
 
 ##### 3.11.2 右旋
 
 如下图所示操作为右旋（左子树高，右子树低）
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\3-17 失衡的二叉树(右旋).png" style="zoom:80%;" />
+<img src="Picture/3-17 失衡的二叉树(右旋).png" style="zoom:67%;" />
 
 Step I. 将失衡结点的左孩子代替失衡结点的位置(图中的失衡结点为5，则表示将5的位置让给3)
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\3-17-1 step I.png" style="zoom:80%;" />
+<img src="Picture/3-17-1 step I.png" style="zoom:67%;" />
 
 Step II. 左孩子的右子树变成失衡结点的左子树(将4变为失衡结点5的左子树)
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\3-17-2 step II.png" style="zoom:80%;" />
+<img src="Picture/3-17-2 step II.png" style="zoom:67%;" />
 
 Step III. 失衡结点本身变成左孩子的右子树(5变为3的右子树)
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\3-17-3 step III.png" style="zoom:80%;" />
+<img src="Picture/3-17-3 step III.png" style="zoom:60%;" />
 
 ##### 3.11.3 插入
 
@@ -1725,17 +1729,17 @@ Step III. 失衡结点本身变成左孩子的右子树(5变为3的右子树)
 
 先对左孩子进行左旋(3.11.1)，然后再对失衡结点进行右旋
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\3-18 插入到左孩子的右子树.png" style="zoom:80%;" />
+<img src="Picture/3-18 插入到左孩子的右子树.png" style="zoom:67%;" />
 
 Part I. 先对左孩子进行左旋(将3进行左旋操作) <降高>
 
 step I. 将原结点的右孩子代替原结点(将3的位置让给4)
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\3-18-1 step I.png" style="zoom:80%;" />
+<img src="Picture/3-18-1 step I.png" style="zoom:67%;" />
 
 step II. 原结点变为替换位置后的左子树，将替换位置的结点变为原结点的父结点的左子树(将3变为4的左子树，将4变为6的左子树)
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\3-18-2 step II.png" style="zoom:80%;" />
+<img src="Picture/3-18-2 step II.png" style="zoom:67%;" />
 
 Part II. 对失衡结点6进行右旋操作(略，同3.11.2 右旋)
 
@@ -1745,17 +1749,17 @@ Part II. 对失衡结点6进行右旋操作(略，同3.11.2 右旋)
 
 先对右孩子进行右旋(3.11.2)，然后再对失衡结点进行左旋
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\3-19 插入到右孩子的左子树.png" style="zoom:80%;" />
+<img src="Picture/3-19 插入到右孩子的左子树.png" style="zoom:67%;" />
 
 Part I. 先对右孩子进行右旋(将6进行右旋操作) <降高>
 
 Step I. 将原结点的左孩子代替原结点(将6的位置让给5)
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\3-19-1 step I.png" style="zoom:80%;" />
+<img src="Picture/3-19-1 step I.png" style="zoom:67%;" />
 
 Step II. 原结点变为替换位置后的右子树，将替换位置的结点变为原结点的父结点的右子树(将6变为5的右子树，将5变为3的右子树)
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\3-19-2 step II.png" style="zoom:80%;" />
+<img src="Picture/3-19-2 step II.png" style="zoom:67%;" />
 
 Part II. 对失衡结点3进行左旋操作(略，同3.11.1 左旋)
 
@@ -2051,11 +2055,11 @@ avlnode* minimun_node(avltree tree)
 
 
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\3-20 右旋操作示意图(k2).png" style="zoom:75%;" />
+<img src="Picture/3-20 右旋操作示意图(k2).png" style="zoom:60%;" />
 
 图3.11.5-1 对73-82行代码起注释作用
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\3-21 左旋操作示意图(k3).png" style="zoom:75%;" />
+<img src="Picture/3-21 左旋操作示意图(k3).png" style="zoom:60%;" />
 
 图3.11.5-2 对84-93行代码起注释作用
 
@@ -2067,7 +2071,7 @@ avlnode* minimun_node(avltree tree)
 
 ##### 3.12.1 基本概念
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\3-22 哈夫曼树概念示意图.png" style="zoom:67%;" />
+<img src="Picture/3-22 哈夫曼树概念示意图.png" style="zoom:60%;" />
 
 1、结点的路径长度：连线数
 
@@ -2085,21 +2089,21 @@ avlnode* minimun_node(avltree tree)
 
 ##### 3.12.2 构建过程
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\3-23 哈夫曼树的构造-1.png" style="zoom:70%;" />
+<img src="Picture/3-23 哈夫曼树的构造-1.png" style="zoom:60%;" />
 
 如上图所示，哈夫曼树的构造过程就是将两个权重最小的树构建成一个新的二叉树，其新树的根结点则为两个子树的权值的和
 
 第一步：将C和D进行构建，形成的根结点值为6，新根结点继续放在待查找序列当中
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\3-24 哈夫曼树的构造-2.png" style="zoom:70%;" />
+<img src="Picture/3-24 哈夫曼树的构造-2.png" style="zoom:60%;" />
 
 第二步：将6和B进行构建，形成的根结点的值为11，新根结点继续放在待查找序列当中
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\3-25 哈夫曼树的构建-3.png" style="zoom:70%;" />
+<img src="Picture/3-25 哈夫曼树的构建-3.png" style="zoom:60%;" />
 
 第三步：将11和A进行构建，形成的根结点的值为18
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\3-26 哈夫曼树的构建-4.png" style="zoom:80%;" />
+<img src="Picture/3-26 哈夫曼树的构建-4.png" style="zoom:60%;" />
 
 通过构建过程发现，我们一开始所需要查询的结点(A、B、C、D)都处在叶子结点上，而新增加的点均在过程中
 
@@ -2107,7 +2111,7 @@ avlnode* minimun_node(avltree tree)
 
 ##### 3.12.3 定长编码
 
-ASCLL码、Unicode码，这两种编码都比较浪费空间，而且Unicode浪费的是ASCLL的两倍，对于纯文本消息来说非常浪费空间，如：abbcddeeefgg，通过定长编码均能表示，但重复的字符都占8位
+ASCII码、Unicode码，这两种编码都比较浪费空间，而且Unicode浪费的是ASCII的两倍，对于纯文本消息来说非常浪费空间，如：abbcddeeefgg，通过定长编码均能表示，但重复的字符都占8位
 
 
 
@@ -2131,7 +2135,7 @@ ASCLL码、Unicode码，这两种编码都比较浪费空间，而且Unicode浪�
 
 所以哈夫曼树就是构造这么一种前缀码，左子树上的路径标记为0，右子树的路径标记为1；
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\3-27 哈夫曼树的应用.png" style="zoom:80%;" />
+<img src="Picture/3-27 哈夫曼树的应用.png" style="zoom:60%;" />
 
 这里再将叶子结点的权重表示为字符所出现的频率，会发现路径越短的就是出现频率越高的字符，同时其编码就越短，反之亦然，这种就是哈夫曼树的编码
 
@@ -2320,7 +2324,7 @@ int main()
 
 ##### 3.13.1 逻辑
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\3-28 线索二叉树.png" style="zoom:67%;" />
+<img src="Picture/3-28 线索二叉树.png" style="zoom:60%;" />
 
 利用了空链域，将图示所有的NULL指针加以利用，因为它们本来就被malloc(C语言)或new(Java)出来了，空着也是一部分空间
 
@@ -2328,7 +2332,7 @@ int main()
 
 现如图所示进行中序遍历，结果为DBEAC，将空链域依次利用，如下图（虚线代表空链域指向）
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\3-29 利用了空链域的线索二叉树.png" style="zoom:67%;" />
+<img src="Picture/3-29 利用了空链域的线索二叉树.png" style="zoom:60%;" />
 
 问题是一旦一颗二叉树变为了线索二叉树，那么怎么样区分哪一个是真实的树杈(实线所示)，哪一个是线索(虚线所示)
 
@@ -2336,9 +2340,9 @@ int main()
 
 带头结点的线索二叉树，就是将线索化后的两个空指针指回头结点，如下图
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\3-30 带头结点的线索二叉树.png" style="zoom:67%;" />
+<img src="Picture/3-30 带头结点的线索二叉树.png" style="zoom:60%;" />
 
-线索二叉树的**核心目的**是<u>快速的找到前驱和后继</u>，当数据量很大时，这个优点才会明显，其中一个场景是路由器——转发分组
+线索二叉树的**核心目的**是<u>快速的找到前驱和后继</u>，当数据量很大时，这个优点才会明显，其中一个应用场景是路由器——转发分组
 
 
 
@@ -2389,19 +2393,19 @@ void inOrderThreadTree(Node* node)
 
 假设现在有1,2,3,4 4个数据需要合并，且每一个数据单独为一个森林(指向自己)
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\3-31 初始状态.png" style="zoom:50%;" />
+<img src="Picture/3-31 初始状态.png" style="zoom:50%;" />
 
 依次按照4与3、3与2、2与1的顺序进行两两合并，且依据集合需要指针朝上，便有了下图奇怪的形状
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\3-32 奇怪的状态.png" style="zoom:50%;" />
+<img src="Picture/3-32 奇怪的状态.png" style="zoom:50%;" />
 
 但并查集真正需要的是路径压缩，其真正的示意图如下图所示
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\3-33 真实的并查集状态.png" style="zoom:50%;" />
+<img src="Picture/3-33 真实的并查集状态.png" style="zoom:50%;" />
 
 如果遇到两个集合需要做并查集操作，如下图
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\3-34 两个集合的并查集.png" style="zoom:50%;" />
+<img src="Picture/3-34 两个集合的并查集.png" style="zoom:50%;" />
 
 此时发现4的代表可能成为第二颗树的5，就用数组来做，如果用链表就会导致指针混乱，找不到原来的树
 
@@ -2539,7 +2543,7 @@ e1 = (V1, V2)(无向) 或者<V1, V2>(有向)
 
 如果不存在顶点到其自身的边，且同一条边不会重复出现（无向图的任何一个点都可以是结点）与结点数量无关(示例图是有向图)
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-1 简单图的示例.png" style="zoom:50%;" />
+<img src="Picture/4-1 简单图的示例.png" style="zoom:50%;" />
 
 
 
@@ -2553,9 +2557,9 @@ e1 = (V1, V2)(无向) 或者<V1, V2>(有向)
 
 图中的任意两个顶点都存在一条边
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-2 完全图.png" style="zoom:67%;" />
+<img src="Picture/4-2 完全图.png" style="zoom:67%;" />
 
-完全有向图的边数：$n(n-1)$    完全无向图的边数：$n(n-1)/2$   (其中n代表顶点个数)
+完全有向图的边数：$n(n-1)$    完全无向图的边数：$n(n-1)\over2$   (其中n代表顶点个数)
 
 
 
@@ -2567,7 +2571,7 @@ e1 = (V1, V2)(无向) 或者<V1, V2>(有向)
 
 ##### 4.2.5 端点和邻接点
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-3 端点和邻接点.png" style="zoom:50%;" />
+<img src="Picture/4-3 端点和邻接点.png" style="zoom:50%;" />
 
 如上图可称，A是B的端点，B也是A的端点，A、B互为邻接点(注：可以把端点看做线的关系，邻接点就是点之间的关系)
 
@@ -2591,7 +2595,7 @@ e1 = (V1, V2)(无向) 或者<V1, V2>(有向)
 
 ##### 4.2.8 路径和路径长度
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-4 路径示意.png" style="zoom:67%;" />
+<img src="Picture/4-4 路径示意.png" style="zoom:55%;" />
 
 路径：从某一个顶点到另一个顶点的顶点序列
 
@@ -2629,7 +2633,7 @@ e1 = (V1, V2)(无向) 或者<V1, V2>(有向)
 
 连通图：任意两个顶点都有路径就被称为连通图
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-5 连通图示意.png" style="zoom:50%;" />
+<img src="Picture/4-5 连通图示意.png" style="zoom:50%;" />
 
 连通分量：在无向图中，其极大连通子图被称为连通分量
 
@@ -2639,13 +2643,13 @@ e1 = (V1, V2)(无向) 或者<V1, V2>(有向)
 
 在有向图中，要连通必须要两条线
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-6 有向图的连通.png" style="zoom:56%;" />
+<img src="Picture/4-6 有向图的连通.png" style="zoom:56%;" />
 
 上图只能被称为从1到2被连通，不能说成2到1连通；强连通图就是两个点之间均有路径(如下图)
 
 强连通分量：在有向图中，其极大强连通子图被称为强连通分量
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-7 有向图的强连通.png" style="zoom:65%;" />
+<img src="Picture/4-7 有向图的强连通.png" style="zoom:65%;" />
 
 
 
@@ -2661,13 +2665,13 @@ e1 = (V1, V2)(无向) 或者<V1, V2>(有向)
 
 ##### 4.3.1 邻接矩阵
 
-![](E:\Typora\Typora Note\Computer\Data Structure\Picture\4-8 邻接矩阵.png)
+<img src="Picture/4-8 邻接矩阵.png" style="zoom:55%;" />
 
 可以发现，其矩阵为对称矩阵；根据二维数组可知，能判断：1、两个顶点之间的边是否存在；2、判断顶点的度(如：V1的度 = 1+0+1+0 = 2)
 
 对于一个有向图，其二维数组就可以代表出度和入度，从行看为入度、从列看为出度；边一般是带有权值的，一般也把带权值的图也叫网。
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-8.1 有向邻接矩阵.png" style="zoom:60%;" />
+<img src="Picture/4-8.1 有向邻接矩阵.png" style="zoom:60%;" />
 
 在带权图中，我们一般把'1'(即有边)的位置改为其权值大小，把'0'(即无边)的位置赋予无穷大(指在真实数据当中不存在的值，如：-1，int_max等等等)
 
@@ -2721,7 +2725,7 @@ void CreateGraph(AdjMartix* G) {
 
 邻接表的表示是数组+链表的形式，数组用来表示顶点集，边集用链表来表示，这里展示无向邻接表。
 
-![](E:\Typora\Typora Note\Computer\Data Structure\Picture\4-9 邻接表.png)
+<img src="Picture/4-9 邻接表.png" style="zoom:55%;" />
 
 
 
@@ -2790,19 +2794,19 @@ void CreatALGraph(GraphadjList* G)
 
 有向邻接表的边也被称为弧，带箭头的结点叫做弧尾，不带箭头的结点叫做弧头。
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-10 逆邻接表.png" style="zoom:67%;" />
+<img src="Picture/4-10 逆邻接表.png" style="zoom:55%;" />
 
 如果是带权值的逆邻接表，就需要把链表增加一条属性，也就是代表结点的结构体中增加一个权值的属性即可
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-11 带权值的逆邻接表的结构.png" style="zoom:67%;" />
+<img src="Picture/4-11 带权值的逆邻接表的结构.png" style="zoom:67%;" />
 
 
 
 ##### 4.3.4 十字链表
 
-把邻接表和逆链接表的组合就是十字链表。
+把邻接表和逆链接表组合起来就是十字链表。
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-12 十字链表.png" alt="1" style="zoom:100%;" />
+<img src="Picture/4-12 十字链表.png" alt="" style="zoom:100%;" />
 
 ###### 十字链表的逻辑实现
 
@@ -2864,7 +2868,7 @@ void CreateDG(OLGraph* G)
 
 基于邻接表的无向图，对边进行操作时非常麻烦；邻接多重表就是在无向图的基础上对边进行频繁操作，它只改造了十字链表中的边集合
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-13 邻接多重表 .png" style="zoom:70%;" />
+<img src="Picture/4-13 邻接多重表 .png" style="zoom:70%;" />
 
 ###### 邻接多重表的逻辑实现
 
@@ -2924,7 +2928,7 @@ void create(Graph* G)
 
 结构体数组：包含开始结点、结束结点和权值（非必要）；两个一维数组，一个表示顶点，一个表示边
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-14 边集数组.png" style="zoom:50%;" />
+<img src="Picture/4-14 边集数组.png" style="zoom:50%;" />
 
 
 
@@ -2934,7 +2938,7 @@ void create(Graph* G)
 
 就类似于树的先序、中序、后序遍历，归结于栈，递归；有两个原则：左手原则、右手原则
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-15 一个再普通不过的图.png" style="zoom:50%;" />
+<img src="Picture/4-15 一个再普通不过的图.png" style="zoom:50%;" />
 
 以上图、右手原则(原则任选一个即可)以及A开始(图没有所谓的起点，任意一点开始均可)为示例进行递归搜索操作
 
@@ -3244,11 +3248,11 @@ void BFSTraverse(MGraph G)
 
 ##### 4.5.1 克鲁斯卡尔 Kruskal（贪心/贪婪）
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-16-1 克鲁斯卡尔算法.png" alt="1" style="zoom:70%;" />
+<img src="Picture/4-16-1 克鲁斯卡尔算法.png" alt="1" style="zoom:70%;" />
 
 每添加一条边X——Y，判断X和Y的终点是否一致，且顶点的终点就是连通的最大顶点，按照权值最小的原则可以算出下列图及数组，类似并查集
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-16-2 克鲁斯卡尔算法.png" style="zoom:67%;" />
+<img src="Picture/4-16-2 克鲁斯卡尔算法.png" style="zoom:67%;" />
 
 贪心算法：总是做出在当前看来最好的那个选择，但它永远都不是从整体考虑的，也就是局部最优，从局部最优推演到整体最优，所以贪心有一定的限制性，但是可以通过贪心寻找一个近似解。一般来说，贪心是一个自顶向下的方式，而动态规划是自底向上的方式。不适合数据量很大的时候，是一种暴力解法。
 
@@ -3427,11 +3431,11 @@ int main()
 
 以随便一个点为起点（图没有起点，所有点都可以是起点），选择周围权值最小的边，然后把所对应的顶点一起找出，将这两点周围权值最小的边找出，以此类推，如4.5.1例图为例
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-16-1 克鲁斯卡尔算法.png" alt="1" style="zoom:70%;" />
+<img src="Picture/4-16-1 克鲁斯卡尔算法.png" alt="1" style="zoom:70%;" />
 
 根据普里姆算法可得出最小生成树为
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-17 普里姆算法.png" style="zoom:80%;" />
+<img src="Picture/4-17 普里姆算法.png" style="zoom:80%;" />
 
 ```c
 #include "stdio.h"    
@@ -3732,21 +3736,21 @@ int main()
 
 先把V0（源点）周围的路径权值记录一遍，要注意，在初始化权值的时候一定是inf（无穷大），若初始化为0则与求最短路径冲突，是一种不合理的行为。将V0相邻的最小权值的点纳入路径中，并在final数组里标为1
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-18 迪杰斯特拉算法step 1.png" style="zoom:67%;" />
+<img src="Picture/4-18 迪杰斯特拉算法step 1.png" style="zoom:67%;" />
 
 然后开始计算拐点，此时V0->V1->V2的权值为1+3=4，比原先的记录要小，更新表中数据，以下同理，如图所示过程。
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-18 迪杰斯特拉算法step 2.png" style="zoom:67%;" />
+<img src="Picture/4-18 迪杰斯特拉算法step 2.png" style="zoom:67%;" />
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-18 迪杰斯特拉算法step 3.png" style="zoom:67%;" />
+<img src="Picture/4-18 迪杰斯特拉算法step 3.png" style="zoom:67%;" />
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-18 迪杰斯特拉算法step 5.png" style="zoom:67%;" />
+<img src="Picture/4-18 迪杰斯特拉算法step 5.png" style="zoom:67%;" />
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-18 迪杰斯特拉算法step 6.png" style="zoom:67%;" />
+<img src="Picture/4-18 迪杰斯特拉算法step 6.png" style="zoom:67%;" />
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-18 迪杰斯特拉算法step 7.png" style="zoom:67%;" />
+<img src="Picture/4-18 迪杰斯特拉算法step 7.png" style="zoom:67%;" />
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-18 迪杰斯特拉算法step 8.png" style="zoom:67%;" />
+<img src="Picture/4-18 迪杰斯特拉算法step 8.png" style="zoom:67%;" />
 
 经过以上步骤后，通过观察数组P得到最短路径，如现在需要找到到V6的最短路径，为6<-3<-4<-2<-1<-0（反推得出）
 
@@ -3892,17 +3896,17 @@ int main() {
 
 ##### 4.7.2 弗洛伊德(*Floyd*)算法
 
-为了计算任意结点之间的最短路径，在Dijkstra算法上扩展为一个n*n的数组，基于数学的角度做归纳总结，得出公式（下图为初始状态）
+为了计算任意结点之间的最短路径，在Dijkstra算法上扩展为一个$n×n$的数组，基于数学的角度做归纳总结，得出公式（下图为初始状态）
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-19-1 弗洛伊德算法初始状态.png" style="zoom:50%;" />
+<img src="Picture/4-19-1 弗洛伊德算法初始状态.png" style="zoom:50%;" />
 
 D^0^[i]\[j]=min(\[D^-1^\[i][j],[D^-1^\[i][mid]+D^-1^[mid]\[j]])\(注：^0^是指新状态、^-1^是上一个状态)，是在迪杰斯特拉算法的基础上多做几个辅助向量
 
 示例初始状态如图所示：
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-20 示例.png" alt="1" style="zoom:50%;" />
+<img src="Picture/4-20 示例.png" alt="1" style="zoom:50%;" />
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-21 floyd初始状态.png" alt="4-21 floyd初始状态" style="zoom:50%;" />
+<img src="Picture/4-21 floyd初始状态.png" alt="4-21 floyd初始状态" style="zoom:50%;" />
 
 注：还应该有一个辅助数组来记录最短路径（如同Dijkstra算法中的final列）
 
@@ -3910,81 +3914,81 @@ D^0^[i]\[j]=min(\[D^-1^\[i][j],[D^-1^\[i][mid]+D^-1^[mid]\[j]])\(注：^0^是指
 
 step 1 如图所示，以V1为拐点，根据上述公式可得D^0^[0]\[2]=min(\[D^-1^\[0][2],[D^-1^\[0][1]+D^-1^[1]\[2]])(注：此处只举例一种)更新表中数据，将表转换为从V0经过V1到能到达的其余点(inf无法达到)
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-21-1 floyd step 1.png" style="zoom:50%;" />
+<img src="Picture/4-21-1 floyd step 1.png" style="zoom:50%;" />
 
 更新如下，继续上述操作
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-21-2 floyd step 2.png" style="zoom:50%;" />
+<img src="Picture/4-21-2 floyd step 2.png" style="zoom:50%;" />
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-21-3 floyd step 3.png" style="zoom:50%;" />
+<img src="Picture/4-21-3 floyd step 3.png" style="zoom:50%;" />
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-21-4 floyd step 4.png" style="zoom:50%;" />
+<img src="Picture/4-21-4 floyd step 4.png" style="zoom:50%;" />
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-12-5 floyd step 5.png" style="zoom:50%;" />
+<img src="Picture/4-21-5 floyd step 5.png" alt="" style="zoom:50%;" />
 
 step 2 以V2为拐点，重复上述操作
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-21-6 floyd step 6.png" style="zoom:50%;" />
+<img src="Picture/4-21-6 floyd step 6.png" style="zoom:50%;" />
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-21-7 floyd step 7.png" style="zoom:50%;" />
+<img src="Picture/4-21-7 floyd step 7.png" style="zoom:50%;" />
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-21-8 floyd step 8.png" style="zoom:50%;" />
+<img src="Picture/4-21-8 floyd step 8.png" style="zoom:50%;" />
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-21-9 floyd step 9.png" style="zoom:50%;" />
+<img src="Picture/4-21-9 floyd step 9.png" style="zoom:50%;" />
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-21-10 floyd step 10.png" style="zoom:50%;" />
+<img src="Picture/4-21-10 floyd step 10.png" style="zoom:50%;" />
 
 
 
 step 3 以V3为拐点
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-21-11 floyd step 11.png" style="zoom:50%;" />
+<img src="Picture/4-21-11 floyd step 11.png" style="zoom:50%;" />
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-21-12 floyd step 12.png" style="zoom:50%;" />
+<img src="Picture/4-21-12 floyd step 12.png" style="zoom:50%;" />
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-21-13 floyd step 13.png" style="zoom:50%;" />
+<img src="Picture/4-21-13 floyd step 13.png" style="zoom:50%;" />
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-21-14 floyd step 14.png" style="zoom:50%;" />
+<img src="Picture/4-21-14 floyd step 14.png" style="zoom:50%;" />
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-21-15 floyd step 15.png" style="zoom:50%;" />
+<img src="Picture/4-21-15 floyd step 15.png" style="zoom:50%;" />
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-21-16 floyd step 16.png" style="zoom:50%;" />
+<img src="Picture/4-21-16 floyd step 16.png" style="zoom:50%;" />
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-21-17 floyd step 17.png" style="zoom:50%;" />
+<img src="Picture/4-21-17 floyd step 17.png" style="zoom:50%;" />
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-21-18 floyd step 18.png" style="zoom:50%;" />
+<img src="Picture/4-21-18 floyd step 18.png" style="zoom:50%;" />
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-21-19 floyd step 19.png" style="zoom:50%;" />
+<img src="Picture/4-21-19 floyd step 19.png" style="zoom:50%;" />
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-21-20 floyd step 20.png" style="zoom:50%;" />
+<img src="Picture/4-21-20 floyd step 20.png" style="zoom:50%;" />
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-21-21 floyd step 21.png" style="zoom:50%;" />
+<img src="Picture/4-21-21 floyd step 21.png" style="zoom:50%;" />
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-21-22 floyd step 22.png" style="zoom:50%;" />
+<img src="Picture/4-21-22 floyd step 22.png" style="zoom:50%;" />
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-21-23 floyd step 23.png" style="zoom:50%;" />
+<img src="Picture/4-21-23 floyd step 23.png" style="zoom:50%;" />
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-21-24 floyd step 24.png" style="zoom:50%;" />
+<img src="Picture/4-21-24 floyd step 24.png" style="zoom:50%;" />
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-21-25 floyd step 25.png" style="zoom:50%;" />
+<img src="Picture/4-21-25 floyd step 25.png" style="zoom:50%;" />
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-21-26 floyd step 26.png" style="zoom:50%;" />
+<img src="Picture/4-21-26 floyd step 26.png" style="zoom:50%;" />
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-21-27 floyd step 27.png" style="zoom:50%;" />
+<img src="Picture/4-21-27 floyd step 27.png" style="zoom:50%;" />
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-21-28 floyd step 28.png" style="zoom:50%;" />
+<img src="Picture/4-21-28 floyd step 28.png" style="zoom:50%;" />
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-21-29 floyd step 29.png" style="zoom:50%;" />
+<img src="Picture/4-21-29 floyd step 29.png" style="zoom:50%;" />
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-21-30 floyd step 30.png" style="zoom:50%;" />
+<img src="Picture/4-21-30 floyd step 30.png" style="zoom:50%;" />
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-21-31 floyd step 31.png" style="zoom:50%;" />
+<img src="Picture/4-21-31 floyd step 31.png" style="zoom:50%;" />
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-21-32 floyd step 32.png" style="zoom:50%;" />
+<img src="Picture/4-21-32 floyd step 32.png" style="zoom:50%;" />
 
 最终结果如下：
 
-<img src="E:\Typora\Typora Note\Computer\Data Structure\Picture\4-21-30 floyd final.png" style="zoom:50%;" />
+<img src="Picture/4-21-30 floyd final.png" style="zoom:50%;" />
 
 对于归纳、总结、推演的思想被叫做动态规划。
 
