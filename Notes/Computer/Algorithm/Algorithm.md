@@ -1779,13 +1779,57 @@ https://leetcode.cn/problems/maximum-subarray/
 
 ## Chapter 10 链表
 
+### 206. 反转链表
 
+https://leetcode.cn/problems/reverse-linked-list/
 
+给你单链表的头节点 `head` ，请你反转链表，并返回反转后的链表。
 
+**示例 1：**
 
+<img src="https://assets.leetcode.com/uploads/2021/02/19/rev1ex1.jpg" style="zoom:50%;" />
 
+```
+输入：head = [1,2,3,4,5]
+输出：[5,4,3,2,1]
+```
 
+**示例 2：**
 
+<img src="https://assets.leetcode.com/uploads/2021/02/19/rev1ex2.jpg" style="zoom:50%;" />
+
+```
+输入：head = [1,2]
+输出：[2,1]
+```
+
+**示例 3：**
+
+```
+输入：head = []
+输出：[]
+```
+
+**提示：**
+
+- 链表中节点的数目范围是 `[0, 5000]`
+- `-5000 <= Node.val <= 5000`
+
+**思路：**
+
+1. 头插法的应用：头插法建立的链表是**倒序**的！
+   从第一个结点开始，挨个摘下每一个结点，摘下后用头插法建立新的链表
+2. 双指针法：
+   定义两个指针：`pre`和`cur`，`pre`在前`cur`在后。
+   每次让`pre`的`next`指向`cur`，实现一次局部反转。
+   局部反转完成之后，`pre`和`cur`同时往前移动一个位置。
+   循环上述过程，直至`pre`到达链表尾部。（在循环过程中，需要记录`pre->next`）
+
+思路解：
+
+[206-1.cpp](source codes\Part X 链表\206-1.cpp)
+
+[206-2.cpp](source codes\Part X 链表\206-2.cpp)
 
 
 
