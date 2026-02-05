@@ -1831,6 +1831,83 @@ https://leetcode.cn/problems/reverse-linked-list/
 
 [206-2.cpp](source codes\Part X 链表\206-2.cpp)
 
+### LCR 140. 训练计划 II
+
+https://leetcode.cn/problems/lian-biao-zhong-dao-shu-di-kge-jie-dian-lcof/
+
+给定一个头结点（首元结点，并非空的指针结点）为 `head` 的链表用于记录一系列核心肌群训练项目编号，请查找并返回倒数第 `cnt` 个训练项目编号。
+
+**示例 1：**
+
+```
+输入：head = [2,4,7,8], cnt = 1
+输出：8
+```
+
+**数据范围：**
+
+- `1 <= head.length <= 100`
+- `0 <= head[i] <= 100`
+- `1 <= cnt <= head.length`
+
+**思路：**
+
+如果要先读取链表的长度再求解，就需要两编循环，这里提出一个只需要一遍循环的方法，如下图所示，使用两个指针`slow`和`fast`，起始这两个指针均在`head`所指的结点上，假设我们要查倒数第二个，当`fast`移到最后一个结点时，为了保证`slow`能够到倒数第二个数据上，就使其与`fast`始终保持一格的间距即可。
+
+<img src="Pictures/Linklist.png" style="zoom:50%;" />
+
+思路解：
+
+[LCR 140.cpp](source codes\Part X 链表\LCR 140.cpp)
+
+### 142. 环形链表 II
+
+https://leetcode.cn/problems/linked-list-cycle-ii/
+
+给定一个链表的头节点  `head` ，返回链表开始入环的第一个节点。 *如果链表无环，则返回 `null`。*
+
+如果链表中有某个节点，可以通过连续跟踪 `next` 指针再次到达，则链表中存在环。 为了表示给定链表中的环，评测系统内部使用整数 `pos` 来表示链表尾连接到链表中的位置（**索引从 0 开始**）。如果 `pos` 是 `-1`，则在该链表中没有环。**注意：`pos` 不作为参数进行传递**，仅仅是为了标识链表的实际情况。
+
+**不允许修改** 链表。
+
+**示例 1：**
+
+<img src="https://assets.leetcode.com/uploads/2018/12/07/circularlinkedlist.png" style="zoom:67%;" />
+
+```
+输入：head = [3,2,0,-4], pos = 1
+输出：返回索引为 1 的链表节点
+解释：链表中有一个环，其尾部连接到第二个节点。
+```
+
+**示例 2：**
+
+![img](https://assets.leetcode.cn/aliyun-lc-upload/uploads/2018/12/07/circularlinkedlist_test2.png)
+
+```
+输入：head = [1,2], pos = 0
+输出：返回索引为 0 的链表节点
+解释：链表中有一个环，其尾部连接到第一个节点。
+```
+
+**示例 3：**
+
+![img](https://assets.leetcode.cn/aliyun-lc-upload/uploads/2018/12/07/circularlinkedlist_test3.png)
+
+```
+输入：head = [1], pos = -1
+输出：返回 null
+解释：链表中没有环。
+```
+
+**数据范围：**
+
+- 链表中节点的数目范围在范围 `[0, 104]` 内
+- `-105 <= Node.val <= 105`
+- `pos` 的值为 `-1` 或者链表中的一个有效索引
+
+
+
 
 
 ## Chapter X 附录
