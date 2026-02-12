@@ -4131,9 +4131,11 @@ int main() {
 }
 ```
 
+
+
 #### 4.8 关键路径
 
-用于项目管理非常有用的思路
+用于项目管理非常有用的思路，关键路径可以有**<u>多条</u>**
 AOE网：用边表示活动，顶点表示事件，边的权值表示活动的时间
 关键路径与最短路径恰好相反，它更强调最长的路径为关键，如下图所示，关键路径为$V_1→V_2→V_5→V_7→V_9$，时长为18。
 
@@ -4167,6 +4169,39 @@ AOE网：用边表示活动，顶点表示事件，边的权值表示活动的�
 
 2、计算LTV，将所有的数据初始化为汇点的ETV，如下表所示：
 <img src="Picture/4-22-6 LTV.png" style="zoom:70%;" />
+
+LTV的计算公式为：$LTV[x]=LTV[x→rear]-V(x,x→rear)$，如$LTV[V_8]=LTV[9]-V(V_8,V_9)=0+4=4$
+上图的逆拓扑排序序列为：$V_1←V_4←V_6←V_3←V_2←V_5←V_8←V_7←V_9$
+
+$V_9$出栈不影响LTV的结果，$V_7$出栈
+<img src="Picture/4-22-7 LTV.png" style="zoom:70%;" />
+
+$V_8$出栈
+<img src="Picture/4-22-8 LTV.png" style="zoom:70%;" />
+
+$V_5$出栈，在计算LTV的时候取最小值。
+<img src="Picture/4-22-9 LTV.png" style="zoom:70%;" />
+
+按照上述逆拓扑排序完后得出的结果为：
+<img src="Picture/4-22-10 LTV.png" style="zoom:70%;" />
+
+关键路径求的是活动的最早与最晚，也就是ETE和LTE，这里用事件的最早(ETV)和最晚(LTV)来求得。
+
+先计算出$V_1→V_2$、$V_1→V_3$和$V_1→V_4$的ETE与LTE，其中ETE由ETV直接求得：$ETE[x_1→x_2]=ETV[x_1]$；LTE由LTV倒推求得：$LTE[x_1→x_2]=LTV[x_2]-V(x_1,x_2)$
+<img src="Picture/4-22-11 ETE&LTE.png" style="zoom:70%;" />
+
+根据上述步骤，得到最终表为：
+<img src="Picture/4-22-12 ETE&LTE.png" style="zoom:70%;" />
+
+经上表对比，求出关键路径为$V_1→V_2→V_5→V_7→V_9$。
+
+<img src="Picture/4-22-13 ETE&LTE.png" style="zoom:50%;" />
+
+
+
+
+
+
 
 
 
