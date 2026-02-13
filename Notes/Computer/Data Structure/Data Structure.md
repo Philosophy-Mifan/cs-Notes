@@ -3433,7 +3433,7 @@ int main()
 
 根据普里姆算法可得出最小生成树为
 
-<img src="Picture/4-17 普里姆算法.png" style="zoom:80%;" />
+<img src="Picture/4-16-2 普里姆算法.png" style="zoom:80%;" />
 
 ```c
 #include "stdio.h"    
@@ -3537,7 +3537,6 @@ void prim(MGraph G)
 				adjvex[i] = k;
 			}
 		}
-
 	}
 }
 ```
@@ -3548,10 +3547,35 @@ void prim(MGraph G)
 
 1、有向无环图：拓扑排序针对于有向图
 2、活动：在图论中，活动是一个个的小阶段
-3、AOV网：用顶点表示活动，用弧来表示活动之间的优先级关系
+3、AOV网：用顶点表示活动，用弧来表示活动之间的<u>优先级关系</u>，在后续学习关键路径是AOE网。
 4、拓扑序列：表示一个活动之间关系的序列
 
-思路：在有向图中选择一个没有前驱的结点并且将其输出，可以用来判断一个有向图是否成环，一旦成环，拓扑序列直接结束
+在面对优先级关系的时候，如：代码之间的依赖关系，就要使用拓扑的思维
+
+以下图为示例
+<img src="Picture/4-17-1 拓扑.png" style="zoom:70%;" />
+
+思路：在有向图中选择一个没有前驱（入度为0）的结点并且将其输出，如果一个有向图中有环，拓扑序列直接结束。
+
+步骤如下：
+1、将入度为0的点放入栈中
+<img src="Picture/4-17-2 拓扑.png" style="zoom:60%;" />
+
+2、将栈顶元素弹出，且更新入度
+<img src="Picture/4-17-3 拓扑.png" style="zoom:60%;" />
+<img src="Picture/4-17-4 拓扑.png" style="zoom:60%;" />
+
+3、同1，然后循环操作，只要有入度为0的点则自动入栈
+
+<img src="Picture/4-17-5 拓扑.png" style="zoom:60%;" />
+
+<img src="Picture/4-17-6 拓扑.png" style="zoom:60%;" />
+
+<img src="Picture/4-17-7 拓扑.png" style="zoom:60%;" />
+
+<img src="Picture/4-17-8 拓扑.png" style="zoom:60%;" />
+
+由弹出栈的顺序作为拓扑序列：6→1→4→3→5→2，要注意，拓扑序列的输出跟实际写法有关，只要符合入度为0弹出都是正确的。
 
 ```c
 #include <stdio.h>
@@ -3570,8 +3594,7 @@ typedef struct StackNode {
 	struct StackNode* next;
 }StackNode, * StackList;
 //出栈函数 
-StackList Pop(StackList S, int* e)
-{
+StackList Pop(StackList S, int* e){
 	StackList p;
 	p = S;
 	if (!p)
@@ -3582,8 +3605,7 @@ StackList Pop(StackList S, int* e)
 	return S;
 }
 //入栈函数： 
-StackList Push(StackList S, int e)
-{
+StackList Push(StackList S, int e){
 	StackList p;
 	p = (StackNode*)malloc(sizeof(StackNode));
 	p->data = e;
@@ -3615,15 +3637,13 @@ typedef struct {
 int LocateVex(ALGraph* G, VerTexType v)  //G带操作的图；v要在图中定位的顶点
 {
 	int i;
-	for (i = 0; i < (G->vexnum); i++)
-	{
+	for (i = 0; i < (G->vexnum); i++){
 		if (v == G->vertices[i].data)
 			return i;               //顶点存在则返回在头结点数组中的下标；否则返回
 	}
 }
 
-void CreateUDG(ALGraph* G)
-{
+void CreateUDG(ALGraph* G){
 	int i, j, k;
 	VerTexType v1, v2;
 	ArcNode* p1;
@@ -3633,15 +3653,12 @@ void CreateUDG(ALGraph* G)
 	getchar();
 	printf("输入各个结点的值：");
 	for (i = 0; i < G->vexnum; i++)   //邻接表初始化
-
 	{
 		scanf_s("%c", &G->vertices[i].data);
 		getchar();
 		G->vertices[i].firstarc = NULL;
 	}
-
-	for (k = 0; k < G->arcnum; k++)
-	{
+	for (k = 0; k < G->arcnum; k++){
 		fflush(stdin);   //是清空输入缓冲区的
 		printf("弧度的两个点两个结点：");
 		scanf_s("%c", &v1);
@@ -3658,68 +3675,51 @@ void CreateUDG(ALGraph* G)
 	}
 }
 
-int TopoSort(ALGraph G, int* topo)
-{
-	StackList S;//声明一个栈指针
+int TopoSort(ALGraph G, int* topo) {
+	StackList S = NULL;	//声明一个栈指针
 	ArcNode* p;
 	int index;
-	int m = 0;//下标 用于存储拓扑序列
-	S = NULL;
-	for (int i = 0; i < G.vexnum; i++)
-	{
-		if (indegree[i] == 0) 
-		{
+	int m = 0;	//用于存储拓扑序列下标
+	for (int i = 0; i < G.vexnum; i++) {
+		//入度为0的点入栈
+		if (indegree[i] == 0) {
 			S = Push(S, i);
 		}
-
 	}
-
-	while (S)//栈不为空 就继续跑
-	{
+	//栈不为空，就继续跑
+	while (S) {
 		S = Pop(S, &index);
 		topo[m] = index;
 		m++;
-		//删边 index相邻的点的入度-1
+		//删边，index相邻的点的入度为-1
 		p = G.vertices[index].firstarc;
-		while (p != NULL)
-		{
+		while (p != NULL) {
 			--indegree[p->adjvex];
-			if (indegree[p->adjvex] == 0)
-			{
+			if (indegree[p->adjvex] == 0) {
 				S = Push(S, p->adjvex);
 			}
 			p = p->nextarc;
-
 		}
-
 	}
-	topo[m] = -1;//-1代表结尾
+	topo[m] = -1;	//-1代表结尾
 	//判断一下是否成环
-	if (m < G.vexnum)
-	{
+	if (m < G.vexnum) {
 		//成环
-		return 0;
 	}
-	else
-	{
+	else {
 		//不成环
-		return 1;
 	}
 }
 
-int main()
-{
+int main() {
 	ALGraph G;
 	int topo[99] = { 0 };
 	CreateUDG(&G);
-	if (TopoSort(G,topo))
-	{
-		for (int i = 0; topo[i] != -1; i++)
-		{
+	if (TopoSort(G, topo)) {
+		for (int i = 0; topo[i] != -1; i++) {
 			printf("%c", G.vertices[topo[i]].data);
 		}
 	}
-
 	return 0;
 }
 ```
@@ -4199,7 +4199,7 @@ $V_5$出栈，在计算LTV的时候取最小值。
 
 
 
-
+##### 代码实现
 
 
 
