@@ -2,7 +2,7 @@
 #include<cstdio>
 #include<vector>
 using namespace std;
-vector<vector<int>> generateMatrix(int n) {	//将力扣中的默认代码直接放过来即可，类不用考虑
+vector<vector<int>> generateMartix(int n) {	//将力扣中的默认代码直接放过来即可，类不用考虑
 	vector<vector<int>> mat(n, vector<int>(n));
  	int left = 0;
  	int top = 0;
