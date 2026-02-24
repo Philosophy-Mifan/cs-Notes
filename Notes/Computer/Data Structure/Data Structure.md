@@ -4201,11 +4201,218 @@ $V_5$出栈，在计算LTV的时候取最小值。
 
 ##### 代码实现
 
+```c
+#include <stdio.h>
+#include <stdlib.h> 
+#define OK 1
+#define ERROR 0
+#define MVNum 100
+typedef int Status;
+typedef char VerTexType;
+typedef char OtherInfo;
+int indegree[MVNum] = { 0 };//结点的入度个数
+int m;
+//创建栈 
+typedef struct StackNode {
+	int data;
+	struct StackNode* next;
+}StackNode, * StackList;
+//出栈函数 
+StackList Pop(StackList S, int* e){
+	StackList p;
+	p = S;
+	if (!p)
+		return ERROR;
+	*e = p->data;
+	S = S->next;
+	free(p);
+	return S;
+}
+//入栈函数： 
+StackList Push(StackList S, int e){
+	StackList p;
+	p = (StackNode*)malloc(sizeof(StackNode));
+	p->data = e;
+	p->next = S;
+	S = p;
+	return S;
+}
+
+//邻接表创建有向图的实现
+//边结点 
+typedef struct ArcNode {    //链表结点
+	int adjvex;           //邻接表创建无向网的实现
+	struct ArcNode* nextarc;    //指向下一条边的指针
+	OtherInfo info;       //和边相关的信息
+}ArcNode;
+
+//顶点信息 
+typedef struct VNode {   //头结点
+	VerTexType data;   //顶点信息
+	ArcNode* firstarc;//指向第一条依附该顶点的边的指针
+}VNode, AdjList[MVNum];//AdjList 表示邻接表类型
+
+typedef struct {
+	AdjList vertices;     //邻接表头结点数组
+	int vexnum, arcnum;   //图的顶点数和弧数
+}ALGraph;
+//创建有向图：
+
+int LocateVex(ALGraph* G, VerTexType v)  //G带操作的图；v要在图中定位的顶点
+{
+	int i;
+	for (i = 0; i < (G->vexnum); i++){
+		if (v == G->vertices[i].data)
+			return i;               //顶点存在则返回在头结点数组中的下标；否则返回
+	}
+}
+
+void CreateUDG(ALGraph* G){
+	int i, j, k;
+	VerTexType v1, v2;
+	OtherInfo weight;
+	ArcNode* p1;
+	printf("输入总结点数和弧数："); //G带操作的图；v要在图中定位的顶点
+	scanf_s("%d %d", &G->vexnum, &G->arcnum);
+	getchar();
+	printf("输入各个结点的值：");
+	for (i = 0; i < G->vexnum; i++)   //邻接表初始化
+	{
+		scanf_s("%c", &G->vertices[i].data);
+		getchar();
+		G->vertices[i].firstarc = NULL;
+	}
+	for (k = 0; k < G->arcnum; k++){
+		printf("弧度的两个结点以及权值：");
+		scanf_s("%c", &v1);
+		getchar();
+		scanf_s("%c", &v2);
+		getchar();
+		scanf_s("%c", &weight);
+		getchar();
+		i = LocateVex(G, v1);   //返回这两个顶点在顶点数组中的位置
+		j = LocateVex(G, v2);
+		p1 = (ArcNode*)malloc(sizeof(ArcNode));   //给邻接表指针分配空间
+		p1->adjvex = j;                          //赋值给p->adjvex指向的顶点域
+		p1->info = weight;
+		p1->nextarc = G->vertices[i].firstarc; //nextarc指针域指向i结点的firstarc指针域  
+		G->vertices[i].firstarc = p1;    //将点i的第一条指针指向
+		indegree[j]++;	//vi->vj, vj入度加1
+	}
+}
+
+Status TopoSort(ALGraph G, int* etv, int* topo) {
+	StackList S;	//声明一个栈指针
+	ArcNode* p;
+	S = NULL;
+	int i;
+	for (int i = 0; i < G.vexnum; i++) {
+		if (!indegree[i]) {
+			S = Push(S, i);
+		}
+	}
+	m = 0;	//记录topo数组的数
+	//初始化etv数组
+	for (int i = 0; i < G.vexnum; i++) {
+		etv[i] = 0;
+	}
+	//栈不为空，就继续跑
+	while (S) {
+		S = Pop(S, &i);
+		topo[m] = i;
+		m++;
+		//删边，index相邻的点的入度为-1
+		p = G.vertices[i].firstarc;
+		while (p != NULL) {
+			--indegree[p->adjvex];
+			if (indegree[p->adjvex] == 0) {
+				S = Push(S, p->adjvex);
+			}
+			//求各顶点的最早发生时间 ETV
+			if ((etv[i] + (p->info)) > etv[p->adjvex]) {
+				etv[p->adjvex] = etv[i] + (p->info);
+			}
+			p = p->nextarc;
+		}
+	}
+	topo[m] = -1;	//-1代表结尾
+	//判断一下是否成环
+	if (m < G.vexnum) {
+		//成环
+		return 0;
+	}
+	else {
+		//不成环
+		return 1;
+	}
+}
+//关键路径代码
+void CriticalPath(ALGraph G, int* etv, int* ltv) {
+	int topo[99] = { 0 };
+	ArcNode* p;
+	int ete, lte;
+	if (TopoSort(G, etv, topo)) {
+		//初始化最晚发生时间，初始化为etv的最大的数字
+		for (int i = 0; i < G.vexnum; i++) {
+			ltv[i] = etv[G.vexnum - 1];
+		}
+		while (m) {
+			int gettop = topo[--m];
+			for (p = G.vertices[gettop].firstarc; p; p = p->nextarc) {
+				int k = p->adjvex;
+				if (ltv[k] - p->info < ltv[gettop]) {
+					ltv[gettop] = ltv[k] - p->info;
+				}
+			}
+		}
+		//活动的最早和最晚发生时间
+		for (int i = 0; i < G.vexnum; i++) {
+			for (p = G.vertices[i].firstarc; p; p = p->nextarc) {
+				int k = p->adjvex;
+				ete = etv[i];
+				lte = ltv[k] - p->info;
+				if (ete == lte) {
+					printf("%c -> %c : %c\n", G.vertices[i].data, G.vertices[k].data, p->info);
+				}
+			}
+		}
+	}
+}
+
+int main() {
+	ALGraph G;
+	CreateUDG(&G);
+	int* ltv = (int*)malloc(G.vexnum * sizeof(int));
+	int* etv = (int*)malloc(G.vexnum * sizeof(int));
+	CriticalPath(G, etv, ltv);
+	return 0;
+}
+```
+
+
+
+## 三、查找
+
+查找算法都是基于排好序的（除顺序查找）
+静态查找：数据稳定$\rightarrow$线性表 排序
+动态查找：在查找的过程中，需要动态的添加或删除元素$\rightarrow$二叉排序树
+在内存中查找叫做内查找，在硬盘中查找叫做外查找。
+平均查找长度：衡量查找算法的标准，将平均需要和待查找关键字进行比较的次数；长度越大，说明其性能越差，反之，则越好。
+
+顺序查找：循环，一个一个的找
+线性查找：把一些常用的数据根据概率放到前面，不常用的放到后面，数据量一般不动，不能排序。
+折半查找（二分）
+分块查找——索引存储结构（索引表）：将一个查找表分为若干个的模块，块内的元素可以无序，但是块和块之间是有序的。
+
+跳跃查找：
+插值查找：
+斐波那契查找：
 
 
 
 
-## 三、字符串模式匹配 KMP
+
+## 四、字符串模式匹配 KMP
 
 KMP没有太多的思想，不算是一种解决方案。
 
@@ -4246,3 +4453,30 @@ void getnext(char* chars) {
 当`p[j] != s[i]`;	下一次匹配应该为p[j] = p[next[j]];
 
 如果p[j] = p[next[j]]，若需要再次回溯的话，就令next[j] = next[next[j]]，也就是失败匹配的时候直接将next数组设定为下一个的下一个的位置，减少了一次失败匹配。
+
+
+
+## 五、其他
+
+### 复杂度分析
+
+复杂度分析一般有两个阶段分析，一是算法实现前的理论分析，二是实现后的实际分析（考虑编程语言、具体的计算机(嵌入、超级计算机等)等），实际分析不是用来判断算法的好坏，只是为了收集具体的数据。
+
+一个好的算法有以下两点
+
+1. 准确性：能够彻底解决问题
+2. 健壮性：在任何情况下，程序不能崩溃。（包括断电时保存，程序自行结束也是崩溃的一种情况）
+
+在满足了上述两点的算法后，开始讨论时间和空间。
+
+时间复杂度：看问题变化的规律
+代码执行的次数（时间频度）
+问题规模(n)：如果问题规模越大，语句的执行次数也就越大。
+
+顺序结构通过累加来计算复杂度，对于循环结构来说，嵌套的循环以累乘来计算复杂度。
+
+从工程上说，分为最好（最理想状态下）、最坏（最糟糕）、平均（加权平均、求数学期望）以及摊均（摊还分析）时间复杂度
+
+
+
+空间复杂度，开辟出来存放具体数据的数组或空间不将其纳入空间复杂度中；当处理问题时，需要开辟其他空间来做辅助的那些空间，将其纳入为空间复杂度中
