@@ -4404,9 +4404,43 @@ int main() {
 折半查找（二分）
 分块查找——索引存储结构（索引表）：将一个查找表分为若干个的模块，块内的元素可以无序，但是块和块之间是有序的。
 
-跳跃查找：
-插值查找：
-斐波那契查找：
+### 3.1 跳跃查找
+
+有序的且以**步长**往前跳，尽可能跳过不在查找范围内的数据，用来减少比较的次数
+
+<img src="Picture/5-1 JumpSearch.png" style="zoom:67%;" />
+
+以上图为例，共16个元素，我们取$\sqrt{16}$为步长，也就是4，在跳跃查找中我们用到两个指针，在这里我们查找64，步骤如下：
+
+<img src="Picture/5-1-1 JumpSearch step1.png" style="zoom:67%;" />
+
+此时$rear-1$指向的数据比查找的数据小，移动front到rear，并用步长再次移动rear指针，得到下图
+
+<img src="Picture/5-1-2 JumpSearch step2.png" style="zoom:67%;" />
+
+此时$rear-1$指向75，比需要搜索到的64还要大，就用front指针向后移动查找即可。
+
+从上述的步骤上来看，跳跃查找比二分查找看起来鸡肋了不少，但跳跃查找的优势在于整个查找中只**回溯**一次（在线性遍历中），如果当二分成本很高的时候我们就会考虑使用跳跃查找。
+
+### 3.2 插值查找
+
+有序且**均匀**分布，如果不是均匀分布插值查找会退化成顺序查找，mid指针的计算公式如下
+
+$mid=low+(x-arr[low])/(arr[high]-arr[low])×(high-low)$，其中$x$指待查找元素。
+
+通过上式可见，查找的元素靠近高位指针时求出的mid也就越靠近high，通过下面为例展示插值查找的步骤
+
+<img src="D:\Documents\ICT\cs-Notes\Notes\Computer\Data Structure\Picture\5-2 InterpolationSearch.png" style="zoom:67%;" />
+
+通过计算，此时$mid=0+(18-10)/(47-10)×(14-0)=3$
+
+<img src="Picture/5-2-1 InterpolationSearch step1.png" style="zoom:67%;" />
+
+mid指向16，比所查找元素小，此时移动$low$到$mid+1$，再计算$mid=4+(18-18)/(47-18)×(14-4)=4$，此时mid和low处在同一位置，当mid所指向元素查找到时结束。
+
+<img src="Picture/5-2-2 InterpolationSearch step2.png" style="zoom:67%;" />
+
+斐波那契查找（黄金分割比查找）：
 
 
 
