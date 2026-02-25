@@ -20,7 +20,7 @@
 
 网络原理为重点，用网络编程的工具、模拟器来理解网络协议
 
-<img src="E:\Typora\Typora Note\Computer\Computer Networking\Picture\计算机网络.png" style="zoom:55%;" />
+<img src="Picture/计算机网络.png" style="zoom:55%;" />
 
 ### 2.参考书籍
 
@@ -34,7 +34,7 @@
 
 核心结构：传输行为、分组传递……
 
-<img src="E:\Typora\Typora Note\Computer\Computer Networking\Picture\因特网的一些部件.png" style="zoom:150%;" />
+<img src="Picture/因特网的一些部件.png" style="zoom:150%;" />
 
 OSI模型
 
@@ -67,7 +67,7 @@ ISO 7层模型
 
 链路：有线链路、无线链路
 
- [1.[补充]计算机网络概述重点.pdf](D:\01 university\计算机网络直播课\1.[补充]计算机网络概述重点.pdf) 
+
 
 互联网(internet)：各种网络互相之间进行数据通信，各个异构网络通过路由器相连
 因特网(Internet)：利用IP地址来识别各个人的身份信息，也可以理解为www
@@ -107,4 +107,4 @@ IP地址就类似于身份证
 
 交换机记的是MAC地址，并不是IP地址
 
-1-7路由与超网试验： [router-1.pkt](C:\Users\Philosophy_Mifan\Cisco Packet Tracer 8.2.1\saves\router-1.pkt) 
+1-7路由与超网试验：
