@@ -4440,7 +4440,33 @@ mid指向16，比所查找元素小，此时移动$low$到$mid+1$，再计算$mi
 
 <img src="Picture/5-2-2 InterpolationSearch step2.png" style="zoom:67%;" />
 
-斐波那契查找（黄金分割比查找）：
+### 3.3 斐波那契查找（黄金分割比查找）
+
+斐波那契数列：1、1、2、3、5、8、13、21、...，首先先找一个大于等于当前数组元素个数的最小斐波那契数字，以下图所示。
+
+<img src="Picture/5-3 Fibonacci Search.png" style="zoom:67%;" />
+
+上图中元素个数为11，所以我们找到的数字为13，13是由5和8构成的。$f(k)=f(k-1)+f(k-2)$，在逻辑上我们视为13个元素的数组，如下所示：
+
+<img src="Picture/5-3-1 Fibonacci Search.png" style="zoom:67%;" />
+
+初始化$offset=-1$，让mid指针指向$offset+f(k-1)=-1+8=7$的位置（注：也可以让其在$f(k-2)$的基础上，取二者其一即可），让$offset=mid=7$
+
+<img src="Picture/5-3-2 Fibonacci Search.png" style="zoom:67%;" />
+
+此时，mid指向的值小于我们要搜索的值，此时将右边划分$f(k)=5,f(k-1)=3,f(k-2)=2，mid=offset+f(k-1)=10$
+
+<img src="Picture/5-3-3 Fibonacci Search.png" style="zoom:67%;" />
+
+此时，mid指向的值大于我们要搜索的值，此时将左边划分$f(k)=2,f(k-1)=1,f(k-2)=1$，此时$offset=7$**不再更新**，故$mid=offset+f(k-1)=8$。
+
+<img src="Picture/5-3-4 Fibonacci Search.png" style="zoom:67%;" />
+
+要注意在上述过程中mid向右移时需要更新offset的值，但是向左移时offset是不更新的！！
+
+相对于二分算法来说，从CPU的消耗量来说，斐波那契查找消耗更小，是因为不需要使用除法，只需要简单的加减法；如果数组无法存在内存中的时候（也就是在外存中）斐波那契查找是很有用的。
+
+
 
 
 
