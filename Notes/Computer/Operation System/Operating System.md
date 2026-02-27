@@ -26,7 +26,7 @@
 
 基于命令行的(只能通过命令行的)：一般统称为Shell文件，我们输入的命令行就是Shell
 
-<img src="E:\Typora\Typora Note\Computer\Operation System\Picture\1-1 操作系统与硬件.png" style="zoom:75%;" />
+<img src="Picture\1-1 操作系统与硬件.png" style="zoom:75%;" />
 
 操作系统将硬件做了抽象，建立起来的一个模型，以软件的形式表达这些硬件；应用程序是以软件的形式对外在的表达
 
@@ -34,7 +34,7 @@
 
 ### 1.1 简单现代计算机的硬件
 
-<img src="E:\Typora\Typora Note\Computer\Operation System\Picture\1-2 一个典型系统的硬件组成.jpg" style="zoom:67%;" />
+<img src="Picture\1-2 一个典型系统的硬件组成.jpg" style="zoom:67%;" />
 
 寄存器：用于存储指向下一条指令的地址
 
@@ -54,11 +54,11 @@
 
 超标量流水线（下图所示）：为了无序执行
 
-<img src="E:\Typora\Typora Note\Computer\Operation System\Picture\1-3 超标量流水线.png" style="zoom:67%;" />
+<img src="Picture\1-3 超标量流水线.png" style="zoom:67%;" />
 
 存储层次结构（如下图所示）
 
-<img src="E:\Typora\Typora Note\Computer\Operation System\Picture\1-4 存储层次结构.png" style="zoom:67%;" />
+<img src="Picture\1-4 存储层次结构.png" style="zoom:67%;" />
 
 时间局部性：某一个内存块的重复性；空间局部性：内存位置及其周边位置的重复性
 
@@ -80,9 +80,9 @@ Q4：移除的这个内容又需要放到哪里去？
 
 磁盘驱动器的构造（如下图所示）
 
-<img src="E:\Typora\Typora Note\Computer\Operation System\Picture\1-5 磁盘驱动器的构造.jpg" style="zoom:25%;" />
+<img src="Picture\1-5 磁盘驱动器的构造.jpg" style="zoom:25%;" />
 
-<img src="E:\Typora\Typora Note\Computer\Operation System\Picture\1-6 盘面.jpg" style="zoom:25%;" />
+<img src="Picture\1-6 盘面.jpg" style="zoom:25%;" />
 
 存储器管理单元MMU：内存地址映射；控制器：屏蔽一些物理上的一些细节，加代理
 
@@ -92,9 +92,9 @@ Q4：移除的这个内容又需要放到哪里去？
 
 忙等待、中断机制(见下图)、直接存储器访问(Direct Memory Access，DMA)芯片
 
-<img src="E:\Typora\Typora Note\Computer\Operation System\Picture\1-7 启动设备并发出中断的过程.jpg" style="zoom:25%;" />
+<img src="Picture\1-7 启动设备并发出中断的过程.jpg" style="zoom:25%;" />
 
-<img src="E:\Typora\Typora Note\Computer\Operation System\Picture\1-8 中断过程.jpg" style="zoom:25%;" />
+<img src="Picture\1-8 中断过程.jpg" style="zoom:25%;" />
 
 
 
@@ -118,9 +118,9 @@ Q4：移除的这个内容又需要放到哪里去？
 
 车辆谁先走谁后走，走哪站，需要有顺序，有规定的——控制器
 
-<img src="E:\Typora\Typora Note\Computer\Operation System\Picture\1-9 一个大型的x86系统的结构.jpg" style="zoom:35%;" />
+<img src="Picture\1-9 一个大型的x86系统的结构.jpg" style="zoom:35%;" />
 
-<img src="E:\Typora\Typora Note\Computer\Operation System\Picture\1-10 硬件结构.jpg" style="zoom:30%;" />
+<img src="Picture\1-10 硬件结构.jpg" style="zoom:30%;" />
 
 ### 1.2 操作系统部分
 
@@ -186,7 +186,7 @@ Q4：移除的这个内容又需要放到哪里去？
 
 会产生的问题：进程直接访问物理地址会带来不可预估的风险；物理内存资源是宝贵的且非常有限；内存分配时，连续内存分配会产生很多难以分配的内存碎片
 
-<img src="E:\Typora\Typora Note\Computer\Operation System\Picture\1-11 进程虚拟空间地址.png" style="zoom:80%;" />
+<img src="Picture\1-11 进程虚拟空间地址.png" style="zoom:80%;" />
 
 #### 1.2.3 文件 
 
@@ -250,7 +250,7 @@ Q4：移除的这个内容又需要放到哪里去？
 
 ##### 客户-服务器模式
 
-<img src="E:\Typora\Typora Note\Computer\Operation System\Picture\1-12 客户-服务器模式.jpg" style="zoom:35%;" />
+<img src="Picture\1-12 客户-服务器模式.jpg" style="zoom:35%;" />
 
 
 
@@ -266,11 +266,11 @@ Q4：移除的这个内容又需要放到哪里去？
 
 伪并行：指单核或多核处理器同时执行多个进程，从而使程序更快。
 
-<img src="E:\Typora\Typora Note\Computer\Operation System\Picture\2-1 程序计数器.jpg" style="zoom:20%;" />
+<img src="Picture\2-1 程序计数器.jpg" style="zoom:20%;" />
 
-<img src="E:\Typora\Typora Note\Computer\Operation System\Picture\2-2 四个程序计数器.jpg" style="zoom:25%;" />
+<img src="Picture\2-2 四个程序计数器.jpg" style="zoom:25%;" />
 
-<img src="E:\Typora\Typora Note\Computer\Operation System\Picture\2-3 进程与时间关系图.jpg" style="zoom:25%;" />
+<img src="Picture\2-3 进程与时间关系图.jpg" style="zoom:25%;" />
 
 #### 2.1.2 进程的创建
 
@@ -321,7 +321,7 @@ Windows是所有的进程都是平等的(众生平等)，唯一类似于层次�
 
 尽管每个进程是一个独立的实体，有其自己的程序计数器和内部状态，但是进程之间仍需要相互帮助。
 
-<img src="E:\Typora\Typora Note\Computer\Operation System\Picture\2-4 进程的状态.png" style="zoom:50%;" />
+<img src="Picture\2-4 进程的状态.png" style="zoom:50%;" />
 
 1：进程等待输入而阻塞，进程由运行态变为阻塞态
 
@@ -349,13 +349,13 @@ A：多线程之间会共享同一块地址空间和所有可用数据的能力�
 
 ##### 多线程解决方案
 
-<img src="E:\Typora\Typora Note\Computer\Operation System\Picture\2-5 Web服务器(线程).jpg" style="zoom:25%;" />
+<img src="Picture\2-5 Web服务器(线程).jpg" style="zoom:25%;" />
 
 高速缓存对所有线程都开放
 
 ##### 状态机解决方案
 
-<img src="E:\Typora\Typora Note\Computer\Operation System\Picture\2-6 状态机.png" style="zoom:67%;" />
+<img src="Picture\2-6 状态机.png" style="zoom:67%;" />
 
 
 
@@ -371,7 +371,7 @@ A：多线程之间会共享同一块地址空间和所有可用数据的能力�
 
 #### 2.2.3 经典的线程模型
 
-<img src="E:\Typora\Typora Note\Computer\Operation System\Picture\2-7 经典的线程模型.jpg" style="zoom:25%;" />
+<img src="Picture\2-7 经典的线程模型.jpg" style="zoom:25%;" />
 
 线程和线程之间可以相互干扰
 
@@ -387,7 +387,7 @@ A：多线程之间会共享同一块地址空间和所有可用数据的能力�
 
 在Linux中有pthreads.h这个包，常见调用与描述见下图
 
-<img src="E:\Typora\Typora Note\Computer\Operation System\Picture\2-8 pthreads.h线程包.jpg" style="zoom:33%;" />
+<img src="Picture\2-8 pthreads.h线程包.jpg" style="zoom:33%;" />
 
 
 
@@ -397,7 +397,7 @@ A：多线程之间会共享同一块地址空间和所有可用数据的能力�
 
 
 
-<img src="E:\Typora\Typora Note\Computer\Operation System\Picture\2-9 用户空间的线程实现.jpg" style="zoom:25%;" />
+<img src="Picture\2-9 用户空间的线程实现.jpg" style="zoom:25%;" />
 
 ##### 用户空间实现优势与弊端
 
@@ -409,7 +409,7 @@ A：多线程之间会共享同一块地址空间和所有可用数据的能力�
 
 ##### 在内核空间中实现线程
 
-<img src="E:\Typora\Typora Note\Computer\Operation System\Picture\2-10 内核空间的线程实现.jpg" style="zoom:25%;" />
+<img src="Picture\2-10 内核空间的线程实现.jpg" style="zoom:25%;" />
 
 
 
@@ -417,7 +417,7 @@ A：多线程之间会共享同一块地址空间和所有可用数据的能力�
 
 ##### 在用户和内核空间中混合实现线程
 
-<img src="E:\Typora\Typora Note\Computer\Operation System\Picture\2-11 混合实现.jpg" style="zoom:25%;" />
+<img src="Picture\2-11 混合实现.jpg" style="zoom:25%;" />
 
 多路复用技术(后面详细讲)
 
@@ -437,7 +437,7 @@ Q3：数据的先后顺序问题，如果进程A产生数据并且进程B打印�
 
 一个后台打印程序，当一个进程需要打印某个文件时，它会将文件名放在一个特殊的后台目录(spooler directory)中。另一个进程打印后台进程(printer daemon)会定期的检查是否需要文件被打印，如果有的话，就打印并将改文件名从目录下删除。
 
-<img src="E:\Typora\Typora Note\Computer\Operation System\Picture\2-12 后台目录.jpg" style="zoom:25%;" />
+<img src="Picture\2-12 后台目录.jpg" style="zoom:25%;" />
 
 out变量代表指向下一个需要打印的文件，in变量代表指向下一个空闲的槽位
 
@@ -464,7 +464,7 @@ A：禁止一个或多个进程在同一时刻对共享资源（包括共享内�
 3.位于临界区外的进程不得阻塞其他进程
 4.不能使任何进程无限等待进入临界区
 
-<img src="E:\Typora\Typora Note\Computer\Operation System\Picture\2-13 临界区.jpg" style="zoom:25%;" />
+<img src="Picture\2-13 临界区.jpg" style="zoom:25%;" />
 
 #### 2.3.4 忙等互斥
 
@@ -478,9 +478,9 @@ Q：这个方案是否可行？进程进入临界区域是由谁决定的呢？�
 
 寻找一种在软件层面解决方案，如果锁的值为0，进程设为1即可，锁为1的时候直接阻塞进程即可，加上锁变量就是为了空出时间
 
-<img src="E:\Typora\Typora Note\Computer\Operation System\Picture\2-14 锁变量.jpg" style="zoom:30%;" />
+<img src="Picture\2-14 锁变量.jpg" style="zoom:30%;" />
 
-<img src="E:\Typora\Typora Note\Computer\Operation System\Picture\2-15 锁变量的问题.jpg" style="zoom:25%;" />
+<img src="Picture\2-15 锁变量的问题.jpg" style="zoom:25%;" />
 
 
 
@@ -561,11 +561,11 @@ void leave_region(int process)
 
 锁住内存总线和禁用中断不一样
 
-<img src="E:\Typora\Typora Note\Computer\Operation System\Picture\2-16 TSL指令.jpg" style="zoom:40%;" />
+<img src="Picture\2-16 TSL指令.jpg" style="zoom:40%;" />
 
 附：Inter x86
 
-<img src="E:\Typora\Typora Note\Computer\Operation System\Picture\2-17 Inter x86.jpg" style="zoom:50%;" />
+<img src="Picture\2-17 Inter x86.jpg" style="zoom:50%;" />
 
 上述解法都有可能产生忙等待，实际上就是浪费CPU的时间，且会有意想不到的情况出现
 
@@ -573,7 +573,7 @@ void leave_region(int process)
 
 #### *2.3.5 优先级反转
 
-<img src="E:\Typora\Typora Note\Computer\Operation System\Picture\2-18 优先级反转问题.png" style="zoom:60%;" />
+<img src="Picture\2-18 优先级反转问题.png" style="zoom:60%;" />
 
 在某一时刻，L已经处于临界区，但是H处于就绪态，H就会忙等待，L又不会被调度，操作系统认知得让H运行起来，同时会屏蔽其他所有的调度，L已经在临界区运行中，且L不会被调度。H就会永远变成死循环，L进程永远不会退出临界区（因为无法被调度），这种现象叫做优先级反转问题
 
@@ -651,9 +651,9 @@ void consumer()
 }
 ```
 
-<img src="E:\Typora\Typora Note\Computer\Operation System\Picture\2-19-1 生产者-消费者模型过程1.png" style="zoom:67%;" /><img src="E:\Typora\Typora Note\Computer\Operation System\Picture\2-19-2 生产者-消费者模型过程2.png" style="zoom:67%;" />
+<img src="Picture\2-19-1 生产者-消费者模型过程1.png" style="zoom:67%;" /><img src="Picture\2-19-2 生产者-消费者模型过程2.png" style="zoom:67%;" />
 
-<img src="E:\Typora\Typora Note\Computer\Operation System\Picture\2-19-3 生产者-消费者模型过程3.png" style="zoom:67%;" /><img src="E:\Typora\Typora Note\Computer\Operation System\Picture\2-19-4 生产者-消费者模型过程4.png" style="zoom:67%;" />
+<img src="Picture\2-19-3 生产者-消费者模型过程3.png" style="zoom:67%;" /><img src="Picture\2-19-4 生产者-消费者模型过程4.png" style="zoom:67%;" />
 
 在wake up的过程中，count的值更新为0，此时消费者被唤醒去查看count更新后的值发现为0，继续休眠，而生产者会一直将整个缓冲区填满后休眠，形成永久休眠。产生上述情况的原因是：消费者和生产者是两个单独的进程，且数据是从寄存器中读取(也就是之前的值)，这样就会导致生产者使得消费者的wake up丢失，消费者无法被唤醒继续休眠，而生产者也会在缓冲区填满之后永久休眠
 
@@ -773,7 +773,7 @@ synchronization也是信号量，只是用于同步
 
 #### 2.3.10 互斥量
 
-<img src="E:\Typora\Typora Note\Computer\Operation System\Picture\2-20 互斥量.jpg" style="zoom:40%;" />
+<img src="Picture\2-20 互斥量.jpg" style="zoom:40%;" />
 
 FUTEXES（快速用户空间互斥）：同步(synchronization) + 互斥(locking) ====> Futex
 
@@ -992,7 +992,7 @@ receive(source, &message);
 
 ##### 消息传递的设计要点
 
-<img src="E:\Typora\Typora Note\Computer\Operation System\Picture\2-21 消息传递的设计要点.jpg" style="zoom:35%;" />
+<img src="Picture\2-21 消息传递的设计要点.jpg" style="zoom:35%;" />
 
 接收方不知道发送方第二次发送的消息是新的消息还是之前发送给的消息，这也是操作系统中需要思考的问题
 
@@ -1054,7 +1054,7 @@ void consumer()
 
 屏障适用于进程组，是一组进程的同步；某些应用中划分了若干阶段，并且规定，除非所有的进程都就绪准备着手下一个阶段，否则任何进程都不能进入下一个阶段
 
-<img src="E:\Typora\Typora Note\Computer\Operation System\Picture\2-22 屏障.jpg" style="zoom:33%;" />
+<img src="Picture\2-22 屏障.jpg" style="zoom:33%;" />
 
 ```c
 //互斥量、自旋锁是用来保护临界区的
@@ -1138,9 +1138,9 @@ int main()
 
 在某些情况下，我们可以允许写操作来更新数据结构，即便还有其他的进程正在使用；确保每个读操作要么读取旧的版本，要么获取读的新版本，但是对于写操作来说就是必须要锁
 
-<img src="E:\Typora\Typora Note\Computer\Operation System\Picture\2-23 避免锁的添加.jpg" style="zoom:33%;" />
+<img src="Picture\2-23 避免锁的添加.jpg" style="zoom:33%;" />
 
-<img src="E:\Typora\Typora Note\Computer\Operation System\Picture\2-24 避免锁的删除.jpg" style="zoom:33%;" />
+<img src="Picture\2-24 避免锁的删除.jpg" style="zoom:33%;" />
 
 对于移除节点操作需要注意B、D的释放必须要十分谨慎
 
@@ -1156,7 +1156,7 @@ int main()
 
 操作系统中有一个叫做调度程序(scheduler)的角色存在，它就是做这事儿的，该程序使用的算法叫做调度算法(scheduling algorithm)
 
-<img src="E:\Typora\Typora Note\Computer\Operation System\Picture\2-25 调用.jpg" style="zoom:25%;" />
+<img src="Picture\2-25 调用.jpg" style="zoom:25%;" />
 
 上图中a代表的是CPU密集型，b代表的是I/O密集型
 
@@ -1230,7 +1230,7 @@ int main()
 
 一家保险公司，因为每天要做类似的工作，所以人们可以相当精确地预测处理1000个索赔的一批作业需要多长时间。
 
-<img src="E:\Typora\Typora Note\Computer\Operation System\Picture\2-26 最短作业优先.jpg" style="zoom:33%;" />
+<img src="Picture/2-26 最短作业优先.jpg" style="zoom:33%;" />
 
 如上图，有四个作业ABCD，其上方的数字代表利用CPU的时间
 
@@ -1254,7 +1254,7 @@ b的周转时间就应该是(4+8+12+20)/4 = 11
 
 ##### 轮询调度
 
-<img src="E:\Typora\Typora Note\Computer\Operation System\Picture\2-27 轮询.jpg" style="zoom:33%;" />
+<img src="Picture/2-27 轮询.jpg" style="zoom:33%;" />
 
 在Linux在，将进程间的切换定在了20~50ms，具体的要根据具体的操作系统来看，轮询调度的前提是所有的进程都是平等的（无优先级），但事实很明显不是这样的。
 
@@ -1268,7 +1268,7 @@ b的周转时间就应该是(4+8+12+20)/4 = 11
 
 静态分配：在一开始就把所有的优先级设定好了；自愿降级：为了照顾某一种场景，允许降低自己的优先级，其指令名为nice
 
-<img src="E:\Typora\Typora Note\Computer\Operation System\Picture\2-28 优先级.jpg" style="zoom:33%;" />
+<img src="Picture/2-28 优先级.jpg" style="zoom:33%;" />
 
 如果优先级固定了以后（如上图）优先级最低的（优先级1）会出现永远无法运行的情况，这种现象被称为饥饿现象，所以要对优先级进行一系列调整
 
@@ -1292,7 +1292,7 @@ A：预测：假设每个终端的每条命令是$T_0$，测量到的下一条�
 
 Q：P1-P5使用轮询(时间片为7)，P6-P10使用最短进程优先调度，且轮询的优先级大于最短进程优先调度的优先级
 
-![](E:\Typora\Typora Note\Computer\Operation System\Picture\2-29 example.png)
+![](Picture/2-29 example.png)
 
 第一类先按照等待时间的长短排序 -> 第一类的时间片开始轮转（若时间片内未能结束，则需要循环处理，直到处理完成） -> 第二类 短进程优先 -> 结束队列
 
@@ -1340,9 +1340,9 @@ $\sum_{i=1}^m\frac{C_i}{P_i}\leq1$：如果它有m个周期性的事件，事件
 
 ### 2.5 线程调度
 
-<img src="E:\Typora\Typora Note\Computer\Operation System\Picture\2-30 用户级线程调度.png" style="zoom:50%;" />
+<img src="Picture/2-30 用户级线程调度.png" style="zoom:50%;" />
 
-<img src="E:\Typora\Typora Note\Computer\Operation System\Picture\2-31 内核级线程调度.png" style="zoom:50%;" />
+<img src="Picture/2-31 内核级线程调度.png" style="zoom:50%;" />
 
 用户级线程和内核级线程主要的区别就在于性能，用户级切换线程只需要少量的机器指令，但是内核级切换线程就需要完成一个完整的上下文。
 
@@ -1369,7 +1369,7 @@ $\sum_{i=1}^m\frac{C_i}{P_i}\leq1$：如果它有m个周期性的事件，事件
 - 早期的大型机、小型机、个人计算机都是直接操控内存
 - 不可能会有两个应用程序同时在内存中
 
-<img src="E:\Typora\Typora Note\Computer\Operation System\Picture\3-1 无存储器抽象.png" style="zoom:33%;" />
+<img src="Picture/3-1 无存储器抽象.png" style="zoom:33%;" />
 
 上图a为大型机，b位小型机，c为个人计算机。
 划分了一个内存区，有4位的状态码，被称之为保护键，且保护键只能由操作系统去访问。但这种方式也有很严重的缺陷。
