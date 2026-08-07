@@ -14,16 +14,16 @@
 ## 目前计划
 
 1. (重要、不紧急)完善Data Structure部分笔记
-2. (重要、紧急)完成计组、操作系统、计网的笔记
+2. (重要、紧急)完成计组、操作系统、计网的笔记 ddl：12.19
 3. (重要、紧急)开始Algorithm笔记，以及同步更新刷题仓库
-4. (暂时不重要、不紧急)Linux、C++进阶部分、MySQL、Redis、RocketMQ、网络编程(socket)等的学习
+4. (暂时不重要、不紧急)Linux、C++进阶部分、MySQL、Redis、RocketMQ、Qt、网络编程(socket)等的学习
 5. (暂时不重要、不紧急)大前端部分学习（HTML/CSS，JavaScript）
-6. 离散数学
-7. (不重要、不紧急)用Python完成群内“报班”需求的插件
+6. 离散数学、FFT/NTT/FWT/FMT
 
 ## 未来计划
 
 1. CSAPP（CMU15-213）及MIT6.824《分布式系统》课程相关内容(附：6.004《计算结构》、6.033《计算机系统工程》)
 2. NapCat+Nonebot2的插件开发
 3. 游戏引擎学习（UE5、Unity3D）
-4. 待定
+4. C#、Golang和Rust
+5. 待定

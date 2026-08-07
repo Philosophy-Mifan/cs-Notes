@@ -16,14 +16,14 @@
 1. (Important, not urgent) Complete the Data Structure notes.
 2. (Important, urgent) Finish notes on Computer Organization, Operating System, and Computer Networks
 3. (Important, urgent) Start the Algorithm notes and simultaneously update the problem-solving repository.
-4. (Not important, not urgent for now) Advanced C++, MySQL, Redis, RocketMQ, and network programming (socket, etc.).
+4. (Not important, not urgent for now) Advanced C++, MySQL, Redis, RocketMQ, Qt, and network programming (socket, etc.).
 5. (Not important, not urgent for now) Frontend basics (HTML/CSS, JavaScript).
-6. Discrete Mathematics
-7. (Not important, not urgent) Implement a Python plugin for a group request (related to "paid courses").
+6. Discrete Mathematics, FFT/NTT/FWT/FMT
 
 ## Future Plan
 
 1. CSAPP (CMU 15-213) and MIT 6.824 *Distributed Systems* (also 6.004 *Computation Structures*, 6.033 *Computer System Engineering*)
 2. Plugin development with NapCat + Nonebot2.
 3. Game engine learning (UE5, Unity3D).
-4. To be decided.
+4. C#、Golang and Rust
+5. To be decided.
